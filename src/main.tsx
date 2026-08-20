@@ -57,7 +57,7 @@ function App() {
 
   const [meals, setMeals] = useState<Meal[]>([]);
   const [menu, setMenu] = useState<MenuRecord | null>(null);
-  const [rsvps, setRsvps] = useState<RSVPRecord>({});
+  const [kitchenHeadcount, setKitchenHeadcount] = useState(0); [rsvps, setRsvps] = useState<RSVPRecord>({});
 
   const [latePlate, setLatePlate] = useState(false);
   const [allergies, setAllergies] = useState<string[]>([]);
@@ -197,12 +197,20 @@ function App() {
         (meal) => meal.id
       );
 
-      const { data: rsvpData, error: rsvpError } =
-        await supabase
-          .from("rsvps")
-          .select("meal_id, status")
-          .eq("member_id", userProfile.id)
-          .in("meal_id", mealIds);
+      let rsvpQuery = supabase
+  .from("rsvps")
+  .select("member_id, meal_id, status")
+  .in("meal_id", mealIds);
+
+if (userProfile.role === "member") {
+  rsvpQuery = rsvpQuery.eq(
+    "member_id",
+    userProfile.id
+  );
+}
+
+const { data: rsvpData, error: rsvpError } =
+  await rsvpQuery;
 
       if (rsvpError) {
         throw rsvpError;
@@ -210,12 +218,14 @@ function App() {
 
       const rsvpMap: RSVPRecord = {};
 
-      (rsvpData || []).forEach((rsvp) => {
-        rsvpMap[rsvp.meal_id] =
-          rsvp.status as RSVPStatus;
-      });
+(rsvpData || []).forEach((rsvp) => {
+  if (rsvp.member_id === userProfile.id) {
+    rsvpMap[rsvp.meal_id] =
+      rsvp.status as RSVPStatus;
+  }
+});
 
-      setRsvps(rsvpMap);
+setRsvps(rsvpMap);
     } catch (error) {
       console.error(
         "Menu loading error:",
