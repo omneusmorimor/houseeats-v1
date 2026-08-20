@@ -1034,7 +1034,7 @@ function MenuPage({
                       "RSVP"
                     )}
                   </button>
-   </div>
+  
               </div>
             </Card>
           )
