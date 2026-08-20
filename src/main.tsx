@@ -695,6 +695,34 @@ function Login({
   );
 }
 
+
+            
+
+  
+        />
+
+        <Action
+          title="Late plate"
+          subtitle="Running late?"
+          icon={<Clock />}
+          onClick={() =>
+            setPage("late")
+          }
+        />
+
+        <Action
+          title="Menu"
+          subtitle="See this week's meals"
+          icon={<UtensilsCrossed />}
+          onClick={() =>
+            setPage("menu")
+          }
+        />
+      </div>
+    </>
+  );
+}
+
 function Dashboard({
   kitchen,
   meals,
@@ -717,64 +745,60 @@ function Dashboard({
     useState(0);
 
   useEffect(() => {
-    if (!kitchen) return;
-
-    loadDashboardAllergyAlerts();
+    if (kitchen) {
+      loadAllergyAlerts();
+    }
   }, [kitchen, kitchenRSVPs]);
 
-  async function loadDashboardAllergyAlerts() {
-    const eatingRSVPs =
+  async function loadAllergyAlerts() {
+    const eatingMembers =
       kitchenRSVPs.filter(
         (rsvp) =>
           rsvp.status === "eating"
       );
 
-    if (eatingRSVPs.length === 0) {
+    if (eatingMembers.length === 0) {
       setAllergyAlertCount(0);
       return;
     }
 
     const memberIds =
-      eatingRSVPs.map(
-        (rsvp) =>
-          rsvp.member_id
+      eatingMembers.map(
+        (rsvp) => rsvp.member_id
       );
 
-    const {
-      data,
-      error,
-    } = await supabase
-      .from("allergy_profiles")
-      .select(
-        "member_id, allergies, dietary_restrictions"
-      )
-      .in(
-        "member_id",
-        memberIds
-      );
+    const { data, error } =
+      await supabase
+        .from("allergy_profiles")
+        .select(
+          "member_id, allergies, dietary_restrictions"
+        )
+        .in(
+          "member_id",
+          memberIds
+        );
 
     if (error) {
       console.error(
-        "Dashboard allergy error:",
+        "Allergy alert error:",
         error
       );
       setAllergyAlertCount(0);
       return;
     }
 
-    const profilesWithAlerts =
+    const alerts =
       (data || []).filter(
         (profile) =>
           (profile.allergies &&
-            profile.allergies.length >
-              0) ||
+            profile.allergies.length > 0) ||
           (profile.dietary_restrictions &&
-            profile.dietary_restrictions
-              .length > 0)
+            profile.dietary_restrictions.length >
+              0)
       );
 
     setAllergyAlertCount(
-      profilesWithAlerts.length
+      alerts.length
     );
   }
 
@@ -782,15 +806,10 @@ function Dashboard({
     const expected =
       kitchenRSVPs.filter(
         (rsvp) =>
-          rsvp.status ===
-          "eating"
+          rsvp.status === "eating"
       ).length;
 
-    const late =
-      kitchenRSVPs.filter(
-        (rsvp) =>
-          false
-      ).length;
+    const late = 0;
 
     return (
       <>
@@ -865,18 +884,28 @@ function Dashboard({
           <button
             className="primary"
             onClick={() =>
-              setPage(
-                "headcount"
-              )
+              setPage("headcount")
             }
           >
             Open headcount
             <ChevronRight />
           </button>
+
+          <button
+            className="secondary"
+            onClick={() =>
+              setPage("allergies")
+            }
+          >
+            View allergy alerts
+          </button>
         </Card>
       </>
     );
   }
+
+  const firstMeal =
+    meals[0];
 
   return (
     <>
@@ -885,109 +914,28 @@ function Dashboard({
       </p>
 
       <h1>
-        {menu?.name ||
-          "Dinner"}
+        {firstMeal
+          ? firstMeal.title
+          : "Dinner"}
       </h1>
 
-      <Card>
-        {meals.length === 0 ? (
+      {firstMeal && (
+        <Card>
+          <h2>
+            {firstMeal.title}
+          </h2>
+
           <p className="muted">
-            No meals posted.
-          </p>
-        ) : (
-          meals.map(
-            (meal) => (
-              <div
-                key={meal.id}
-              >
-                <h2>
-                  {meal.title}
-                </h2>
-
-                <p className="muted">
-                  {formatTime(
-                    meal.service_time
-                  )}
-                </p>
-
-                <p>
-                  {meal.description}
-                </p>
-              </div>
-            )
-          )
-        )}
-      </Card>
-
-      <div className="actions">
-        <Action
-          title="RSVP"
-          subtitle="Tell the kitchen if you're eating"
-          icon={<Check />}
-          onClick={() =>
-            setPage("rsvp")
-          }
-        />
-
-        <Action
-          title="Allergy"
-          subtitle="Manage your allergy profile"
-          icon={<Shield />}
-          onClick={() =>
-            setPage("allergy")
-          }
-        />
-
-        <Action
-          title="Late plate"
-          subtitle="Running late?"
-          icon={<Clock />}
-          onClick={() =>
-            setPage("late")
-          }
-        />
-
-        <Action
-          title="Menu"
-          subtitle="See this week's meals"
-          icon={<UtensilsCrossed />}
-          onClick={() =>
-            setPage("menu")
-          }
-        />
-      </div>
-    </>
-  );
-}
-
-  const firstMeal =
-    meals[0];
-
-  return (
-    <>
-      <div className="hero">
-        <p>
-          TONIGHT'S DINNER
-        </p>
-
-        <h1>
-          {firstMeal
-            ? firstMeal.title
-            : "No dinner posted"}
-        </h1>
-
-        {firstMeal && (
-          <span>
             {formatTime(
               firstMeal.service_time
             )}
-          </span>
-        )}
-      </div>
+          </p>
 
-      <h2>
-        Quick actions
-      </h2>
+          <p>
+            {firstMeal.description}
+          </p>
+        </Card>
+      )}
 
       <div className="actions">
         <Action
