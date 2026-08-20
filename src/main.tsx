@@ -1048,7 +1048,7 @@ function Late({
         </button>
 
         {late && (
-          <p className="green">
+                   <p className="green">
             The kitchen has been
             notified.
           </p>
@@ -1076,7 +1076,7 @@ function Notifications() {
 
         <p>
           Don't forget to RSVP
-          before 3:00 PM.
+          before dinner.
         </p>
       </Card>
 
@@ -1086,8 +1086,8 @@ function Notifications() {
         </b>
 
         <p>
-          Tonight's dinner is
-          Chicken Alfredo.
+          Your chapter's menu
+          has been updated.
         </p>
       </Card>
     </>
@@ -1122,8 +1122,7 @@ function Headcount({
       </div>
 
       <p className="center muted">
-        confirmed RSVPs in
-        this preview
+        confirmed RSVPs
       </p>
     </>
   );
@@ -1158,13 +1157,37 @@ function Alerts({
             )
           : (
             <p className="muted">
-              No allergy alerts in
-              this preview.
+              No allergy alerts.
             </p>
           )}
       </Card>
     </>
   );
+}
+
+function formatTime(
+  time: string
+) {
+  if (!time) return "";
+
+  const parts =
+    time.split(":");
+
+  const hour =
+    Number(parts[0]);
+
+  const minute =
+    parts[1] || "00";
+
+  const suffix =
+    hour >= 12
+      ? "PM"
+      : "AM";
+
+  const displayHour =
+    hour % 12 || 12;
+
+  return `${displayHour}:${minute} ${suffix}`;
 }
 
 const rootElement =
@@ -1184,4 +1207,4 @@ createRoot(
   <React.StrictMode>
     <App />
   </React.StrictMode>
-); 
+);
