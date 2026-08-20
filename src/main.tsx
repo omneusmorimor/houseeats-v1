@@ -496,12 +496,8 @@ function App() {
         )}
 
         {page === "allergies" && (
-  <AlertsPage
-    kitchenRSVPs={
-      kitchenRSVPs
-    }
-  />
-)}
+          <AlertsPage />
+        )}
       </main>
 
       <nav>
@@ -694,28 +690,6 @@ function Login({
     </div>
   );
 }
-         
-        <Action
-          title="Late plate"
-          subtitle="Running late?"
-          icon={<Clock />}
-          onClick={() =>
-            setPage("late")
-          }
-        />
-
-        <Action
-          title="Menu"
-          subtitle="See this week's meals"
-          icon={<UtensilsCrossed />}
-          onClick={() =>
-            setPage("menu")
-          }
-        />
-      </div>
-    </>
-  );
-}
 
 function Dashboard({
   kitchen,
@@ -735,75 +709,19 @@ function Dashboard({
   setPage: (page: string) => void;
   menu: MenuRecord | null;
 }) {
-  const [allergyAlertCount, setAllergyAlertCount] =
-    useState(0);
-
-  useEffect(() => {
-    if (kitchen) {
-      loadAllergyAlerts();
-    }
-  }, [kitchen, kitchenRSVPs]);
-
-  async function loadAllergyAlerts() {
-    const eatingMembers =
-      kitchenRSVPs.filter(
-        (rsvp) =>
-          rsvp.status === "eating"
-      );
-
-    if (eatingMembers.length === 0) {
-      setAllergyAlertCount(0);
-      return;
-    }
-
-    const memberIds =
-      eatingMembers.map(
-        (rsvp) => rsvp.member_id
-      );
-
-    const { data, error } =
-      await supabase
-        .from("allergy_profiles")
-        .select(
-          "member_id, allergies, dietary_restrictions"
-        )
-        .in(
-          "member_id",
-          memberIds
-        );
-
-    if (error) {
-      console.error(
-        "Allergy alert error:",
-        error
-      );
-      setAllergyAlertCount(0);
-      return;
-    }
-
-    const alerts =
-      (data || []).filter(
-        (profile) =>
-          (profile.allergies &&
-            profile.allergies.length > 0) ||
-          (profile.dietary_restrictions &&
-            profile.dietary_restrictions.length >
-              0)
-      );
-
-    setAllergyAlertCount(
-      alerts.length
-    );
-  }
-
   if (kitchen) {
     const expected =
       kitchenRSVPs.filter(
         (rsvp) =>
-          rsvp.status === "eating"
+          rsvp.status ===
+          "eating"
       ).length;
 
-    const late = 0;
+    const late =
+      kitchenRSVPs.filter(
+        (rsvp) =>
+          false
+      ).length;
 
     return (
       <>
@@ -831,9 +749,7 @@ function Dashboard({
           </Card>
 
           <Card>
-            <b>
-              {allergyAlertCount}
-            </b>
+            <b>0</b>
             <small>
               Allergy alerts
             </small>
@@ -878,20 +794,13 @@ function Dashboard({
           <button
             className="primary"
             onClick={() =>
-              setPage("headcount")
+              setPage(
+                "headcount"
+              )
             }
           >
             Open headcount
             <ChevronRight />
-          </button>
-
-          <button
-            className="secondary"
-            onClick={() =>
-              setPage("allergies")
-            }
-          >
-            View allergy alerts
           </button>
         </Card>
       </>
@@ -903,33 +812,29 @@ function Dashboard({
 
   return (
     <>
-      <p className="eyebrow">
-        TONIGHT'S DINNER
-      </p>
+      <div className="hero">
+        <p>
+          TONIGHT'S DINNER
+        </p>
 
-      <h1>
-        {firstMeal
-          ? firstMeal.title
-          : "Dinner"}
-      </h1>
+        <h1>
+          {firstMeal
+            ? firstMeal.title
+            : "No dinner posted"}
+        </h1>
 
-      {firstMeal && (
-        <Card>
-          <h2>
-            {firstMeal.title}
-          </h2>
-
-          <p className="muted">
+        {firstMeal && (
+          <span>
             {formatTime(
               firstMeal.service_time
             )}
-          </p>
+          </span>
+        )}
+      </div>
 
-          <p>
-            {firstMeal.description}
-          </p>
-        </Card>
-      )}
+      <h2>
+        Quick actions
+      </h2>
 
       <div className="actions">
         <Action
@@ -1129,109 +1034,7 @@ function MenuPage({
                       "RSVP"
                     )}
                   </button>
-   )}
-              </div>
-            </Card>
-          )
-        )
-      )}
-    </>
-  );
-}
-
-function RSVPPage({
-  meals,
-  myRSVPs,
-  saveRSVP,
-}: {
-  meals: Meal[];
-  myRSVPs: Record<
-    string,
-    RSVPStatus
-  >;
-  saveRSVP: (
-    mealId: string,
-    status: RSVPStatus
-  ) => Promise<void>;
-}) {
-  return (
-    <>
-      <p className="eyebrow">
-        DINNER RSVP
-      </p>
-
-      <h1>
-        Who's eating?
-      </h1>
-
-      <p className="muted">
-        Your RSVP helps the
-        kitchen prepare the
-        right amount.
-      </p>
-
-      {meals.length === 0 ? (
-        <Card>
-          <p className="muted">
-            No meals available.
-          </p>
-        </Card>
-      ) : (
-        meals.map(
-          (meal) => (
-            <Card key={meal.id}>
-              <div className="head">
-                <div>
-                  <h2>
-                    {meal.title}
-                  </h2>
-
-                  <p>
-                    {formatTime(
-                      meal.service_time
-                    )}
-                  </p>
-                </div>
-
-                <div className="choice">
-                  <button
-                    className={
-                      myRSVPs[
-                        meal.id
-                      ] ===
-                      "eating"
-                        ? "on"
-                        : ""
-                    }
-                    onClick={() =>
-                      saveRSVP(
-                        meal.id,
-                        "eating"
-                      )
-                    }
-                  >
-                    Eating
-                  </button>
-
-                  <button
-                    className={
-                      myRSVPs[
-                        meal.id
-                      ] ===
-                      "not_eating"
-                        ? "on"
-                        : ""
-                    }
-                    onClick={() =>
-                      saveRSVP(
-                        meal.id,
-                        "not_eating"
-                      )
-                    }
-                  >
-                    Not eating
-                  </button>
-                </div>
+   </div>
               </div>
             </Card>
           )
@@ -1242,208 +1045,6 @@ function RSVPPage({
 }
 
 function AllergyPage() {
-  const [allergies, setAllergies] =
-    useState<string[]>([]);
-
-  const [
-    dietaryRestrictions,
-    setDietaryRestrictions,
-  ] = useState<string[]>([]);
-
-  const [notes, setNotes] =
-    useState("");
-
-  const [loading, setLoading] =
-    useState(true);
-
-  const [saving, setSaving] =
-    useState(false);
-
-  const [message, setMessage] =
-    useState("");
-
-  const allergyOptions = [
-    "Peanuts",
-    "Tree nuts",
-    "Dairy",
-    "Eggs",
-    "Gluten",
-    "Shellfish",
-    "Fish",
-    "Soy",
-  ];
-
-  const dietaryOptions = [
-    "Vegetarian",
-    "Vegan",
-    "Halal",
-    "Gluten-free",
-  ];
-
-  useEffect(() => {
-    loadAllergyProfile();
-  }, []);
-
-  async function loadAllergyProfile() {
-    setLoading(true);
-    setMessage("");
-
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-
-    if (!user) {
-      setLoading(false);
-      return;
-    }
-
-    const { data, error } =
-      await supabase
-        .from("allergy_profiles")
-        .select(
-          "allergies, dietary_restrictions, notes"
-        )
-        .eq("member_id", user.id)
-        .maybeSingle();
-
-    if (error) {
-      console.error(
-        "Allergy profile error:",
-        error
-      );
-
-      setMessage(
-        "Unable to load allergy profile."
-      );
-
-      setLoading(false);
-      return;
-    }
-
-    if (data) {
-      setAllergies(
-        data.allergies || []
-      );
-
-      setDietaryRestrictions(
-        data.dietary_restrictions || []
-      );
-
-      setNotes(
-        data.notes || ""
-      );
-    }
-
-    setLoading(false);
-  }
-
-  function toggleAllergy(
-    allergy: string
-  ) {
-    setAllergies((current) =>
-      current.includes(allergy)
-        ? current.filter(
-            (item) =>
-              item !== allergy
-          )
-        : [...current, allergy]
-    );
-  }
-
-  function toggleDietary(
-    restriction: string
-  ) {
-    setDietaryRestrictions(
-      (current) =>
-        current.includes(restriction)
-          ? current.filter(
-              (item) =>
-                item !== restriction
-            )
-          : [
-              ...current,
-              restriction,
-            ]
-    );
-  }
-
-  async function saveAllergyProfile() {
-    setSaving(true);
-    setMessage("");
-
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-
-    if (!user) {
-      setMessage(
-        "You must be signed in."
-      );
-      setSaving(false);
-      return;
-    }
-
-    const { error } =
-      await supabase
-        .from("allergy_profiles")
-        .upsert(
-          {
-            member_id: user.id,
-            allergies,
-            dietary_restrictions:
-              dietaryRestrictions,
-            notes,
-            updated_at:
-              new Date().toISOString(),
-          },
-          {
-            onConflict:
-              "member_id",
-          }
-        );
-
-    if (error) {
-      console.error(
-        "Save allergy profile error:",
-        error
-      );
-
-      setMessage(
-        "Unable to save your allergy profile."
-      );
-
-      setSaving(false);
-      return;
-    }
-
-    setMessage(
-      "Allergy profile saved successfully."
-    );
-
-    setSaving(false);
-  }
-
-  if (loading) {
-    return (
-      <>
-        <p className="eyebrow">
-          PRIVATE PROFILE
-        </p>
-
-        <h1>
-          Allergy & dietary
-          profile
-        </h1>
-
-        <Card>
-          <p className="muted">
-            Loading allergy profile...
-          </p>
-        </Card>
-      </>
-    );
-  }
-
   return (
     <>
       <p className="eyebrow">
@@ -1455,128 +1056,17 @@ function AllergyPage() {
         profile
       </h1>
 
-      <p className="muted">
-        This information is private
-        and is only available to
-        authorized kitchen and
-        admin users.
-      </p>
-
       <Card>
         <h2>
           Allergies
         </h2>
 
-        <div className="chips">
-          {allergyOptions.map(
-            (allergy) => {
-              const active =
-                allergies.includes(
-                  allergy
-                );
-
-              return (
-                <button
-                  key={allergy}
-                  type="button"
-                  className={
-                    active
-                      ? "chip active"
-                      : "chip"
-                  }
-                  onClick={() =>
-                    toggleAllergy(
-                      allergy
-                    )
-                  }
-                >
-                  {active && (
-                    <Check />
-                  )}
-
-                  {allergy}
-                </button>
-              );
-            }
-          )}
-        </div>
-      </Card>
-
-      <Card>
-        <h2>
-          Dietary restrictions
-        </h2>
-
-        <div className="chips">
-          {dietaryOptions.map(
-            (restriction) => {
-              const active =
-                dietaryRestrictions.includes(
-                  restriction
-                );
-
-              return (
-                <button
-                  key={restriction}
-                  type="button"
-                  className={
-                    active
-                      ? "chip active"
-                      : "chip"
-                  }
-                  onClick={() =>
-                    toggleDietary(
-                      restriction
-                    )
-                  }
-                >
-                  {active && (
-                    <Check />
-                  )}
-
-                  {restriction}
-                </button>
-              );
-            }
-          )}
-        </div>
-      </Card>
-
-      <Card>
-        <h2>
-          Notes for the kitchen
-        </h2>
-
-        <textarea
-          value={notes}
-          onChange={(event) =>
-            setNotes(
-              event.target.value
-            )
-          }
-          placeholder="Anything the kitchen should know about your allergies or dietary needs?"
-          rows={4}
-        />
-      </Card>
-
-      {message && (
-        <p className="green">
-          {message}
+        <p className="muted">
+          Allergy profiles will
+          be connected to
+          Supabase next.
         </p>
-      )}
-
-      <button
-        type="button"
-        className="primary"
-        onClick={
-          saveAllergyProfile
-        }
-        disabled={saving}
-      >
-        {saving
-          ? "Saving..."
-          : "Save allergy profile"}
-      </button>
+      </Card>
     </>
   );
 }
@@ -1709,118 +1199,7 @@ function HeadcountPage({
   );
 }
 
-function AlertsPage({
-  kitchenRSVPs,
-}: {
-  kitchenRSVPs: RSVP[];
-}) {
-  const [alerts, setAlerts] =
-    useState<
-      {
-        member_id: string;
-        meal_id: string;
-        allergies: string[];
-        dietary_restrictions: string[];
-        notes: string | null;
-      }[]
-    >([]);
-
-  const [loading, setLoading] =
-    useState(true);
-
-  useEffect(() => {
-    loadAllergyAlerts();
-  }, [kitchenRSVPs]);
-
-  async function loadAllergyAlerts() {
-    const eatingRSVPs =
-      kitchenRSVPs.filter(
-        (rsvp) =>
-          rsvp.status === "eating"
-      );
-
-    if (
-      eatingRSVPs.length === 0
-    ) {
-      setAlerts([]);
-      setLoading(false);
-      return;
-    }
-
-    const memberIds =
-      eatingRSVPs.map(
-        (rsvp) =>
-          rsvp.member_id
-      );
-
-    const { data, error } =
-      await supabase
-        .from("allergy_profiles")
-        .select(
-          "member_id, allergies, dietary_restrictions, notes"
-        )
-        .in(
-          "member_id",
-          memberIds
-        );
-
-    if (error) {
-      console.error(
-        "Allergy alerts error:",
-        error
-      );
-      setAlerts([]);
-      setLoading(false);
-      return;
-    }
-
-    const mealIds =
-      eatingRSVPs.map(
-        (rsvp) =>
-          rsvp.meal_id
-      );
-
-    const combined =
-      (data || []).map(
-        (profile) => ({
-          ...profile,
-          meal_id:
-            mealIds.find(
-              (id) =>
-                eatingRSVPs.some(
-                  (rsvp) =>
-                    rsvp.member_id ===
-                      profile.member_id &&
-                    rsvp.meal_id === id
-                )
-            ) || "",
-        })
-      );
-
-    setAlerts(combined);
-    setLoading(false);
-  }
-
-  if (loading) {
-    return (
-      <>
-        <p className="eyebrow">
-          KITCHEN
-        </p>
-
-        <h1>
-          Allergy Alerts
-        </h1>
-
-        <Card>
-          <p className="muted">
-            Loading allergy alerts...
-          </p>
-        </Card>
-      </>
-    );
-  }
-
+function AlertsPage() {
   return (
     <>
       <p className="eyebrow">
@@ -1831,61 +1210,16 @@ function AlertsPage({
         Allergy Alerts
       </h1>
 
-      {alerts.length === 0 ? (
-        <Card>
-          <p className="muted">
-            No allergy alerts for
-            members eating tonight.
-          </p>
-        </Card>
-      ) : (
-        alerts.map((alert) => (
-          <Card
-            key={`${alert.member_id}-${alert.meal_id}`}
-          >
-            <h2>
-              ⚠️ Allergy Alert
-            </h2>
-
-            {alert.allergies.length >
-              0 && (
-              <p>
-                <strong>
-                  Allergies:
-                </strong>{" "}
-                {alert.allergies.join(
-                  ", "
-                )}
-              </p>
-            )}
-
-            {alert.dietary_restrictions
-              .length > 0 && (
-              <p>
-                <strong>
-                  Dietary:
-                </strong>{" "}
-                {alert.dietary_restrictions.join(
-                  ", "
-                )}
-              </p>
-            )}
-
-            {alert.notes && (
-              <p>
-                <strong>
-                  Notes:
-                </strong>{" "}
-                {alert.notes}
-              </p>
-            )}
-          </Card>
-        ))
-      )}
+      <Card>
+        <p className="muted">
+          No allergy alerts
+          have been connected
+          yet.
+        </p>
+      </Card>
     </>
   );
 }
-
 
 function formatTime(
   time: string
