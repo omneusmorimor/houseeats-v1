@@ -10,20 +10,19 @@ import {
   Home,
   ChevronRight,
   Check,
-  Plus,
   LogOut,
 } from "lucide-react";
 import { supabase } from "./lib/supabase";
 import "./styles.css";
 
 type Role = "member" | "chef" | "admin";
+type RSVPStatus = "eating" | "not_eating";
 
 type Profile = {
   id: string;
   chapter_id: string;
-  full_name: string;
   role: Role;
-  created_at: string;
+  full_name?: string | null;
 };
 
 type MenuRecord = {
@@ -32,7 +31,6 @@ type MenuRecord = {
   name: string;
   service_date: string;
   published: boolean;
-  created_at: string;
 };
 
 type Meal = {
@@ -44,189 +42,219 @@ type Meal = {
   sort_order: number;
 };
 
-type RSVPStatus = "eating" | "not_eating";
-
-type RSVPRecord = Record<string, RSVPStatus>;
+type RSVP = {
+  member_id: string;
+  meal_id: string;
+  status: RSVPStatus;
+};
 
 function App() {
-  const [profile, setProfile] = useState<Profile | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [profile, setProfile] =
+    useState<Profile | null>(null);
 
-  const [role, setRole] = useState<Role>("member");
-  const [page, setPage] = useState("dashboard");
+  const [loading, setLoading] =
+    useState(true);
 
-  const [meals, setMeals] = useState<Meal[]>([]);
-  const [menu, setMenu] = useState<MenuRecord | null>(null);
-  const [rsvps, setRsvps] = useState<RSVPRecord>({});
+  const [role, setRole] =
+    useState<Role>("member");
 
-  const [latePlate, setLatePlate] = useState(false);
-  const [allergies, setAllergies] = useState<string[]>([]);
+  const [page, setPage] =
+    useState("dashboard");
 
-  const [dataLoading, setDataLoading] = useState(false);
-  const [dataError, setDataError] = useState("");
+  const [menu, setMenu] =
+    useState<MenuRecord | null>(null);
+
+  const [meals, setMeals] =
+    useState<Meal[]>([]);
+
+  const [myRSVPs, setMyRSVPs] =
+    useState<Record<string, RSVPStatus>>({});
+
+  const [kitchenRSVPs, setKitchenRSVPs] =
+    useState<RSVP[]>([]);
+
+  const [error, setError] =
+    useState("");
 
   useEffect(() => {
-    loadUser();
-
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange(
-      async (_event, session) => {
-        if (session?.user) {
-          await loadProfile(session.user.id);
-        } else {
-          setProfile(null);
-          setLoading(false);
-        }
-      }
-    );
-
-    return () => {
-      subscription.unsubscribe();
-    };
+    loadSession();
   }, []);
 
-  async function loadUser() {
+  async function loadSession() {
+    setLoading(true);
+    setError("");
+
     try {
       const {
         data: { session },
       } = await supabase.auth.getSession();
 
       if (!session?.user) {
-        setLoading(false);
-        return;
-      }
-
-      await loadProfile(session.user.id);
-    } catch (error) {
-      console.error(error);
-      setLoading(false);
-    }
-  }
-
-  async function loadProfile(userId: string) {
-    try {
-      const { data, error } = await supabase
-        .from("profiles")
-        .select(
-          "id, chapter_id, full_name, role, created_at"
-        )
-        .eq("id", userId)
-        .single();
-
-      if (error) {
-        console.error("Profile error:", error);
         setProfile(null);
         setLoading(false);
         return;
       }
 
-      const userProfile = data as Profile;
-
-      setProfile(userProfile);
-      setRole(userProfile.role);
-
-      await loadMenuData(userProfile);
-    } catch (error) {
-      console.error("Profile loading error:", error);
+      await loadProfile(session.user.id);
+    } catch (err) {
+      console.error(err);
+      setError("Unable to load your account.");
     } finally {
       setLoading(false);
     }
   }
 
-  async function loadMenuData(userProfile: Profile) {
-    setDataLoading(true);
-    setDataError("");
+  async function loadProfile(userId: string) {
+    const { data, error } = await supabase
+      .from("profiles")
+      .select("id, chapter_id, role, full_name")
+      .eq("id", userId)
+      .single();
 
-    try {
-      const { data: menuData, error: menuError } =
-        await supabase
-          .from("menus")
-          .select(
-            "id, chapter_id, name, service_date, published, created_at"
-          )
-          .eq("chapter_id", userProfile.chapter_id)
-          .eq("published", true)
-          .order("service_date", {
-            ascending: true,
-          })
-          .limit(1)
-          .maybeSingle();
-
-      if (menuError) {
-        throw menuError;
-      }
-
-      if (!menuData) {
-        setMenu(null);
-        setMeals([]);
-        setRsvps({});
-        setDataLoading(false);
-        return;
-      }
-
-      setMenu(menuData as MenuRecord);
-
-      const { data: mealData, error: mealError } =
-        await supabase
-          .from("meals")
-          .select(
-            "id, menu_id, title, description, service_time, sort_order"
-          )
-          .eq("menu_id", menuData.id)
-          .order("sort_order", {
-            ascending: true,
-          });
-
-      if (mealError) {
-        throw mealError;
-      }
-
-      const loadedMeals =
-        (mealData as Meal[]) || [];
-
-      setMeals(loadedMeals);
-
-      if (loadedMeals.length === 0) {
-        setRsvps({});
-        setDataLoading(false);
-        return;
-      }
-
-      const mealIds = loadedMeals.map(
-        (meal) => meal.id
+    if (error) {
+      console.error("Profile error:", error);
+      setError(
+        "Your account exists, but your profile could not be loaded."
       );
+      return;
+    }
 
-      const { data: rsvpData, error: rsvpError } =
-        await supabase
-          .from("rsvps")
-          .select("meal_id, status")
-          .eq("member_id", userProfile.id)
-          .in("meal_id", mealIds);
+    const userProfile = data as Profile;
+
+    setProfile(userProfile);
+    setRole(userProfile.role);
+
+    await loadMenu(userProfile);
+  }
+
+  async function loadMenu(userProfile: Profile) {
+    setError("");
+
+    const { data: menuData, error: menuError } =
+      await supabase
+        .from("menus")
+        .select(
+          "id, chapter_id, name, service_date, published"
+        )
+        .eq("chapter_id", userProfile.chapter_id)
+        .eq("published", true)
+        .order("service_date", {
+          ascending: true,
+        })
+        .limit(1)
+        .maybeSingle();
+
+    if (menuError) {
+      console.error("Menu error:", menuError);
+      setError("Unable to load the menu.");
+      return;
+    }
+
+    if (!menuData) {
+      setMenu(null);
+      setMeals([]);
+      setMyRSVPs({});
+      setKitchenRSVPs([]);
+      return;
+    }
+
+    setMenu(menuData as MenuRecord);
+
+    const { data: mealData, error: mealError } =
+      await supabase
+        .from("meals")
+        .select(
+          "id, menu_id, title, description, service_time, sort_order"
+        )
+        .eq("menu_id", menuData.id)
+        .order("sort_order", {
+          ascending: true,
+        });
+
+    if (mealError) {
+      console.error("Meals error:", mealError);
+      setError("Unable to load the meals.");
+      return;
+    }
+
+    const loadedMeals =
+      (mealData as Meal[]) || [];
+
+    setMeals(loadedMeals);
+
+    if (loadedMeals.length === 0) {
+      setMyRSVPs({});
+      setKitchenRSVPs([]);
+      return;
+    }
+
+    const mealIds = loadedMeals.map(
+      (meal) => meal.id
+    );
+
+    /*
+     * Members only need their own RSVPs.
+     */
+    if (userProfile.role === "member") {
+      const {
+        data: rsvpData,
+        error: rsvpError,
+      } = await supabase
+        .from("rsvps")
+        .select(
+          "member_id, meal_id, status"
+        )
+        .eq("member_id", userProfile.id)
+        .in("meal_id", mealIds);
 
       if (rsvpError) {
-        throw rsvpError;
+        console.error(
+          "RSVP error:",
+          rsvpError
+        );
+        return;
       }
 
-      const rsvpMap: RSVPRecord = {};
+      const map: Record<
+        string,
+        RSVPStatus
+      > = {};
 
-      (rsvpData || []).forEach((rsvp) => {
-        rsvpMap[rsvp.meal_id] =
-          rsvp.status as RSVPStatus;
-      });
-
-      setRsvps(rsvpMap);
-    } catch (error) {
-      console.error(
-        "Menu loading error:",
-        error
+      (rsvpData || []).forEach(
+        (rsvp) => {
+          map[rsvp.meal_id] =
+            rsvp.status as RSVPStatus;
+        }
       );
 
-      setDataError(
-        "We couldn't load the menu right now."
+      setMyRSVPs(map);
+    }
+
+    /*
+     * Kitchen/admin can see all RSVPs.
+     */
+    if (userProfile.role !== "member") {
+      const {
+        data: allRSVPData,
+        error: allRSVPError,
+      } = await supabase
+        .from("rsvps")
+        .select(
+          "member_id, meal_id, status"
+        )
+        .in("meal_id", mealIds);
+
+      if (allRSVPError) {
+        console.error(
+          "Kitchen RSVP error:",
+          allRSVPError
+        );
+        return;
+      }
+
+      setKitchenRSVPs(
+        (allRSVPData || []) as RSVP[]
       );
-    } finally {
-      setDataLoading(false);
     }
   }
 
@@ -236,7 +264,7 @@ function App() {
   ) {
     if (!profile) return;
 
-    setDataError("");
+    setError("");
 
     const { error } = await supabase
       .from("rsvps")
@@ -254,21 +282,90 @@ function App() {
 
     if (error) {
       console.error(
-        "RSVP error:",
+        "Save RSVP error:",
         error
       );
 
-      setDataError(
-        "Your RSVP could not be saved."
-      );
+      /*
+       * If the database doesn't have the
+       * unique constraint, use a manual
+       * update/insert instead.
+       */
+      const { data: existing } =
+        await supabase
+          .from("rsvps")
+          .select("id")
+          .eq(
+            "member_id",
+            profile.id
+          )
+          .eq("meal_id", mealId)
+          .maybeSingle();
 
-      return;
+      if (existing) {
+        const { error: updateError } =
+          await supabase
+            .from("rsvps")
+            .update({ status })
+            .eq(
+              "id",
+              existing.id
+            );
+
+        if (updateError) {
+          console.error(
+            updateError
+          );
+          setError(
+            "Your RSVP could not be saved."
+          );
+          return;
+        }
+      } else {
+        const { error: insertError } =
+          await supabase
+            .from("rsvps")
+            .insert({
+              member_id:
+                profile.id,
+              meal_id: mealId,
+              status,
+            });
+
+        if (insertError) {
+          console.error(
+            insertError
+          );
+          setError(
+            "Your RSVP could not be saved."
+          );
+          return;
+        }
+      }
     }
 
-    setRsvps((current) => ({
+    setMyRSVPs((current) => ({
       ...current,
       [mealId]: status,
     }));
+
+    /*
+     * Refresh kitchen numbers if this
+     * account has kitchen access.
+     */
+    if (profile.role !== "member") {
+      await loadMenu(profile);
+    }
+  }
+
+  async function logout() {
+    await supabase.auth.signOut();
+
+    setProfile(null);
+    setMenu(null);
+    setMeals([]);
+    setMyRSVPs({});
+    setKitchenRSVPs([]);
   }
 
   if (loading) {
@@ -279,7 +376,6 @@ function App() {
             <UtensilsCrossed />
             HouseEats
           </h1>
-
           <p>
             Loading your account...
           </p>
@@ -291,19 +387,14 @@ function App() {
   if (!profile) {
     return (
       <Login
-        onLogin={async () => {
-          await loadUser();
-        }}
+        onLogin={loadSession}
+        error={error}
       />
     );
   }
 
-  const kitchen = role !== "member";
-
-  async function logout() {
-    await supabase.auth.signOut();
-    setProfile(null);
-  }
+  const kitchen =
+    role !== "member";
 
   return (
     <div className="app">
@@ -313,19 +404,13 @@ function App() {
           HouseEats
         </b>
 
-        <div className="header-right">
-          <span>
-            {profile.full_name ||
-              "Member"}
-          </span>
-
-          <button
-            className="icon-button"
-            onClick={logout}
-          >
-            <LogOut />
-          </button>
-        </div>
+        <button
+          className="icon-button"
+          onClick={logout}
+          title="Sign out"
+        >
+          <LogOut />
+        </button>
       </header>
 
       <main>
@@ -347,15 +432,17 @@ function App() {
                 setPage("dashboard");
               }}
             >
-              {r.charAt(0).toUpperCase() +
+              {r
+                .charAt(0)
+                .toUpperCase() +
                 r.slice(1)}
             </button>
           ))}
         </div>
 
-        {dataError && (
+        {error && (
           <div className="error">
-            {dataError}
+            {error}
           </div>
         )}
 
@@ -363,122 +450,147 @@ function App() {
           <Dashboard
             kitchen={kitchen}
             meals={meals}
-            rsvps={rsvps}
-            late={latePlate}
+            myRSVPs={myRSVPs}
+            kitchenRSVPs={
+              kitchenRSVPs
+            }
             setPage={setPage}
-            loading={dataLoading}
+            menu={menu}
           />
         )}
 
         {page === "menu" && (
-          <Menu
+          <MenuPage
             kitchen={kitchen}
             meals={meals}
-            rsvps={rsvps}
+            myRSVPs={myRSVPs}
             saveRSVP={saveRSVP}
-            loading={dataLoading}
           />
         )}
 
         {page === "rsvp" && (
-          <RSVP
+          <RSVPPage
             meals={meals}
-            rsvps={rsvps}
+            myRSVPs={myRSVPs}
             saveRSVP={saveRSVP}
-            loading={dataLoading}
           />
         )}
 
         {page === "allergy" && (
-          <Allergy
-            allergies={allergies}
-            setAllergies={setAllergies}
-          />
+          <AllergyPage />
         )}
 
         {page === "late" && (
-          <Late
-            late={latePlate}
-            setLate={setLatePlate}
-          />
+          <LatePage />
         )}
 
         {page === "notifications" && (
-          <Notifications />
+          <NotificationsPage />
         )}
 
         {page === "headcount" && (
-          <Headcount
-            rsvps={rsvps}
+          <HeadcountPage
+            meals={meals}
+            rsvps={kitchenRSVPs}
           />
         )}
 
         {page === "allergies" && (
-          <Alerts
-            allergies={allergies}
-          />
+          <AlertsPage />
         )}
       </main>
 
       <nav>
         {(kitchen
           ? [
-              ["dashboard", "Kitchen"],
-              ["headcount", "Headcount"],
-              ["allergies", "Allergies"],
-              ["late", "Late Plates"],
+              [
+                "dashboard",
+                "Kitchen",
+              ],
+              [
+                "headcount",
+                "Headcount",
+              ],
+              [
+                "allergies",
+                "Allergies",
+              ],
+              [
+                "late",
+                "Late Plates",
+              ],
               ["menu", "Menu"],
             ]
           : [
-              ["dashboard", "Home"],
+              [
+                "dashboard",
+                "Home",
+              ],
               ["menu", "Menu"],
               ["rsvp", "RSVP"],
-              ["allergy", "Allergy"],
+              [
+                "allergy",
+                "Allergy",
+              ],
               ["late", "Late"],
               [
                 "notifications",
                 "Updates",
               ],
             ]
-        ).map(([p, label]) => (
-          <button
-            key={p}
-            className={
-              page === p ? "sel" : ""
-            }
-            onClick={() =>
-              setPage(p)
-            }
-          >
-            {p === "dashboard" && (
-              <Home />
-            )}
+        ).map(
+          ([pageName, label]) => (
+            <button
+              key={pageName}
+              className={
+                page === pageName
+                  ? "sel"
+                  : ""
+              }
+              onClick={() =>
+                setPage(pageName)
+              }
+            >
+              {pageName ===
+                "dashboard" && (
+                <Home />
+              )}
 
-            {p === "menu" && (
-              <MenuIcon />
-            )}
+              {pageName ===
+                "menu" && (
+                <MenuIcon />
+              )}
 
-            {(p === "rsvp" ||
-              p === "headcount") && (
-              <CalendarCheck />
-            )}
+              {(pageName ===
+                "rsvp" ||
+                pageName ===
+                  "headcount") && (
+                <CalendarCheck />
+              )}
 
-            {(p === "allergy" ||
-              p === "allergies") && (
-              <ShieldAlert />
-            )}
+              {(pageName ===
+                "allergy" ||
+                pageName ===
+                  "allergies") && (
+                <ShieldAlert />
+              )}
 
-            {p === "late" && (
-              <Clock3 />
-            )}
+              {pageName ===
+                "late" && (
+                <Clock3 />
+              )}
 
-            {p === "notifications" && (
-              <Bell />
-            )}
+              {pageName ===
+                "notifications" && (
+                <Bell />
+              )}
 
-            <small>{label}</small>
-          </button>
-        ))}
+              <small>
+                {label}
+              </small>
+            </button>
+          )
+        )}
       </nav>
     </div>
   );
@@ -486,8 +598,10 @@ function App() {
 
 function Login({
   onLogin,
+  error: initialError,
 }: {
   onLogin: () => Promise<void>;
+  error: string;
 }) {
   const [email, setEmail] =
     useState("");
@@ -495,19 +609,15 @@ function Login({
   const [password, setPassword] =
     useState("");
 
+  const [error, setError] =
+    useState(initialError);
+
   const [loading, setLoading] =
     useState(false);
-
-  const [error, setError] =
-    useState("");
-
-  const [message, setMessage] =
-    useState("");
 
   async function signIn() {
     setLoading(true);
     setError("");
-    setMessage("");
 
     const { error } =
       await supabase.auth.signInWithPassword(
@@ -527,44 +637,6 @@ function Login({
     setLoading(false);
   }
 
-  async function signUp() {
-    setLoading(true);
-    setError("");
-    setMessage("");
-
-    if (!email || !password) {
-      setError(
-        "Enter an email and password."
-      );
-      setLoading(false);
-      return;
-    }
-
-    if (password.length < 6) {
-      setError(
-        "Password must be at least 6 characters."
-      );
-      setLoading(false);
-      return;
-    }
-
-    const { error } =
-      await supabase.auth.signUp({
-        email,
-        password,
-      });
-
-    if (error) {
-      setError(error.message);
-    } else {
-      setMessage(
-        "Account created. Check your email if confirmation is required."
-      );
-    }
-
-    setLoading(false);
-  }
-
   return (
     <div className="login">
       <div className="loginbox">
@@ -578,23 +650,23 @@ function Login({
         </p>
 
         <input
-          placeholder="Email"
           type="email"
+          placeholder="Email"
           value={email}
-          onChange={(event) =>
+          onChange={(e) =>
             setEmail(
-              event.target.value
+              e.target.value
             )
           }
         />
 
         <input
-          placeholder="Password"
           type="password"
+          placeholder="Password"
           value={password}
-          onChange={(event) =>
+          onChange={(e) =>
             setPassword(
-              event.target.value
+              e.target.value
             )
           }
         />
@@ -602,12 +674,6 @@ function Login({
         {error && (
           <p className="error">
             {error}
-          </p>
-        )}
-
-        {message && (
-          <p className="green">
-            {message}
           </p>
         )}
 
@@ -620,14 +686,6 @@ function Login({
             ? "Signing in..."
             : "Sign in"}
         </button>
-
-        <button
-          className="secondary"
-          onClick={signUp}
-          disabled={loading}
-        >
-          Create account
-        </button>
       </div>
     </div>
   );
@@ -636,25 +694,33 @@ function Login({
 function Dashboard({
   kitchen,
   meals,
-  rsvps,
-  late,
+  myRSVPs,
+  kitchenRSVPs,
   setPage,
-  loading,
+  menu,
 }: {
   kitchen: boolean;
   meals: Meal[];
-  rsvps: RSVPRecord;
-  late: boolean;
+  myRSVPs: Record<
+    string,
+    RSVPStatus
+  >;
+  kitchenRSVPs: RSVP[];
   setPage: (page: string) => void;
-  loading: boolean;
+  menu: MenuRecord | null;
 }) {
   if (kitchen) {
     const expected =
-      Object.values(
-        rsvps
-      ).filter(
-        (value) =>
-          value === "eating"
+      kitchenRSVPs.filter(
+        (rsvp) =>
+          rsvp.status ===
+          "eating"
+      ).length;
+
+    const late =
+      kitchenRSVPs.filter(
+        (rsvp) =>
+          false
       ).length;
 
     return (
@@ -676,9 +742,7 @@ function Dashboard({
           </Card>
 
           <Card>
-            <b>
-              {late ? 1 : 0}
-            </b>
+            <b>{late}</b>
             <small>
               Late plates
             </small>
@@ -692,7 +756,9 @@ function Dashboard({
           </Card>
 
           <Card>
-            <b>{meals.length}</b>
+            <b>
+              {meals.length}
+            </b>
             <small>
               Menu items
             </small>
@@ -700,26 +766,29 @@ function Dashboard({
         </div>
 
         <Card>
-          <h2>Tonight</h2>
+          <h2>
+            {menu?.name ||
+              "Tonight"}
+          </h2>
 
-          {loading ? (
-            <p>
-              Loading menu...
-            </p>
-          ) : meals.length === 0 ? (
+          {meals.length === 0 ? (
             <p className="muted">
-              No meals have been
-              published yet.
+              No meals posted.
             </p>
           ) : (
-            <p>
-              {meals[0].title}
-              {" · "}
-              {formatTime(
-                meals[0]
-                  .service_time
-              )}
-            </p>
+            meals.map(
+              (meal) => (
+                <p
+                  key={meal.id}
+                >
+                  {meal.title}
+                  {" · "}
+                  {formatTime(
+                    meal.service_time
+                  )}
+                </p>
+              )
+            )
           )}
 
           <button
@@ -738,10 +807,8 @@ function Dashboard({
     );
   }
 
-  const tonight =
-    meals.length > 0
-      ? meals[0]
-      : null;
+  const firstMeal =
+    meals[0];
 
   return (
     <>
@@ -751,20 +818,16 @@ function Dashboard({
         </p>
 
         <h1>
-          {loading
-            ? "Loading..."
-            : tonight
-            ? tonight.title
+          {firstMeal
+            ? firstMeal.title
             : "No dinner posted"}
         </h1>
 
-        {tonight && (
+        {firstMeal && (
           <span>
             {formatTime(
-              tonight.service_time
-            )}{" "}
-            · RSVP through the
-            menu
+              firstMeal.service_time
+            )}
           </span>
         )}
       </div>
@@ -777,9 +840,9 @@ function Dashboard({
         <Action
           title="RSVP"
           subtitle={
-            tonight &&
-            rsvps[
-              tonight.id
+            firstMeal &&
+            myRSVPs[
+              firstMeal.id
             ] === "eating"
               ? "You're eating"
               : "Tell the kitchen"
@@ -805,11 +868,7 @@ function Dashboard({
 
         <Action
           title="Late plate"
-          subtitle={
-            late
-              ? "Requested"
-              : "Need one later?"
-          }
+          subtitle="Need one later?"
           icon={
             <Clock3 />
           }
@@ -820,7 +879,7 @@ function Dashboard({
 
         <Action
           title="Full menu"
-          subtitle="See upcoming meals"
+          subtitle="See all meals"
           icon={
             <MenuIcon />
           }
@@ -875,141 +934,130 @@ function Card({
   );
 }
 
-function Menu({
+function MenuPage({
   kitchen,
   meals,
-  rsvps,
+  myRSVPs,
   saveRSVP,
-  loading,
 }: {
   kitchen: boolean;
   meals: Meal[];
-  rsvps: RSVPRecord;
+  myRSVPs: Record<
+    string,
+    RSVPStatus
+  >;
   saveRSVP: (
     mealId: string,
     status: RSVPStatus
   ) => Promise<void>;
-  loading: boolean;
 }) {
   return (
     <>
-      <div className="head">
-        <div>
-          <p className="eyebrow">
-            MEALS
-          </p>
+      <p className="eyebrow">
+        MEALS
+      </p>
 
-          <h1>
-            {kitchen
-              ? "Menu Management"
-              : "Menu"}
-          </h1>
-        </div>
+      <h1>
+        {kitchen
+          ? "Menu Management"
+          : "Menu"}
+      </h1>
 
-        {kitchen && (
-          <button className="primary">
-            <Plus />
-            Add meal
-          </button>
-        )}
-      </div>
-
-      {loading ? (
-        <Card>
-          <p>
-            Loading meals...
-          </p>
-        </Card>
-      ) : meals.length === 0 ? (
+      {meals.length === 0 ? (
         <Card>
           <h2>
             No meals posted
           </h2>
 
           <p className="muted">
-            Your chapter does not
-            have a published meal
-            yet.
+            There are currently
+            no meals on the
+            published menu.
           </p>
         </Card>
       ) : (
-        meals.map((meal) => (
-          <Card key={meal.id}>
-            <div className="meal">
-              <div>
-                <small>
-                  Meal
-                </small>
+        meals.map(
+          (meal) => (
+            <Card key={meal.id}>
+              <div className="meal">
+                <div>
+                  <small>
+                    Meal
+                  </small>
 
-                <h2>
-                  {meal.title}
-                </h2>
+                  <h2>
+                    {meal.title}
+                  </h2>
 
-                <p>
-                  {meal.description}
-                </p>
+                  <p>
+                    {meal.description}
+                  </p>
 
-                <span>
-                  🍽{" "}
-                  {formatTime(
-                    meal.service_time
-                  )}
-                </span>
-              </div>
+                  <span>
+                    🍽{" "}
+                    {formatTime(
+                      meal.service_time
+                    )}
+                  </span>
+                </div>
 
-              {!kitchen && (
-                <button
-                  className={
-                    rsvps[
-                      meal.id
-                    ] === "eating"
-                      ? "success"
-                      : "primary"
-                  }
-                  onClick={() =>
-                    saveRSVP(
-                      meal.id,
-                      rsvps[
+                {!kitchen && (
+                  <button
+                    className={
+                      myRSVPs[
                         meal.id
-                      ] === "eating"
-                        ? "not_eating"
-                        : "eating"
-                    )
-                  }
-                >
-                  {rsvps[
-                    meal.id
-                  ] === "eating" ? (
-                    <>
-                      <Check />
-                      Eating
-                    </>
-                  ) : (
-                    "RSVP"
-                  )}
-                </button>
-              )}
-            </div>
-          </Card>
-        ))
+                      ] ===
+                      "eating"
+                        ? "success"
+                        : "primary"
+                    }
+                    onClick={() =>
+                      saveRSVP(
+                        meal.id,
+                        myRSVPs[
+                          meal.id
+                        ] ===
+                          "eating"
+                          ? "not_eating"
+                          : "eating"
+                      )
+                    }
+                  >
+                    {myRSVPs[
+                      meal.id
+                    ] === "eating" ? (
+                      <>
+                        <Check />
+                        Eating
+                      </>
+                    ) : (
+                      "RSVP"
+                    )}
+                  </button>
+                )}
+              </div>
+            </Card>
+          )
+        )
       )}
     </>
   );
 }
 
-function RSVP({
+function RSVPPage({
   meals,
-  rsvps,
+  myRSVPs,
   saveRSVP,
-  loading,
 }: {
   meals: Meal[];
-  rsvps: RSVPRecord;
+  myRSVPs: Record<
+    string,
+    RSVPStatus
+  >;
   saveRSVP: (
     mealId: string,
     status: RSVPStatus
   ) => Promise<void>;
-  loading: boolean;
 }) {
   return (
     <>
@@ -1027,13 +1075,293 @@ function RSVP({
         right amount.
       </p>
 
-      {loading ? (
-        <Card>
-          <p>
-            Loading meals...
-          </p>
-        </Card>
-      ) : meals.length === 0 ? (
+      {meals.length === 0 ? (
         <Card>
           <p className="muted">
-            No meals are currently availa
+            No meals available.
+          </p>
+        </Card>
+      ) : (
+        meals.map(
+          (meal) => (
+            <Card key={meal.id}>
+              <div className="head">
+                <div>
+                  <h2>
+                    {meal.title}
+                  </h2>
+
+                  <p>
+                    {formatTime(
+                      meal.service_time
+                    )}
+                  </p>
+                </div>
+
+                <div className="choice">
+                  <button
+                    className={
+                      myRSVPs[
+                        meal.id
+                      ] ===
+                      "eating"
+                        ? "on"
+                        : ""
+                    }
+                    onClick={() =>
+                      saveRSVP(
+                        meal.id,
+                        "eating"
+                      )
+                    }
+                  >
+                    Eating
+                  </button>
+
+                  <button
+                    className={
+                      myRSVPs[
+                        meal.id
+                      ] ===
+                      "not_eating"
+                        ? "on"
+                        : ""
+                    }
+                    onClick={() =>
+                      saveRSVP(
+                        meal.id,
+                        "not_eating"
+                      )
+                    }
+                  >
+                    Not eating
+                  </button>
+                </div>
+              </div>
+            </Card>
+          )
+        )
+      )}
+    </>
+  );
+}
+
+function AllergyPage() {
+  return (
+    <>
+      <p className="eyebrow">
+        PRIVATE PROFILE
+      </p>
+
+      <h1>
+        Allergy & dietary
+        profile
+      </h1>
+
+      <Card>
+        <h2>
+          Allergies
+        </h2>
+
+        <p className="muted">
+          Allergy profiles will
+          be connected to
+          Supabase next.
+        </p>
+      </Card>
+    </>
+  );
+}
+
+function LatePage() {
+  return (
+    <>
+      <p className="eyebrow">
+        DINNER SERVICE
+      </p>
+
+      <h1>
+        Late plate
+      </h1>
+
+      <Card>
+        <h2>
+          Running late?
+        </h2>
+
+        <p>
+          Tell the kitchen
+          you're running late.
+        </p>
+
+        <button
+          className="primary"
+          onClick={() =>
+            alert(
+              "Late plate feature coming next."
+            )
+          }
+        >
+          Request a late plate
+        </button>
+      </Card>
+    </>
+  );
+}
+
+function NotificationsPage() {
+  return (
+    <>
+      <p className="eyebrow">
+        UPDATES
+      </p>
+
+      <h1>
+        Notifications
+      </h1>
+
+      <Card>
+        <b>
+          Menu posted
+        </b>
+
+        <p>
+          Your chapter's menu
+          is available.
+        </p>
+      </Card>
+    </>
+  );
+}
+
+function HeadcountPage({
+  meals,
+  rsvps,
+}: {
+  meals: Meal[];
+  rsvps: RSVP[];
+}) {
+  return (
+    <>
+      <p className="eyebrow">
+        KITCHEN
+      </p>
+
+      <h1>
+        Headcount
+      </h1>
+
+      {meals.map(
+        (meal) => {
+          const count =
+            rsvps.filter(
+              (rsvp) =>
+                rsvp.meal_id ===
+                  meal.id &&
+                rsvp.status ===
+                  "eating"
+            ).length;
+
+          return (
+            <Card key={meal.id}>
+              <div className="head">
+                <div>
+                  <h2>
+                    {meal.title}
+                  </h2>
+
+                  <p>
+                    {formatTime(
+                      meal.service_time
+                    )}
+                  </p>
+                </div>
+
+                <div className="big">
+                  {count}
+                </div>
+              </div>
+
+              <p className="muted">
+                confirmed eating
+              </p>
+            </Card>
+          );
+        }
+      )}
+
+      {meals.length === 0 && (
+        <Card>
+          <p className="muted">
+            No meals available.
+          </p>
+        </Card>
+      )}
+    </>
+  );
+}
+
+function AlertsPage() {
+  return (
+    <>
+      <p className="eyebrow">
+        KITCHEN
+      </p>
+
+      <h1>
+        Allergy Alerts
+      </h1>
+
+      <Card>
+        <p className="muted">
+          No allergy alerts
+          have been connected
+          yet.
+        </p>
+      </Card>
+    </>
+  );
+}
+
+function formatTime(
+  time: string
+) {
+  if (!time) return "";
+
+  const parts =
+    time.split(":");
+
+  const hour =
+    Number(parts[0]);
+
+  const minute =
+    parts[1] || "00";
+
+  const suffix =
+    hour >= 12
+      ? "PM"
+      : "AM";
+
+  const displayHour =
+    hour % 12 || 12;
+
+  return `${displayHour}:${minute} ${suffix}`;
+}
+
+const root =
+  document.getElementById(
+    "root"
+  );
+
+if (!root) {
+  throw new Error(
+    "HouseEats root element was not found."
+  );
+}
+
+createRoot(root).render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
+);
+   
