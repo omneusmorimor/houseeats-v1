@@ -220,57 +220,11 @@ function App() {
         RSVPStatus
       > = {};
 
-      rsvpData.forEach((rsvp) => {
-  map[rsvp.meal_id] =
-    rsvp.status as RSVPStatus;
-});
-
-setMyRSVPs(map);
-}
-
-if (userProfile.role !== "member") {
-  const {
-    data: allRsvps,
-    error: allRsvpError,
-  } = await supabase
-    .from("rsvps")
-    .select(
-      "member_id, meal_id, status"
-    )
-    .in("meal_id", mealIds);
-
-  if (allRsvpError) {
-    console.error(
-      "Kitchen RSVP error:",
-      allRsvpError
-    );
-    return;
-  }
-
-  setKitchenRSVPs(
-    (allRsvps || []) as RSVP[]
-  );
-}
-  const {
-    data: allRsvps,
-    error: allRsvpError,
-  } = await supabase
-    .from("rsvps")
-    .select("member_id, meal_id, status")
-    .in("meal_id", mealIds);
-
-  if (allRsvpError) {
-    console.error(
-      "Kitchen RSVP error:",
-      allRsvpError
-    );
-    return;
-  }
-
-  setKitchenRSVPs(
-    (allRsvps || []) as RSVP[]
-  );
-      }
+      (rsvpData || []).forEach(
+        (rsvp) => {
+          map[rsvp.meal_id] =
+            rsvp.status as RSVPStatus;
+        }
       );
 
       setMyRSVPs(map);
@@ -279,73 +233,24 @@ if (userProfile.role !== "member") {
     /*
      * Kitchen/admin can see all RSVPs.
      */
-    if (userProfile.role === "member") {
-  const {
-    data: rsvpData,
-    error: rsvpError,
-  } = await supabase
-    .from("rsvps")
-    .select(
-      "member_id, meal_id, status"
-    )
-    .eq(
-      "member_id",
-      userProfile.id
-    )
-    .in(
-      "meal_id",
-      mealIds
-    );
+    if (userProfile.role !== "member") {
+      const {
+        data: allRSVPData,
+        error: allRSVPError,
+      } = await supabase
+        .from("rsvps")
+        .select(
+          "member_id, meal_id, status"
+        )
+        .in("meal_id", mealIds);
 
-  if (rsvpError) {
-    console.error(
-      "RSVP error:",
-      rsvpError
-    );
-    return;
-  }
-
-  const map: Record<
-    string,
-    RSVPStatus
-  > = {};
-
-  (rsvpData || []).forEach(
-    (rsvp) => {
-      map[rsvp.meal_id] =
-        rsvp.status as RSVPStatus;
-    }
-  );
-
-  setMyRSVPs(map);
-}
-
-if (userProfile.role !== "member") {
-  const {
-    data: allRsvps,
-    error: allRsvpError,
-  } = await supabase
-    .from("rsvps")
-    .select(
-      "member_id, meal_id, status"
-    )
-    .in(
-      "meal_id",
-      mealIds
-    );
-
-  if (allRsvpError) {
-    console.error(
-      "Kitchen RSVP error:",
-      allRsvpError
-    );
-    return;
-  }
-
-  setKitchenRSVPs(
-    (allRsvps || []) as RSVP[]
-  );
-}
+      if (allRSVPError) {
+        console.error(
+          "Kitchen RSVP error:",
+          allRSVPError
+        );
+        return;
+      }
 
       setKitchenRSVPs(
         (allRSVPData || []) as RSVP[]
@@ -1129,7 +1034,7 @@ function MenuPage({
                       "RSVP"
                     )}
                   </button>
-                )}
+   )}
               </div>
             </Card>
           )
@@ -1242,206 +1147,6 @@ function RSVPPage({
 }
 
 function AllergyPage() {
-  const [allergies, setAllergies] =
-    useState<string[]>([]);
-
-  const [dietaryRestrictions, setDietaryRestrictions] =
-    useState<string[]>([]);
-
-  const [notes, setNotes] =
-    useState("");
-
-  const [loading, setLoading] =
-    useState(true);
-
-  const [saving, setSaving] =
-    useState(false);
-
-  const [message, setMessage] =
-    useState("");
-
-  const allergyOptions = [
-    "Peanuts",
-    "Tree nuts",
-    "Dairy",
-    "Eggs",
-    "Gluten",
-    "Shellfish",
-    "Fish",
-    "Soy",
-  ];
-
-  const dietaryOptions = [
-    "Vegetarian",
-    "Vegan",
-    "Halal",
-    "Gluten-free",
-  ];
-
-  useEffect(() => {
-    loadAllergyProfile();
-  }, []);
-
-  async function loadAllergyProfile() {
-    setLoading(true);
-
-    const {
-      data: {
-        user,
-      },
-    } = await supabase.auth.getUser();
-
-    if (!user) {
-      setLoading(false);
-      return;
-    }
-
-    const {
-      data,
-      error,
-    } = await supabase
-      .from("allergy_profiles")
-      .select(
-        "allergies, dietary_restrictions, notes"
-      )
-      .eq(
-        "member_id",
-        user.id
-      )
-      .maybeSingle();
-
-    if (error) {
-      console.error(
-        "Allergy profile error:",
-        error
-      );
-      setMessage(
-        "Unable to load your allergy profile."
-      );
-      setLoading(false);
-      return;
-    }
-
-    if (data) {
-      setAllergies(
-        data.allergies || []
-      );
-
-      setDietaryRestrictions(
-        data.dietary_restrictions ||
-          []
-      );
-
-      setNotes(
-        data.notes || ""
-      );
-    }
-
-    setLoading(false);
-  }
-
-  function toggleValue(
-    value: string,
-    current: string[],
-    setter: React.Dispatch<
-      React.SetStateAction<string[]>
-    >
-  ) {
-    if (current.includes(value)) {
-      setter(
-        current.filter(
-          (item) =>
-            item !== value
-        )
-      );
-    } else {
-      setter([
-        ...current,
-        value,
-      ]);
-    }
-  }
-
-  async function saveProfile() {
-    setSaving(true);
-    setMessage("");
-
-    const {
-      data: {
-        user,
-      },
-    } = await supabase.auth.getUser();
-
-    if (!user) {
-      setMessage(
-        "You must be signed in."
-      );
-      setSaving(false);
-      return;
-    }
-
-    const {
-      error,
-    } = await supabase
-      .from("allergy_profiles")
-      .upsert(
-        {
-          member_id: user.id,
-          allergies,
-          dietary_restrictions:
-            dietaryRestrictions,
-          notes,
-          updated_at:
-            new Date().toISOString(),
-        },
-        {
-          onConflict:
-            "member_id",
-        }
-      );
-
-    if (error) {
-      console.error(
-        "Save allergy profile error:",
-        error
-      );
-
-      setMessage(
-        "Unable to save your allergy profile."
-      );
-
-      setSaving(false);
-      return;
-    }
-
-    setMessage(
-      "Allergy profile saved."
-    );
-
-    setSaving(false);
-  }
-
-  if (loading) {
-    return (
-      <>
-        <p className="eyebrow">
-          PRIVATE PROFILE
-        </p>
-
-        <h1>
-          Allergy & dietary
-          profile
-        </h1>
-
-        <Card>
-          <p className="muted">
-            Loading...
-          </p>
-        </Card>
-      </>
-    );
-  }
-
   return (
     <>
       <p className="eyebrow">
@@ -1453,127 +1158,17 @@ function AllergyPage() {
         profile
       </h1>
 
-      <p className="muted">
-        Your allergy information
-        is only available to
-        authorized kitchen and
-        admin users.
-      </p>
-
       <Card>
         <h2>
           Allergies
         </h2>
 
-        <div className="chips">
-          {allergyOptions.map(
-            (option) => {
-              const active =
-                allergies.includes(
-                  option
-                );
-
-              return (
-                <button
-                  key={option}
-                  className={
-                    active
-                      ? "chip active"
-                      : "chip"
-                  }
-                  onClick={() =>
-                    toggleValue(
-                      option,
-                      allergies,
-                      setAllergies
-                    )
-                  }
-                >
-                  {active && (
-                    <Check />
-                  )}
-
-                  {option}
-                </button>
-              );
-            }
-          )}
-        </div>
-      </Card>
-
-      <Card>
-        <h2>
-          Dietary restrictions
-        </h2>
-
-        <div className="chips">
-          {dietaryOptions.map(
-            (option) => {
-              const active =
-                dietaryRestrictions.includes(
-                  option
-                );
-
-              return (
-                <button
-                  key={option}
-                  className={
-                    active
-                      ? "chip active"
-                      : "chip"
-                  }
-                  onClick={() =>
-                    toggleValue(
-                      option,
-                      dietaryRestrictions,
-                      setDietaryRestrictions
-                    )
-                  }
-                >
-                  {active && (
-                    <Check />
-                  )}
-
-                  {option}
-                </button>
-              );
-            }
-          )}
-        </div>
-      </Card>
-
-      <Card>
-        <h2>
-          Notes
-        </h2>
-
-        <textarea
-          value={notes}
-          onChange={(e) =>
-            setNotes(
-              e.target.value
-            )
-          }
-          placeholder="Anything the kitchen should know?"
-          rows={4}
-        />
-      </Card>
-
-      {message && (
-        <p className="green">
-          {message}
+        <p className="muted">
+          Allergy profiles will
+          be connected to
+          Supabase next.
         </p>
-      )}
-
-      <button
-        className="primary"
-        onClick={saveProfile}
-        disabled={saving}
-      >
-        {saving
-          ? "Saving..."
-          : "Save allergy profile"}
-      </button>
+      </Card>
     </>
   );
 }
