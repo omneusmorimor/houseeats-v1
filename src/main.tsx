@@ -279,24 +279,73 @@ if (userProfile.role !== "member") {
     /*
      * Kitchen/admin can see all RSVPs.
      */
-    if (userProfile.role !== "member") {
-      const {
-        data: allRSVPData,
-        error: allRSVPError,
-      } = await supabase
-        .from("rsvps")
-        .select(
-          "member_id, meal_id, status"
-        )
-        .in("meal_id", mealIds);
+    if (userProfile.role === "member") {
+  const {
+    data: rsvpData,
+    error: rsvpError,
+  } = await supabase
+    .from("rsvps")
+    .select(
+      "member_id, meal_id, status"
+    )
+    .eq(
+      "member_id",
+      userProfile.id
+    )
+    .in(
+      "meal_id",
+      mealIds
+    );
 
-      if (allRSVPError) {
-        console.error(
-          "Kitchen RSVP error:",
-          allRSVPError
-        );
-        return;
-      }
+  if (rsvpError) {
+    console.error(
+      "RSVP error:",
+      rsvpError
+    );
+    return;
+  }
+
+  const map: Record<
+    string,
+    RSVPStatus
+  > = {};
+
+  (rsvpData || []).forEach(
+    (rsvp) => {
+      map[rsvp.meal_id] =
+        rsvp.status as RSVPStatus;
+    }
+  );
+
+  setMyRSVPs(map);
+}
+
+if (userProfile.role !== "member") {
+  const {
+    data: allRsvps,
+    error: allRsvpError,
+  } = await supabase
+    .from("rsvps")
+    .select(
+      "member_id, meal_id, status"
+    )
+    .in(
+      "meal_id",
+      mealIds
+    );
+
+  if (allRsvpError) {
+    console.error(
+      "Kitchen RSVP error:",
+      allRsvpError
+    );
+    return;
+  }
+
+  setKitchenRSVPs(
+    (allRsvps || []) as RSVP[]
+  );
+}
 
       setKitchenRSVPs(
         (allRSVPData || []) as RSVP[]
