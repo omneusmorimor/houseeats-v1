@@ -496,8 +496,12 @@ function App() {
         )}
 
         {page === "allergies" && (
-          <AlertsPage />
-        )}
+  <AlertsPage
+    kitchenRSVPs={
+      kitchenRSVPs
+    }
+  />
+)}
       </main>
 
       <nav>
@@ -1614,7 +1618,118 @@ function HeadcountPage({
   );
 }
 
-function AlertsPage() {
+function AlertsPage({
+  kitchenRSVPs,
+}: {
+  kitchenRSVPs: RSVP[];
+}) {
+  const [alerts, setAlerts] =
+    useState<
+      {
+        member_id: string;
+        meal_id: string;
+        allergies: string[];
+        dietary_restrictions: string[];
+        notes: string | null;
+      }[]
+    >([]);
+
+  const [loading, setLoading] =
+    useState(true);
+
+  useEffect(() => {
+    loadAllergyAlerts();
+  }, [kitchenRSVPs]);
+
+  async function loadAllergyAlerts() {
+    const eatingRSVPs =
+      kitchenRSVPs.filter(
+        (rsvp) =>
+          rsvp.status === "eating"
+      );
+
+    if (
+      eatingRSVPs.length === 0
+    ) {
+      setAlerts([]);
+      setLoading(false);
+      return;
+    }
+
+    const memberIds =
+      eatingRSVPs.map(
+        (rsvp) =>
+          rsvp.member_id
+      );
+
+    const { data, error } =
+      await supabase
+        .from("allergy_profiles")
+        .select(
+          "member_id, allergies, dietary_restrictions, notes"
+        )
+        .in(
+          "member_id",
+          memberIds
+        );
+
+    if (error) {
+      console.error(
+        "Allergy alerts error:",
+        error
+      );
+      setAlerts([]);
+      setLoading(false);
+      return;
+    }
+
+    const mealIds =
+      eatingRSVPs.map(
+        (rsvp) =>
+          rsvp.meal_id
+      );
+
+    const combined =
+      (data || []).map(
+        (profile) => ({
+          ...profile,
+          meal_id:
+            mealIds.find(
+              (id) =>
+                eatingRSVPs.some(
+                  (rsvp) =>
+                    rsvp.member_id ===
+                      profile.member_id &&
+                    rsvp.meal_id === id
+                )
+            ) || "",
+        })
+      );
+
+    setAlerts(combined);
+    setLoading(false);
+  }
+
+  if (loading) {
+    return (
+      <>
+        <p className="eyebrow">
+          KITCHEN
+        </p>
+
+        <h1>
+          Allergy Alerts
+        </h1>
+
+        <Card>
+          <p className="muted">
+            Loading allergy alerts...
+          </p>
+        </Card>
+      </>
+    );
+  }
+
   return (
     <>
       <p className="eyebrow">
@@ -1625,16 +1740,61 @@ function AlertsPage() {
         Allergy Alerts
       </h1>
 
-      <Card>
-        <p className="muted">
-          No allergy alerts
-          have been connected
-          yet.
-        </p>
-      </Card>
+      {alerts.length === 0 ? (
+        <Card>
+          <p className="muted">
+            No allergy alerts for
+            members eating tonight.
+          </p>
+        </Card>
+      ) : (
+        alerts.map((alert) => (
+          <Card
+            key={`${alert.member_id}-${alert.meal_id}`}
+          >
+            <h2>
+              ⚠️ Allergy Alert
+            </h2>
+
+            {alert.allergies.length >
+              0 && (
+              <p>
+                <strong>
+                  Allergies:
+                </strong>{" "}
+                {alert.allergies.join(
+                  ", "
+                )}
+              </p>
+            )}
+
+            {alert.dietary_restrictions
+              .length > 0 && (
+              <p>
+                <strong>
+                  Dietary:
+                </strong>{" "}
+                {alert.dietary_restrictions.join(
+                  ", "
+                )}
+              </p>
+            )}
+
+            {alert.notes && (
+              <p>
+                <strong>
+                  Notes:
+                </strong>{" "}
+                {alert.notes}
+              </p>
+            )}
+          </Card>
+        ))
+      )}
     </>
   );
 }
+
 
 function formatTime(
   time: string
