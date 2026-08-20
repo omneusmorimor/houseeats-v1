@@ -220,11 +220,37 @@ function App() {
         RSVPStatus
       > = {};
 
-      (rsvpData || []).forEach(
-        (rsvp) => {
-          map[rsvp.meal_id] =
-            rsvp.status as RSVPStatus;
-        } if (userProfile.role !== "member") {
+      rsvpData.forEach((rsvp) => {
+  map[rsvp.meal_id] =
+    rsvp.status as RSVPStatus;
+});
+
+setMyRSVPs(map);
+}
+
+if (userProfile.role !== "member") {
+  const {
+    data: allRsvps,
+    error: allRsvpError,
+  } = await supabase
+    .from("rsvps")
+    .select(
+      "member_id, meal_id, status"
+    )
+    .in("meal_id", mealIds);
+
+  if (allRsvpError) {
+    console.error(
+      "Kitchen RSVP error:",
+      allRsvpError
+    );
+    return;
+  }
+
+  setKitchenRSVPs(
+    (allRsvps || []) as RSVP[]
+  );
+}
   const {
     data: allRsvps,
     error: allRsvpError,
