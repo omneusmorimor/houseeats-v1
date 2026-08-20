@@ -1,39 +1,3 @@
-import React, { useState } from "react";
-import { createRoot } from "react-dom/client";
-import {
-  UtensilsCrossed,
-  CalendarCheck,
-  ShieldAlert,
-  Clock3,
-  Bell,
-  Menu as MenuIcon,
-  Home,
-  ChevronRight,
-  Check,
-  Plus,
-} from "lucide-react";
-import "./styles.css";
-
-type Role = "member" | "chef" | "admin";
-
-type RSVPStatus = "eating" | "not_eating";
-
-type RSVPRecord = Record<string, RSVPStatus>;
-
-const meals = [
-  {
-    id: "1",
-    name: "Chicken Alfredo",
-    description:
-      "Grilled chicken, penne, Alfredo sauce, broccoli",
-    day: "Today",
-  },
-  {
-    id: "2",
-    name: "Taco Bar",
-    description:
-      "Beef, chicken, tortillas, rice, beans and toppings",
-    day: "Tomorrow",
   },
   {
     id: "3",
