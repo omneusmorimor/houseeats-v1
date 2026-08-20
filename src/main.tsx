@@ -713,6 +713,71 @@ function Dashboard({
   setPage: (page: string) => void;
   menu: MenuRecord | null;
 }) {
+  const [allergyAlertCount, setAllergyAlertCount] =
+    useState(0);
+
+  useEffect(() => {
+    if (!kitchen) return;
+
+    loadDashboardAllergyAlerts();
+  }, [kitchen, kitchenRSVPs]);
+
+  async function loadDashboardAllergyAlerts() {
+    const eatingRSVPs =
+      kitchenRSVPs.filter(
+        (rsvp) =>
+          rsvp.status === "eating"
+      );
+
+    if (eatingRSVPs.length === 0) {
+      setAllergyAlertCount(0);
+      return;
+    }
+
+    const memberIds =
+      eatingRSVPs.map(
+        (rsvp) =>
+          rsvp.member_id
+      );
+
+    const {
+      data,
+      error,
+    } = await supabase
+      .from("allergy_profiles")
+      .select(
+        "member_id, allergies, dietary_restrictions"
+      )
+      .in(
+        "member_id",
+        memberIds
+      );
+
+    if (error) {
+      console.error(
+        "Dashboard allergy error:",
+        error
+      );
+      setAllergyAlertCount(0);
+      return;
+    }
+
+    const profilesWithAlerts =
+      (data || []).filter(
+        (profile) =>
+          (profile.allergies &&
+            profile.allergies.length >
+              0) ||
+          (profile.dietary_restrictions &&
+            profile.dietary_restrictions
+              .length > 0)
+      );
+
+    setAllergyAlertCount(
+      profilesWithAlerts.length
+    );
+  }
+
   if (kitchen) {
     const expected =
       kitchenRSVPs.filter(
@@ -753,7 +818,9 @@ function Dashboard({
           </Card>
 
           <Card>
-            <b>0</b>
+            <b>
+              {allergyAlertCount}
+            </b>
             <small>
               Allergy alerts
             </small>
@@ -810,6 +877,88 @@ function Dashboard({
       </>
     );
   }
+
+  return (
+    <>
+      <p className="eyebrow">
+        TONIGHT'S DINNER
+      </p>
+
+      <h1>
+        {menu?.name ||
+          "Dinner"}
+      </h1>
+
+      <Card>
+        {meals.length === 0 ? (
+          <p className="muted">
+            No meals posted.
+          </p>
+        ) : (
+          meals.map(
+            (meal) => (
+              <div
+                key={meal.id}
+              >
+                <h2>
+                  {meal.title}
+                </h2>
+
+                <p className="muted">
+                  {formatTime(
+                    meal.service_time
+                  )}
+                </p>
+
+                <p>
+                  {meal.description}
+                </p>
+              </div>
+            )
+          )
+        )}
+      </Card>
+
+      <div className="actions">
+        <Action
+          title="RSVP"
+          subtitle="Tell the kitchen if you're eating"
+          icon={<Check />}
+          onClick={() =>
+            setPage("rsvp")
+          }
+        />
+
+        <Action
+          title="Allergy"
+          subtitle="Manage your allergy profile"
+          icon={<Shield />}
+          onClick={() =>
+            setPage("allergy")
+          }
+        />
+
+        <Action
+          title="Late plate"
+          subtitle="Running late?"
+          icon={<Clock />}
+          onClick={() =>
+            setPage("late")
+          }
+        />
+
+        <Action
+          title="Menu"
+          subtitle="See this week's meals"
+          icon={<UtensilsCrossed />}
+          onClick={() =>
+            setPage("menu")
+          }
+        />
+      </div>
+    </>
+  );
+}
 
   const firstMeal =
     meals[0];
