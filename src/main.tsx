@@ -1892,7 +1892,7 @@ function AlertsPage({
       )}
     </>
   );
-}
+
 function formatTime(
   time: string
 ) {
