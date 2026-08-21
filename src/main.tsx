@@ -9,7 +9,7 @@ import {
   supabase,
 } from "./lib/supabase";
 
-import "./index.css";
+
 
 type Page =
   | "dashboard"
