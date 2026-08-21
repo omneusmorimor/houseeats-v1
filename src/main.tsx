@@ -498,6 +498,13 @@ function App() {
             rsvps={kitchenRSVPs}
           />
         )}
+        {page === "weekly-menu" && (
+  <KitchenMenuPage
+    menu={menu}
+    meals={meals}
+    setMeals={setMeals}
+  />
+)}
 
         {page === "allergy" && (
   <AllergyPage />
@@ -1883,7 +1890,328 @@ function AlertsPage({
     </>
   );
 }
+function KitchenMenuPage({
+  menu,
+  meals,
+  setMeals,
+}: {
+  menu: MenuRecord | null;
+  meals: Meal[];
+  setMeals: React.Dispatch<
+    React.SetStateAction<Meal[]>
+  >;
+}) {
+  const [saving, setSaving] =
+    useState(false);
 
+  const [message, setMessage] =
+    useState("");
+
+  const [selectedDay, setSelectedDay] =
+    useState(
+      new Date()
+        .toISOString()
+        .split("T")[0]
+    );
+
+  const [mealType, setMealType] =
+    useState<"lunch" | "dinner">(
+      "lunch"
+    );
+
+  const [title, setTitle] =
+    useState("");
+
+  const [description, setDescription] =
+    useState("");
+
+  const [serviceTime, setServiceTime] =
+    useState("");
+
+  const days = Array.from(
+    { length: 7 },
+    (_, index) => {
+      const date =
+        new Date();
+
+      date.setDate(
+        date.getDate() + index
+      );
+
+      return date;
+    }
+  );
+
+  async function saveMeal() {
+    if (!menu?.id) {
+      setMessage(
+        "No active menu found."
+      );
+      return;
+    }
+
+    if (!title.trim()) {
+      setMessage(
+        "Enter a meal name."
+      );
+      return;
+    }
+
+    if (!serviceTime) {
+      setMessage(
+        "Enter a serving time."
+      );
+      return;
+    }
+
+    setSaving(true);
+    setMessage("");
+
+    const { data, error } =
+      await supabase
+        .from("meals")
+        .insert({
+          menu_id: menu.id,
+          title: title.trim(),
+          description:
+            description.trim(),
+          service_time:
+            serviceTime,
+          meal_date:
+            selectedDay,
+          meal_type:
+            mealType,
+          sort_order: meals.length,
+        })
+        .select()
+        .single();
+
+    if (error) {
+      console.error(
+        "Create meal error:",
+        error
+      );
+
+      setMessage(
+        "Unable to create meal."
+      );
+
+      setSaving(false);
+      return;
+    }
+
+    setMeals((current) => [
+      ...current,
+      data as Meal,
+    ]);
+
+    setTitle("");
+    setDescription("");
+    setServiceTime("");
+
+    setMessage(
+      "Meal added successfully."
+    );
+
+    setSaving(false);
+  }
+
+  return (
+    <>
+      <p className="eyebrow">
+        KITCHEN
+      </p>
+
+      <h1>
+        Weekly Menu
+      </h1>
+
+      <Card>
+        <h2>
+          Add a meal
+        </h2>
+
+        <label>
+          Day
+        </label>
+
+        <select
+          value={selectedDay}
+          onChange={(event) =>
+            setSelectedDay(
+              event.target.value
+            )
+          }
+        >
+          {days.map((date) => {
+            const value =
+              date
+                .toISOString()
+                .split("T")[0];
+
+            return (
+              <option
+                key={value}
+                value={value}
+              >
+                {date.toLocaleDateString(
+                  undefined,
+                  {
+                    weekday:
+                      "long",
+                    month:
+                      "short",
+                    day: "numeric",
+                  }
+                )}
+              </option>
+            );
+          })}
+        </select>
+
+        <label>
+          Meal
+        </label>
+
+        <select
+          value={mealType}
+          onChange={(event) =>
+            setMealType(
+              event.target
+                .value as
+                | "lunch"
+                | "dinner"
+            )
+          }
+        >
+          <option value="lunch">
+            Lunch
+          </option>
+
+          <option value="dinner">
+            Dinner
+          </option>
+        </select>
+
+        <label>
+          Meal name
+        </label>
+
+        <input
+          value={title}
+          onChange={(event) =>
+            setTitle(
+              event.target.value
+            )
+          }
+          placeholder="Chicken Alfredo"
+        />
+
+        <label>
+          Serving time
+        </label>
+
+        <input
+          type="time"
+          value={serviceTime}
+          onChange={(event) =>
+            setServiceTime(
+              event.target.value
+            )
+          }
+        />
+
+        <label>
+          Description
+        </label>
+
+        <textarea
+          value={description}
+          onChange={(event) =>
+            setDescription(
+              event.target.value
+            )
+          }
+          placeholder="Chicken, pasta, salad..."
+          rows={3}
+        />
+
+        {message && (
+          <p className="green">
+            {message}
+          </p>
+        )}
+
+        <button
+          className="primary"
+          type="button"
+          onClick={saveMeal}
+          disabled={saving}
+        >
+          {saving
+            ? "Saving..."
+            : "Add meal"}
+        </button>
+      </Card>
+
+      <Card>
+        <h2>
+          This week's meals
+        </h2>
+
+        {meals.length === 0 ? (
+          <p className="muted">
+            No meals have been
+            added yet.
+          </p>
+        ) : (
+          meals
+            .filter(
+              (meal) =>
+                meal.meal_date
+            )
+            .sort((a, b) =>
+              String(
+                a.meal_date
+              ).localeCompare(
+                String(
+                  b.meal_date
+                )
+              )
+            )
+            .map((meal) => (
+              <div
+                key={meal.id}
+              >
+                <h3>
+                  {meal.meal_type ===
+                  "dinner"
+                    ? "Dinner"
+                    : "Lunch"}
+                  {" — "}
+                  {meal.title}
+                </h3>
+
+                <p className="muted">
+                  {meal.meal_date}
+                  {" · "}
+                  {formatTime(
+                    meal.service_time
+                  )}
+                </p>
+
+                {meal.description && (
+                  <p>
+                    {meal.description}
+                  </p>
+                )}
+              </div>
+            ))
+        )}
+      </Card>
+    </>
+  );
+}
 
 function formatTime(
   time: string
