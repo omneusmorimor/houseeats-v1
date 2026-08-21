@@ -1880,12 +1880,19 @@ function AlertsPage({
             )}
 
             {alert.notes && (
-              <p>
-                <strong>
-                  Notes:
-                </strong>{" "}
-                {alert.no
-
+  <p>
+    <strong>
+      Notes:
+    </strong>{" "}
+    {alert.notes}
+  </p>
+)}
+          </Card>
+        ))
+      )}
+    </>
+  );
+}
 function formatTime(
   time: string
 ) {
