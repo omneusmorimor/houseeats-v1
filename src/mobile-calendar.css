@@ -1,0 +1,82 @@
+/* Compact monthly calendar for small screens */
+@media (max-width: 600px) {
+  .chefMonthCalendar { padding: 10px; overflow: hidden; }
+  .chefMonthCalendar .heading { margin-bottom: 10px; }
+  .chefMonthCalendar .heading h2 { font-size: 18px; }
+  .chefMonthCalendar .heading p { font-size: 10px; }
+  .chefMonthCalendar .calendarActions { gap: 4px; }
+  .chefMonthCalendar .calendarActions button { min-width: 32px; height: 32px; padding: 5px 7px; font-size: 9px; }
+  .chefMonthCalendar .calendarActions button:nth-child(2) { padding-inline: 8px; }
+
+  .chefMonthCalendar .monthGrid {
+    grid-template-columns: repeat(7, 96px);
+    gap: 1px;
+    border-radius: 12px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+  }
+  .chefMonthCalendar .monthGrid .calendarHeader {
+    padding: 7px 3px;
+    font-size: 9px;
+  }
+  .chefMonthCalendar .monthGrid .calendarCell {
+    min-height: 104px;
+    padding: 5px;
+  }
+  .chefMonthCalendar .calendarDate {
+    width: 22px;
+    height: 22px;
+    font-size: 10px;
+    margin-bottom: 4px;
+  }
+  .chefMonthCalendar .calendarMeal {
+    padding: 5px;
+    margin: 3px 0;
+    border-radius: 8px;
+  }
+  .chefMonthCalendar .chefMealTop h3 {
+    font-size: 9px;
+    line-height: 1.15;
+  }
+  .chefMonthCalendar .chefMealTop > strong {
+    font-size: 10px;
+  }
+  .chefMonthCalendar .chefMealCard small,
+  .chefMonthCalendar .chefMealFooter span {
+    font-size: 7px;
+  }
+  .chefMonthCalendar .chefMealFooter {
+    margin-top: 4px;
+    padding-top: 4px;
+  }
+  .chefMonthCalendar .chefMealFooter button {
+    min-height: 24px;
+    padding: 4px 6px;
+    font-size: 7px;
+  }
+  .chefMonthCalendar .emptyMealPrompt {
+    min-height: 24px;
+    padding: 4px !important;
+    font-size: 7px !important;
+  }
+
+  .chefMonthCalendar .chefInlineEditor input,
+  .chefMonthCalendar .chefInlineEditor textarea {
+    min-height: 32px;
+    padding: 6px;
+    font-size: 10px;
+  }
+  .chefMonthCalendar .chefAllergenPicker { max-height: 85px; }
+  .chefMonthCalendar .chefAllergenPicker label { font-size: 7px; padding: 4px; }
+  .chefMonthCalendar .chefEditorActions button {
+    min-height: 30px;
+    padding: 5px;
+    font-size: 9px;
+  }
+}
+
+@media (max-width: 380px) {
+  .chefMonthCalendar .monthGrid { grid-template-columns: repeat(7, 88px); }
+  .chefMonthCalendar .monthGrid .calendarCell { min-height: 98px; }
+}
