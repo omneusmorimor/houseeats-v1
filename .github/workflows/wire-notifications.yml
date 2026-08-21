@@ -1,0 +1,53 @@
+name: Wire notification center
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  wire:
+    if: github.event.head_commit.message != 'Wire notification center into app'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Patch main.tsx
+        shell: python
+        run: |
+          from pathlib import Path
+          p=Path('src/main.tsx')
+          s=p.read_text()
+          if 'NotificationCenter' in s:
+              print('NotificationCenter already wired')
+              raise SystemExit(0)
+          s=s.replace('import {supabase} from "./lib/supabase";','import {supabase} from "./lib/supabase";\nimport NotificationCenter from "./components/NotificationCenter";')
+          s=s.replace('[saving,setSaving]=useState<string|null>(null);','[saving,setSaving]=useState<string|null>(null),[notifications,setNotifications]=useState<any[]>([]);')
+          marker='async function toggleRsvp(id:string)'
+          notification_fn='''async function loadNotifications(){if(!user)return;const{data,error}=await supabase.from("notifications").select("id,type,title,message,meal_id,read,created_at").eq("user_id",user.id).order("created_at",{ascending:false}).limit(50);if(!error)setNotifications(data||[])}\n'''
+          s=s.replace(marker,notification_fn+marker)
+          s=s.replace('setStaffAllergies([]);setStaffRsvps([]);setStaffLate([])}}','setStaffAllergies([]);setStaffRsvps([]);setStaffLate([])}await loadNotifications()}')
+          marker2='async function signOut(){await supabase.auth.signOut()}'
+          notification_actions='''async function markNotificationRead(id:string){const{error}=await supabase.from("notifications").update({read:true}).eq("id",id).eq("user_id",user.id);if(!error)setNotifications(x=>x.map(n=>n.id===id?{...n,read:true}:n))}\nasync function markAllNotificationsRead(){const{error}=await supabase.from("notifications").update({read:true}).eq("user_id",user.id).eq("read",false);if(!error)setNotifications(x=>x.map(n=>({...n,read:true})))}\n'''
+          s=s.replace(marker2,notification_actions+marker2)
+          old='{page==="notifications"&&<section className="panel"><h2>Notifications</h2>{warnings.length?<div className="error"><b>Allergy warning</b><span>{warnings.length} current meal(s) match your allergies.</span></div>:<p>No current allergy notifications.</p>}</section>}'
+          new='{page==="notifications"&&<NotificationCenter notifications={notifications} onRead={markNotificationRead} onReadAll={markAllNotificationsRead}/>}'
+          if old not in s:
+              raise SystemExit('Expected notifications section was not found; refusing to modify main.tsx')
+          s=s.replace(old,new)
+          p.write_text(s)
+      - name: Verify build
+        run: |
+          npm ci
+          npm run build
+      - name: Commit patched app
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src/main.tsx
+          git diff --cached --quiet || git commit -m "Wire notification center into app"
+          git push
