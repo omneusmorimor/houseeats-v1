@@ -1,0 +1,18 @@
+import React from "react";
+
+export type HouseNotification={id:string;type:string;title:string;message:string;read:boolean;created_at:string};
+
+type Props={notifications:HouseNotification[];onRead:(id:string)=>void;onReadAll:()=>void};
+
+export default function NotificationCenter({notifications,onRead,onReadAll}:Props){
+ const unread=notifications.filter(n=>!n.read).length;
+ return <section className="panel notificationCenter">
+  <div className="heading"><div><h2>Notifications</h2><p>{unread} unread</p></div>{unread>0&&<button onClick={onReadAll}>Mark all read</button>}</div>
+  {notifications.length===0?<div className="message">You're all caught up.</div>:<div className="notificationList">
+   {notifications.map(n=><article key={n.id} className={n.read?"notification read":"notification"} onClick={()=>!n.read&&onRead(n.id)}>
+    <div><b>{n.title}</b><small>{new Date(n.created_at).toLocaleString()}</small></div>
+    <p>{n.message}</p>{!n.read&&<span>NEW</span>}
+   </article>)}
+  </div>}
+ </section>;
+}
