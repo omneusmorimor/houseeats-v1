@@ -5,4 +5,31 @@
 @media(max-width:900px){.stats{grid-template-columns:1fr 1fr}.allergyGrid{grid-template-columns:1fr 1fr}.heading,.app header{flex-direction:column;align-items:flex-start}.user{flex-direction:column;align-items:flex-start}}
 @media(max-width:600px){.app{padding:10px}.app header{padding:15px;border-radius:12px}.app header h1{font-size:22px}.app header p{font-size:12px}.user{width:100%;flex-direction:row;justify-content:space-between;align-items:center}.app nav{padding:9px 0;gap:6px}.app nav button{flex:0 0 auto;font-size:12px;padding:8px 10px}.panel{padding:14px;border-radius:12px}.heading{gap:10px}.heading h2{font-size:20px;margin:0}.periodButtons{width:100%;display:grid;grid-template-columns:1fr 1fr;gap:6px}.periodButtons button{font-size:11px;padding:9px 6px}.calendarWeek{margin-top:18px}.calendarGrid{grid-template-columns:repeat(7,140px)}.calendarHeader{font-size:11px;padding:8px 4px}.calendarHeader span{font-size:10px}.calendarCell{min-height:200px;padding:5px}.calendarMeal{padding:7px;font-size:11px}.mealName{font-size:12px}.calendarMeal small{font-size:10px}.calendarActions button{font-size:10px;padding:5px}.chef .heading button{width:100%}.chefWeek{grid-template-columns:repeat(7,155px);margin-bottom:20px}.chefRow{min-height:205px;padding:9px;gap:6px}.chefRow input{font-size:11px;padding:8px}.chefRow b,.chefRow:before{font-size:11px}.chefRow span{font-size:9px}.allergyGrid{grid-template-columns:1fr 1fr}}
 @media(max-width:380px){.app{padding:7px}.panel{padding:10px}.calendarGrid{grid-template-columns:repeat(7,125px)}.chefWeek{grid-template-columns:repeat(7,140px)}.periodButtons button{font-size:10px}.stats{gap:6px}.stats div{padding:12px}.stats b{font-size:22px}}
-@media print{body{background:#fff}.app{max-width:none;padding:0}.calendarGrid,.chefWeek{grid-template-columns:repeat(7,1fr)}.app nav,.app button,.calendarActions,.periodButtons{display:none!important}.panel{box-shadow:none}.calendarCell{min-height:190px}.calendarMeal,.chefRow{break-inside:avoid}.chefWeek{border:1px solid #000}.chefWeek h3{color:#000;background:#fff;border-bottom:1px solid #000}.chefRow{min-height:170px}.chefRow input{border:0;padding:2px;background:#fff}.chefRow span{display:none}}
+@media print{
+  @page{size:landscape; margin:0.28in}
+  html,body,#root{width:100%;background:#fff!important}
+  body{font-size:9px}
+  .app{max-width:none;width:100%;padding:0;margin:0}
+  .app header,.app nav,.app .message,.app .error,.periodButtons,.heading>button,.calendarActions{display:none!important}
+  .panel{box-shadow:none;border-radius:0;padding:0;margin:0}
+  .chef{display:block!important}
+  .chef .heading{display:block;margin:0;padding:0}
+  .chef .heading h2{font-size:15px;margin:0 0 4px}
+  .chef .heading p{font-size:8px;margin:0 0 5px}
+  .chefWeek{grid-template-columns:repeat(7,minmax(0,1fr));width:100%;margin:0 0 0;border:1px solid #222;border-radius:0;overflow:visible;break-inside:avoid;page-break-inside:avoid}
+  .chefWeek h3{font-size:10px;padding:4px 6px;background:#eee;color:#111;border-bottom:1px solid #222}
+  .chefRow{min-height:0;height:3.15in;padding:5px;gap:3px;border-right:1px solid #bbb;border-top:1px solid #bbb;font-size:8px;break-inside:avoid;page-break-inside:avoid}
+  .chefRow b,.chefRow:before{font-size:8px}
+  .chefRow input{font-size:8px;padding:2px;border:0;background:#fff}
+  .chefRow span{display:none}
+  .chefWeek:nth-of-type(3){page-break-before:always;break-before:page}
+  .chefWeek:nth-of-type(2){page-break-after:always;break-after:page}
+  .calendarWeek{break-inside:avoid;page-break-inside:avoid}
+  .calendarGrid{grid-template-columns:repeat(7,minmax(0,1fr));width:100%}
+  .calendarCell{min-height:0;padding:4px;font-size:8px}
+  .calendarHeader{padding:4px;font-size:8px}
+  .calendarHeader span{font-size:7px}
+  .calendarMeal{padding:4px;margin-bottom:3px;font-size:7px}
+  .mealName{font-size:8px}
+  .calendarMeal small{font-size:7px}
+}
