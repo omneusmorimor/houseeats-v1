@@ -1,55 +1,40 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import ReactDOM from "react-dom/client";
 import { supabase } from "./lib/supabase";
 
 type Page = "dashboard" | "menu" | "allergies" | "late" | "notifications" | "chef";
+type Meal = { id:string; week:number; day:string; type:"Lunch"|"Dinner"; name:string; description:string; allergens:string[] };
 
-function App() {
-  const [user, setUser] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
-  const [page, setPage] = useState<Page>("dashboard");
+const days=["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"];
+const allergens=["Milk","Eggs","Wheat","Soy","Peanuts","Tree Nuts","Fish","Shellfish","Sesame"];
+const initialMeals:Meal[]=Array.from({length:4},(_,w)=>days.flatMap((day,d)=>(["Lunch","Dinner"] as const).map((type,t)=>({id:`${w+1}-${d}-${t}`,week:w+1,day,type,name:"No meal posted",description:"Chef has not posted this meal yet.",allergens:[]})))).flat();
 
-  useEffect(() => {
-    loadUser();
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user ?? null);
-    });
-    return () => subscription.unsubscribe();
-  }, []);
-
-  async function loadUser() {
-    const { data } = await supabase.auth.getUser();
-    setUser(data.user ?? null);
-    setLoading(false);
-  }
-
-  async function signOut() {
-    await supabase.auth.signOut();
-    setUser(null);
-  }
-
-  if (loading) return <main><h1>HouseEats</h1><p>Loading...</p></main>;
-  if (!user) return <main><h1>HouseEats</h1><p>Please sign in.</p></main>;
-
-  return (
-    <main>
-      <header><h1>HouseEats</h1><button onClick={signOut}>Sign out</button></header>
-      <nav>
-        <button onClick={() => setPage("dashboard")}>Dashboard</button>
-        <button onClick={() => setPage("menu")}>4-Week Menu</button>
-        <button onClick={() => setPage("allergies")}>Allergies</button>
-        <button onClick={() => setPage("late")}>Late Plate</button>
-        <button onClick={() => setPage("notifications")}>Notifications</button>
-        <button onClick={() => setPage("chef")}>Chef / Mod</button>
-      </nav>
-      {page === "dashboard" && <section><h2>Dashboard</h2><p>HouseEats meal management.</p></section>}
-      {page === "menu" && <section><h2>4-Week Menu</h2><p>Four weeks of meals, RSVP and allergy warnings coming next.</p></section>}
-      {page === "allergies" && <section><h2>Allergy & Dietary Profile</h2><p>Manage member allergies and dietary restrictions.</p></section>}
-      {page === "late" && <section><h2>Late Plate</h2><p>Request a meal to be held.</p></section>}
-      {page === "notifications" && <section><h2>Notifications</h2><p>Menu and meal notifications.</p></section>}
-      {page === "chef" && <section><h2>Chef / Moderator</h2><p>Chef menu editing and print tools.</p><button onClick={() => window.print()}>Print</button></section>}
-    </main>
-  );
+function App(){
+ const [user,setUser]=useState<any>(null); const [loading,setLoading]=useState(true); const [page,setPage]=useState<Page>("dashboard");
+ const [meals,setMeals]=useState<Meal[]>(initialMeals); const [rsvps,setRsvps]=useState<Record<string,boolean>>({}); const [myAllergies,setMyAllergies]=useState<string[]>([]); const [late,setLate]=useState<string[]>([]);
+ useEffect(()=>{loadUser();const {data:{subscription}}=supabase.auth.onAuthStateChange((_e,s)=>setUser(s?.user??null));return()=>subscription.unsubscribe()},[]);
+ async function loadUser(){const {data}=await supabase.auth.getUser();setUser(data.user??null);setLoading(false)}
+ async function signOut(){await supabase.auth.signOut();setUser(null)}
+ const warnings=useMemo(()=>meals.filter(m=>m.allergens.some(a=>myAllergies.includes(a))),[meals,myAllergies]);
+ const rsvpCount=(id:string)=>rsvps[id]?1:0;
+ function toggleRsvp(id:string){setRsvps(x=>({...x,[id]:!x[id]}))}
+ function toggleAllergy(a:string){setMyAllergies(x=>x.includes(a)?x.filter(v=>v!==a):[...x,a])}
+ function editMeal(id:string,field:"name"|"description",value:string){setMeals(x=>x.map(m=>m.id===id?{...m,[field]:value}:m))}
+ function editAllergens(id:string,value:string){setMeals(x=>x.map(m=>m.id===id?{...m,allergens:value.split(",").map(v=>v.trim()).filter(Boolean)}:m))}
+ function requestLate(id:string){setLate(x=>x.includes(id)?x:[...x,id])}
+ function print(){window.print()}
+ if(loading)return <main><h1>HouseEats</h1><p>Loading...</p></main>;
+ if(!user)return <main><h1>HouseEats</h1><p>Please sign in.</p></main>;
+ return <main className="app">
+  <header><div><h1>HouseEats</h1><p>Fraternity meal management</p></div><button onClick={signOut}>Sign out</button></header>
+  <nav>{(["dashboard","menu","allergies","late","notifications","chef"] as Page[]).map(p=><button key={p} onClick={()=>setPage(p)}>{p==="chef"?"Chef / Mod":p==="menu"?"4-Week Menu":p[0].toUpperCase()+p.slice(1)}</button>)}</nav>
+  {page==="dashboard"&&<section className="panel"><h2>Dashboard</h2><div className="stats"><div><b>4</b><span>Weeks</span></div><div><b>{Object.values(rsvps).filter(Boolean).length}</b><span>My RSVPs</span></div><div><b>{warnings.length}</b><span>Allergy alerts</span></div><div><b>{late.length}</b><span>Late plates</span></div></div><p>Open the 4-Week Menu to RSVP for meals. Set your allergies so the app can flag meals that need review.</p></section>}
+  {page==="menu"&&<section className="panel"><div className="heading"><div><h2>4-Week Menu</h2><p>RSVP for every meal you plan to attend.</p></div><button onClick={print}>Print Menu</button></div>{[1,2,3,4].map(w=><div className="week" key={w}><h3>Week {w}</h3>{days.map(day=><div className="day" key={day}><h4>{day}</h4>{meals.filter(m=>m.week===w&&m.day===day).map(m=>{const warning=m.allergens.some(a=>myAllergies.includes(a));return <article className={warning?"meal warning":"meal"} key={m.id}><div><b>{m.type}: {m.name}</b><p>{m.description}</p>{m.allergens.length>0&&<small>Allergens: {m.allergens.join(", ")}</small>}{warning&&<strong className="alert">⚠️ Allergy match</strong>}</div><div className="actions"><button onClick={()=>toggleRsvp(m.id)}>{rsvps[m.id]?"✓ RSVP'd":"RSVP"}</button><button onClick={()=>requestLate(m.id)}>{late.includes(m.id)?"Late Plate Requested":"Request Late Plate"}</button></div></article>})}</div>)}</div>)}</section>}
+  {page==="allergies"&&<section className="panel"><h2>Allergy & Dietary Profile</h2><p>Select allergies that the kitchen should know about.</p><div className="allergyGrid">{allergens.map(a=><label key={a}><input type="checkbox" checked={myAllergies.includes(a)} onChange={()=>toggleAllergy(a)}/> {a}</label>)}</div><p><b>Your profile:</b> {myAllergies.join(", ")||"No allergies selected"}</p></section>}
+  {page==="late"&&<section className="panel"><h2>Late Plate</h2>{late.length?<ul>{late.map(id=>{const m=meals.find(x=>x.id===id);return <li key={id}>{m?.day} — {m?.type}: {m?.name}</li>})}</ul>:<p>No late plates requested.</p>}</section>}
+  {page==="notifications"&&<section className="panel"><h2>Notifications</h2><p>Allergy warnings, RSVP reminders, menu updates and late-plate notices will appear here.</p>{warnings.length>0&&<div className="alert">You have {warnings.length} meal(s) with an allergy match.</div>}</section>}
+  {page==="chef"&&<section className="panel chef"><div className="heading"><div><h2>Chef / Moderator Mode</h2><p>Edit all 4 weeks and print the kitchen sheet.</p></div><button onClick={print}>🖨 Print Kitchen Sheet</button></div>{[1,2,3,4].map(w=><div className="chefWeek" key={w}><h3>Week {w}</h3>{meals.filter(m=>m.week===w).map(m=><div className="chefRow" key={m.id}><b>{m.day} {m.type}</b><input value={m.name} onChange={e=>editMeal(m.id,"name",e.target.value)}/><input value={m.description} onChange={e=>editMeal(m.id,"description",e.target.value)}/><input value={m.allergens.join(", ")} onChange={e=>editAllergens(m.id,e.target.value)} placeholder="Allergens"/><span>RSVP {rsvpCount(m.id)} · Late {late.includes(m.id)?"Yes":"No"}</span></div>)}</div>)}</section>}
+  <style>{`*{box-sizing:border-box}body{margin:0;background:#f4f6f8;color:#172033;font-family:system-ui,sans-serif}.app{max-width:1200px;margin:auto;padding:20px}header{display:flex;justify-content:space-between;align-items:center;background:#172033;color:white;border-radius:16px;padding:20px}header h1{margin:0}header p{margin:4px 0;opacity:.8}button{border:0;border-radius:9px;padding:10px 14px;font-weight:700;cursor:pointer;background:#e7ebf1;color:#172033}nav{display:flex;gap:8px;overflow:auto;padding:14px 0}.panel{background:white;border-radius:16px;padding:24px;box-shadow:0 2px 12px #0001}.heading{display:flex;justify-content:space-between;gap:16px;align-items:center}.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.stats div{background:#eef1f5;border-radius:12px;padding:18px}.stats b,.stats span{display:block}.stats b{font-size:28px}.week{margin-top:24px}.day{border-top:1px solid #e1e5ea;padding:12px 0}.day h4{margin:0 0 8px}.meal{display:flex;justify-content:space-between;gap:15px;border:1px solid #dfe3e8;border-radius:12px;padding:14px;margin:8px 0}.meal.warning{border-left:5px solid #d97706}.meal p{margin:5px 0}.actions{display:flex;gap:8px;align-items:center}.alert{display:block;margin-top:8px;font-weight:800}.allergyGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.allergyGrid label{padding:12px;background:#eef1f5;border-radius:10px}.chefRow{display:grid;grid-template-columns:130px 1fr 1fr 1fr 130px;gap:8px;padding:10px 0;border-top:1px solid #e1e5ea;align-items:center}.chefRow input{min-width:0;padding:9px;border:1px solid #ccd2da;border-radius:8px}.chefWeek{margin-bottom:28px}@media(max-width:800px){.stats{grid-template-columns:1fr 1fr}.meal,.heading,header{flex-direction:column;align-items:flex-start}.allergyGrid{grid-template-columns:1fr 1fr}.chefRow{grid-template-columns:1fr}}@media print{body{background:white}.app{max-width:none;padding:0}nav,button,.actions{display:none!important}.panel{box-shadow:none}.chefRow{grid-template-columns:110px 1fr 1fr 1fr 100px}}`}</style>
+ </main>
 }
-
-ReactDOM.createRoot(document.getElementById("root")!).render(<React.StrictMode><App /></React.StrictMode>);
+ReactDOM.createRoot(document.getElementById("root")!).render(<React.StrictMode><App/></React.StrictMode>);
