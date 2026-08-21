@@ -785,7 +785,7 @@ async function loadKitchenAllergyCount() {
   setAllergyAlertCount(count);
 }
   if (kitchen) {
-    co nst expected =
+    const expected =
       kitchenRSVPs.filter(
         (rsvp) =>
           rsvp.status ===
