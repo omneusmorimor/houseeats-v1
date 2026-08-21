@@ -784,7 +784,7 @@ async function loadKitchenAllergyCount() {
 
   setAllergyAlertCount(count);
 }
-  if (kitchen) {
+ ) {
     const expected =
       kitchenRSVPs.filter(
         (rsvp) =>
@@ -879,35 +879,114 @@ async function loadKitchenAllergyCount() {
   className="primary"
   type="button"
   onClick={() =>
-    setPage("headcount")
-  }
->
-            <button
-            className="primary"
-            type="button"
-            onClick={() =>
-              setPage("headcount")
-            }
-          >
-            Open headcount
-            <ChevronRight />
-          </button>
+if (kitchen) {
+  const expected =
+    kitchenRSVPs.filter(
+      (rsvp) =>
+        rsvp.status === "eating"
+    ).length;
 
-          <button
-            className="primary"
-            type="button"
-            onClick={() =>
-              setPage("weekly-menu")
-            }
-          >
-            Manage weekly menu
-            <ChevronRight />
-          </button>
+  const late = 0;
+
+  return (
+    <>
+      <p className="eyebrow">
+        KITCHEN
+      </p>
+
+      <h1>
+        Kitchen Dashboard
+      </h1>
+
+      <div className="stats">
+        <Card>
+          <b>{expected}</b>
+          <small>
+            Expected tonight
+          </small>
         </Card>
-      </>
-    );
-  }
 
+        <Card>
+          <b>{late}</b>
+          <small>
+            Late plates
+          </small>
+        </Card>
+
+        <Card
+          onClick={() =>
+            setPage("allergies")
+          }
+        >
+          <b>
+            {allergyAlertCount}
+          </b>
+          <small>
+            Allergy alerts
+          </small>
+        </Card>
+
+        <Card>
+          <b>
+            {meals.length}
+          </b>
+          <small>
+            Menu items
+          </small>
+        </Card>
+      </div>
+
+      <Card>
+        <h2>
+          {menu?.name ||
+            "This Week"}
+        </h2>
+
+        {meals.length === 0 ? (
+          <p className="muted">
+            No meals posted.
+          </p>
+        ) : (
+          meals.map(
+            (meal) => (
+              <p
+                key={meal.id}
+              >
+                {meal.title}
+                {" · "}
+                {formatTime(
+                  meal.service_time
+                )}
+              </p>
+            )
+          )
+        )}
+
+        <button
+          className="primary"
+          type="button"
+          onClick={() =>
+            setPage("headcount")
+          }
+        >
+          Open headcount
+          <ChevronRight />
+        </button>
+
+        <button
+          className="primary"
+          type="button"
+          onClick={() =>
+            setPage("weekly-menu")
+          }
+        >
+          Manage weekly menu
+          <ChevronRight />
+        </button>
+      </Card>
+    </>
+  );
+}
   const firstMeal =
     meals[0];
 
