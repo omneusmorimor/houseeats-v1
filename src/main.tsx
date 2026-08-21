@@ -163,13 +163,13 @@ function App() {
     const { data: mealData, error: mealError } =
       await supabase
         .from("meals")
-        .select(
-          "id, menu_id, title, description, service_time, sort_order"
-        )
-        .eq("menu_id", menuData.id)
-        .order("sort_order", {
-          ascending: true,
-        });
+.select(
+  "id, menu_id, title, description, service_time, meal_date, meal_type, sort_order"
+)
+.eq("menu_id", menuData.id)
+.order("sort_order", {
+  ascending: true,
+});
 
     if (mealError) {
       console.error("Meals error:", mealError);
