@@ -510,8 +510,6 @@ function App() {
     }
   />
 )}
-  />
-)}
       </main>
 
       <nav>
