@@ -476,9 +476,13 @@ function App() {
           />
         )}
 
-        {page === "allergy" && (
-          <AllergyPage />
-        )}
+        {page === "allergies" && (
+  <AlertsPage
+    kitchenRSVPs={
+      kitchenRSVPs
+    }
+  />
+)}
 
         {page === "late" && (
           <LatePage />
@@ -1642,15 +1646,15 @@ function AlertsPage({
   }, [kitchenRSVPs]);
 
   async function loadAllergyAlerts() {
+    setLoading(true);
+
     const eatingRSVPs =
       kitchenRSVPs.filter(
         (rsvp) =>
           rsvp.status === "eating"
       );
 
-    if (
-      eatingRSVPs.length === 0
-    ) {
+    if (eatingRSVPs.length === 0) {
       setAlerts([]);
       setLoading(false);
       return;
@@ -1662,51 +1666,78 @@ function AlertsPage({
           rsvp.member_id
       );
 
-    const { data, error } =
-      await supabase
-        .from("allergy_profiles")
-        .select(
-          "member_id, allergies, dietary_restrictions, notes"
-        )
-        .in(
-          "member_id",
-          memberIds
-        );
+    const {
+      data,
+      error,
+    } = await supabase
+      .from("allergy_profiles")
+      .select(
+        "member_id, allergies, dietary_restrictions, notes"
+      )
+      .in(
+        "member_id",
+        memberIds
+      );
 
     if (error) {
       console.error(
-        "Allergy alerts error:",
+        "Kitchen allergy error:",
         error
       );
+
       setAlerts([]);
       setLoading(false);
       return;
     }
 
-    const mealIds =
-      eatingRSVPs.map(
-        (rsvp) =>
+    const mealByMember =
+      new Map<string, string>();
+
+    eatingRSVPs.forEach(
+      (rsvp) => {
+        mealByMember.set(
+          rsvp.member_id,
           rsvp.meal_id
-      );
+        );
+      }
+    );
 
-    const combined =
-      (data || []).map(
-        (profile) => ({
-          ...profile,
-          meal_id:
-            mealIds.find(
-              (id) =>
-                eatingRSVPs.some(
-                  (rsvp) =>
-                    rsvp.member_id ===
-                      profile.member_id &&
-                    rsvp.meal_id === id
-                )
-            ) || "",
-        })
-      );
+    const allergyAlerts =
+      (data || [])
+        .filter(
+          (profile) =>
+            (profile.allergies &&
+              profile.allergies
+                .length > 0) ||
+            (profile.dietary_restrictions &&
+              profile
+                .dietary_restrictions
+                .length > 0) ||
+            profile.notes
+        )
+        .map(
+          (profile) => ({
+            member_id:
+              profile.member_id,
+            meal_id:
+              mealByMember.get(
+                profile.member_id
+              ) || "",
+            allergies:
+              profile.allergies ||
+              [],
+            dietary_restrictions:
+              profile.dietary_restrictions ||
+              [],
+            notes:
+              profile.notes || null,
+          })
+        );
 
-    setAlerts(combined);
+    setAlerts(
+      allergyAlerts
+    );
+
     setLoading(false);
   }
 
@@ -1723,13 +1754,81 @@ function AlertsPage({
 
         <Card>
           <p className="muted">
-            Loading allergy alerts...
+            Checking allergy
+            profiles...
           </p>
         </Card>
       </>
     );
   }
 
+  return (
+    <>
+      <p className="eyebrow">
+        KITCHEN
+      </p>
+
+      <h1>
+        Allergy Alerts
+      </h1>
+
+      {alerts.length === 0 ? (
+        <Card>
+          <p className="muted">
+            No allergy alerts for
+            members eating tonight.
+          </p>
+        </Card>
+      ) : (
+        alerts.map(
+          (alert) => (
+            <Card
+              key={`${alert.member_id}-${alert.meal_id}`}
+            >
+              <h2>
+                ⚠️ Allergy Alert
+              </h2>
+
+              {alert.allergies
+                .length > 0 && (
+                <p>
+                  <strong>
+                    Allergies:
+                  </strong>{" "}
+                  {alert.allergies.join(
+                    ", "
+                  )}
+                </p>
+              )}
+
+              {alert
+                .dietary_restrictions
+                .length > 0 && (
+                <p>
+                  <strong>
+                    Dietary:
+                  </strong>{" "}
+                  {alert.dietary_restrictions.join(
+                    ", "
+                  )}
+                </p>
+              )}
+
+              {alert.notes && (
+                <p>
+                  <strong>
+                    Kitchen notes:
+                  </strong>{" "}
+                  {alert.notes}
+                </p>
+              )}
+            </Card>
+          )
+        )
+      )}
+    </>
+  );
+}
   return (
     <>
       <p className="eyebrow">
@@ -1785,16 +1884,7 @@ function AlertsPage({
                 <strong>
                   Notes:
                 </strong>{" "}
-                {alert.notes}
-              </p>
-            )}
-          </Card>
-        ))
-      )}
-    </>
-  );
-}
-
+                {alert.no
 
 function formatTime(
   time: string
