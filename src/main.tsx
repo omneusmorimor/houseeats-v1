@@ -784,7 +784,7 @@ async function loadKitchenAllergyCount() {
 
   setAllergyAlertCount(count);
 }
-  if (kitchen) {
+  
     const expected =
       kitchenRSVPs.filter(
         (rsvp) =>
