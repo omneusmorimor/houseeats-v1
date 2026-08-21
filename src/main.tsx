@@ -41,7 +41,7 @@ function App() {
     loadUser();
 
     const {
-      data: listener,
+      data: { subscription },
     } =
       supabase.auth.onAuthStateChange(
         (_event, session) => {
@@ -52,7 +52,7 @@ function App() {
       );
 
     return () => {
-      listener.subscription.unsubscribe();
+      subscription.unsubscribe();
     };
   }, []);
 
@@ -184,11 +184,41 @@ function App() {
             4-Week Menu
           </h2>
 
-          <p>
-            Your four-week
-            menu will appear
-            here.
-          </p>
+          {[1, 2, 3, 4].map(
+            (week) => (
+              <div key={week}>
+                <h3>
+                  Week {week}
+                </h3>
+
+                {[
+                  "Monday",
+                  "Tuesday",
+                  "Wednesday",
+                  "Thursday",
+                  "Friday",
+                  "Saturday",
+                  "Sunday",
+                ].map((day) => (
+                  <div key={day}>
+                    <h4>
+                      {day}
+                    </h4>
+
+                    <p>
+                      Lunch — No meal
+                      posted
+                    </p>
+
+                    <p>
+                      Dinner — No meal
+                      posted
+                    </p>
+                  </div>
+                ))}
+              </div>
+            )
+          )}
         </section>
       )}
 
