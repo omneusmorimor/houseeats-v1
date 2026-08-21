@@ -721,6 +721,62 @@ function Dashboard({
   setPage: (page: string) => void;
   menu: MenuRecord | null;
 }) {
+  const [allergyAlertCount, setAllergyAlertCount] =
+  useState(0);
+
+useEffect(() => {
+  if (kitchen) {
+    loadKitchenAllergyCount();
+  }
+}, [kitchen, kitchenRSVPs]);
+
+async function loadKitchenAllergyCount() {
+  const eatingMembers =
+    kitchenRSVPs.filter(
+      (rsvp) =>
+        rsvp.status === "eating"
+    );
+
+  if (eatingMembers.length === 0) {
+    setAllergyAlertCount(0);
+    return;
+  }
+
+  const memberIds =
+    eatingMembers.map(
+      (rsvp) => rsvp.member_id
+    );
+
+  const { data, error } =
+    await supabase
+      .from("allergy_profiles")
+      .select(
+        "member_id, allergies, dietary_restrictions, notes"
+      )
+      .in(
+        "member_id",
+        memberIds
+      );
+
+  if (error) {
+    console.error(
+      "Allergy count error:",
+      error
+    );
+    setAllergyAlertCount(0);
+    return;
+  }
+
+  const count =
+    (data || []).filter(
+      (profile) =>
+        (profile.allergies?.length ?? 0) > 0 ||
+        (profile.dietary_restrictions?.length ?? 0) > 0 ||
+        !!profile.notes
+    ).length;
+
+  setAllergyAlertCount(count);
+}
   if (kitchen) {
     const expected =
       kitchenRSVPs.filter(
@@ -761,10 +817,12 @@ function Dashboard({
           </Card>
 
           <Card>
-            <b>0</b>
-            <small>
-              Allergy alerts
-            </small>
+            <b>
+  {allergyAlertCount}
+</b>
+<small>
+  Allergy alerts
+</small>
           </Card>
 
           <Card>
