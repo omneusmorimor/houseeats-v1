@@ -876,6 +876,15 @@ async function loadKitchenAllergyCount() {
               )
             }
           >
+            <button
+  className="primary"
+  type="button"
+  onClick={() =>
+    setPage("weekly-menu")
+  }
+>
+  Manage weekly menu
+</button>
             Open headcount
             <ChevronRight />
           </button>
