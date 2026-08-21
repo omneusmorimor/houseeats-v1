@@ -1666,25 +1666,22 @@ function AlertsPage({
           rsvp.member_id
       );
 
-    const {
-      data,
-      error,
-    } = await supabase
-      .from("allergy_profiles")
-      .select(
-        "member_id, allergies, dietary_restrictions, notes"
-      )
-      .in(
-        "member_id",
-        memberIds
-      );
+    const { data, error } =
+      await supabase
+        .from("allergy_profiles")
+        .select(
+          "member_id, allergies, dietary_restrictions, notes"
+        )
+        .in(
+          "member_id",
+          memberIds
+        );
 
     if (error) {
       console.error(
         "Kitchen allergy error:",
         error
       );
-
       setAlerts([]);
       setLoading(false);
       return;
@@ -1706,14 +1703,12 @@ function AlertsPage({
       (data || [])
         .filter(
           (profile) =>
-            (profile.allergies &&
-              profile.allergies
-                .length > 0) ||
-            (profile.dietary_restrictions &&
-              profile
-                .dietary_restrictions
-                .length > 0) ||
-            profile.notes
+            (profile.allergies?.length ??
+              0) > 0 ||
+            (profile
+              .dietary_restrictions
+              ?.length ?? 0) > 0 ||
+            !!profile.notes
         )
         .map(
           (profile) => ({
@@ -1724,8 +1719,7 @@ function AlertsPage({
                 profile.member_id
               ) || "",
             allergies:
-              profile.allergies ||
-              [],
+              profile.allergies || [],
             dietary_restrictions:
               profile.dietary_restrictions ||
               [],
@@ -1754,8 +1748,7 @@ function AlertsPage({
 
         <Card>
           <p className="muted">
-            Checking allergy
-            profiles...
+            Loading allergy alerts...
           </p>
         </Card>
       </>
@@ -1789,8 +1782,8 @@ function AlertsPage({
                 ⚠️ Allergy Alert
               </h2>
 
-              {alert.allergies
-                .length > 0 && (
+              {alert.allergies.length >
+                0 && (
                 <p>
                   <strong>
                     Allergies:
@@ -1801,8 +1794,7 @@ function AlertsPage({
                 </p>
               )}
 
-              {alert
-                .dietary_restrictions
+              {alert.dietary_restrictions
                 .length > 0 && (
                 <p>
                   <strong>
@@ -1817,7 +1809,7 @@ function AlertsPage({
               {alert.notes && (
                 <p>
                   <strong>
-                    Kitchen notes:
+                    Notes:
                   </strong>{" "}
                   {alert.notes}
                 </p>
@@ -1829,69 +1821,7 @@ function AlertsPage({
     </>
   );
 }
-  return (
-    <>
-      <p className="eyebrow">
-        KITCHEN
-      </p>
 
-      <h1>
-        Allergy Alerts
-      </h1>
-
-      {alerts.length === 0 ? (
-        <Card>
-          <p className="muted">
-            No allergy alerts for
-            members eating tonight.
-          </p>
-        </Card>
-      ) : (
-        alerts.map((alert) => (
-          <Card
-            key={`${alert.member_id}-${alert.meal_id}`}
-          >
-            <h2>
-              ⚠️ Allergy Alert
-            </h2>
-
-            {alert.allergies.length >
-              0 && (
-              <p>
-                <strong>
-                  Allergies:
-                </strong>{" "}
-                {alert.allergies.join(
-                  ", "
-                )}
-              </p>
-            )}
-
-            {alert.dietary_restrictions
-              .length > 0 && (
-              <p>
-                <strong>
-                  Dietary:
-                </strong>{" "}
-                {alert.dietary_restrictions.join(
-                  ", "
-                )}
-              </p>
-            )}
-
-            {alert.notes && (
-  <p>
-    <strong>
-      Notes:
-    </strong>{" "}
-    {alert.notes}
-  </p>
-)}
-          </Card>
-        ))
-      )}
-    </>
-  );
 
 function formatTime(
   time: string
