@@ -875,8 +875,18 @@ async function loadKitchenAllergyCount() {
                 "headcount"
               )
             }
-          >
-            <button
+          ><button
+  className="primary"
+  type="button"
+  onClick={() =>
+    setPage("headcount")
+  }
+>
+  Open headcount
+  <ChevronRight />
+</button>
+
+<button
   className="primary"
   type="button"
   onClick={() =>
@@ -884,14 +894,8 @@ async function loadKitchenAllergyCount() {
   }
 >
   Manage weekly menu
+  <ChevronRight />
 </button>
-            Open headcount
-            <ChevronRight />
-          </button>
-        </Card>
-      </>
-    );
-  }
 
   const firstMeal =
     meals[0];
