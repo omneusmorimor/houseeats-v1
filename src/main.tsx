@@ -499,11 +499,17 @@ function App() {
           />
         )}
 
-        {page === "allergies" && (
+        {page === "allergy" && (
+  <AllergyPage />
+)}
+
+{page === "allergies" && (
   <AlertsPage
     kitchenRSVPs={
       kitchenRSVPs
     }
+  />
+)}
   />
 )}
       </main>
