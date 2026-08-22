@@ -46,11 +46,37 @@ function Login({onSignedIn}:{onSignedIn:()=>void}){
   </div>
  </form></main>
 }
+
+function UpdatePassword({onComplete}:{onComplete:()=>void}){
+ const [password,setPassword]=useState(""),[confirm,setConfirm]=useState("");
+ const [busy,setBusy]=useState(false),[error,setError]=useState(""),[message,setMessage]=useState("");
+ async function submit(e:React.FormEvent){
+  e.preventDefault();setBusy(true);setError("");setMessage("");
+  try{
+   if(password.length<6) throw new Error("Password must be at least 6 characters.");
+   if(password!==confirm) throw new Error("Passwords do not match.");
+   const {error}=await supabase.auth.updateUser({password});
+   if(error) throw error;
+   setMessage("Your password has been updated. You can continue to HouseEats.");
+   window.setTimeout(onComplete,900);
+  }catch(err:any){setError(err?.message||"We couldn't update your password. Please request another reset link.")}
+  finally{setBusy(false)}
+ }
+ return <main className="loginPage"><form className="loginCard" onSubmit={submit}>
+  <div className="brandMark">🔐</div><h1>New password</h1>
+  <p>Choose a new password for your HouseEats account.</p>
+  {error&&<div className="error" role="alert">{error}</div>}{message&&<div className="message" role="status">{message}</div>}
+  <label>New password<input type="password" autoComplete="new-password" value={password} onChange={e=>setPassword(e.target.value)} placeholder="At least 6 characters" minLength={6} required/></label>
+  <label>Confirm password<input type="password" autoComplete="new-password" value={confirm} onChange={e=>setConfirm(e.target.value)} placeholder="Enter it again" minLength={6} required/></label>
+  <button className="primary" disabled={busy}>{busy?"Updating…":"Update password"}</button>
+ </form></main>
+}
+
 function Loading(){return <main className="loginPage"><div className="loadingCard"><div className="brandMark">🍽️</div><h1>HouseEats</h1><p>Loading your workspace…</p></div></main>}
 function ProfileError({message,onSignOut}:{message:string;onSignOut:()=>void}){return <main className="loginPage"><div className="loginCard"><div className="brandMark">⚠️</div><h1>Profile unavailable</h1><p>We signed you in, but HouseEats could not load your member profile.</p><div className="error">{message}</div><button className="primary" onClick={onSignOut}>Sign out</button></div></main>}
 
 export default function App(){
- const [user,setUser]=useState<any>(null),[profile,setProfile]=useState<Profile|null>(null),[loading,setLoading]=useState(true),[error,setError]=useState("");
+ const [user,setUser]=useState<any>(null),[profile,setProfile]=useState<Profile|null>(null),[loading,setLoading]=useState(true),[error,setError]=useState(""),[recovery,setRecovery]=useState(false);
  async function loadSessionUser(currentUser?:any){
   const activeUser=currentUser??(await supabase.auth.getUser()).data.user;
   if(!activeUser){setUser(null);setProfile(null);setError("");setLoading(false);return}
@@ -59,8 +85,10 @@ export default function App(){
   if(profileError){setError(profileError.message);setProfile(null)} else if(!data){setError("No profile exists for this account. An administrator may need to create or activate your profile.");setProfile(null)} else {setError("");setProfile(data as Profile)}
   setLoading(false);
  }
- useEffect(()=>{let mounted=true;loadSessionUser();const {data:auth}=supabase.auth.onAuthStateChange((_event,session)=>{if(!mounted)return;window.setTimeout(()=>{if(mounted)void loadSessionUser(session?.user??null)},0)});return()=>{mounted=false;auth.subscription.unsubscribe()}},[]);
- async function signOut(){await supabase.auth.signOut();setUser(null);setProfile(null);setError("")}
+ useEffect(()=>{let mounted=true;loadSessionUser();const {data:auth}=supabase.auth.onAuthStateChange((event,session)=>{if(!mounted)return;if(event==="PASSWORD_RECOVERY"){setRecovery(true);setLoading(false);return}window.setTimeout(()=>{if(mounted)void loadSessionUser(session?.user??null)},0)});return()=>{mounted=false;auth.subscription.unsubscribe()}},[]);
+ async function finishRecovery(){setRecovery(false);await loadSessionUser()}
+ async function signOut(){await supabase.auth.signOut();setUser(null);setProfile(null);setError("");setRecovery(false)}
+ if(recovery)return <UpdatePassword onComplete={()=>void finishRecovery()}/>;
  if(loading)return <Loading/>;
  if(!user)return <Login onSignedIn={()=>void loadSessionUser()}/>;
  if(error||!profile)return <ProfileError message={error} onSignOut={signOut}/>;
