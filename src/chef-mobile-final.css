@@ -1,0 +1,13 @@
+/* Final mobile Chef layout override: Today is a normal in-flow screen, never an overlay. */
+@media (max-width:900px){
+  .chefWorkspace .chefIOSHome,
+  .chefWorkspace .chefIOSHome *{box-sizing:border-box}
+  .chefWorkspace .chefIOSHome{position:static!important;inset:auto!important;display:block!important;width:100%!important;height:auto!important;min-height:0!important;max-height:none!important;margin:0!important;padding:0!important;overflow:visible!important;transform:none!important;z-index:auto!important}
+  .chefWorkspace .chefTodayHero{position:relative!important;inset:auto!important;display:block!important;width:100%!important;height:auto!important;min-height:0!important;max-height:none!important;margin:0 0 14px!important;transform:none!important;z-index:auto!important}
+  .chefWorkspace .chefStatusRow,.chefWorkspace .chefTimeline,.chefWorkspace .chefAlertList{position:static!important;width:100%!important;height:auto!important;min-height:0!important;max-height:none!important;overflow:visible!important;transform:none!important}
+  .chefWorkspace .chefStatusRow{display:grid!important}
+  .chefWorkspace .chefTimeline{display:block!important}
+  .chefWorkspace .chefAlertList{display:block!important}
+  .chefWorkspace .panel{position:static!important;inset:auto!important;width:100%!important;height:auto!important;min-height:0!important;max-height:none!important;overflow:visible!important;transform:none!important}
+  .chefWorkspace{position:relative!important;min-height:100dvh!important;height:auto!important;overflow-x:hidden!important;overflow-y:auto!important}
+}
