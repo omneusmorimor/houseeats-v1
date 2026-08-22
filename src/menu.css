@@ -1,0 +1,25 @@
+/* HouseEats Menu — cream + blue companion screen */
+.he-page:has(.he-days){padding-top:4px}
+.he-page:has(.he-days) .he-page-title{padding-bottom:18px}
+.he-page:has(.he-days) .he-page-title h1{font-size:34px;letter-spacing:-1.4px}
+.he-page:has(.he-days) .he-page-title p{color:#6f7f89}
+.he-days{border-top:0!important;display:grid;gap:0}
+.he-day{position:relative;padding:20px 0 21px!important;border-bottom:1px solid #ddd7ce}
+.he-day:first-child{border-top:1px solid #ddd7ce}
+.he-day.today{margin:0 -12px!important;padding:19px 12px 21px!important;background:linear-gradient(90deg,#e4eff4 0%,rgba(228,239,244,.32) 68%,transparent)!important;border-radius:0 18px 18px 0}
+.he-day-head{display:flex!important;align-items:center!important;margin-bottom:12px!important}
+.he-day-head b{font-size:15px!important;font-weight:900!important;color:#29455a!important;letter-spacing:-.2px}
+.he-day-head span{font-size:10px!important;color:#80909a!important}
+.he-day.today .he-day-head b:after{content:"  ·  TODAY";font-size:8px;letter-spacing:1px;color:#3d6f91;vertical-align:2px}
+.he-day .he-meal{grid-template-columns:42px 1fr!important;gap:13px!important;padding:13px 0!important;border-bottom:0!important;border-top:1px solid rgba(221,215,206,.75)!important}
+.he-day .he-meal:first-of-type{border-top:0!important}
+.he-day .he-meal-date{padding-top:1px}
+.he-day .he-meal-date span{font-size:8px!important;color:#87959d!important}
+.he-day .he-meal-date b{font-size:17px!important;color:#38556b!important}
+.he-day .he-meal-type{display:inline-flex;padding:4px 7px;border-radius:20px;background:#e7eff3;color:#4d6b7e;font-size:7px!important;letter-spacing:1px!important}
+.he-day .he-meal h3{font-size:16px!important;margin:6px 0 3px!important;color:#263c4d!important}
+.he-day .he-meal p{max-width:390px;font-size:11px!important;color:#74848d!important}
+.he-day .he-meal-actions{margin-top:10px!important}
+.he-day .he-meal-actions button{min-height:34px!important;padding:7px 11px!important;border-radius:10px!important}
+.he-menu-empty{padding:11px 0 2px;color:#9aa4a9;font-size:10px}
+@media(max-width:380px){.he-page:has(.he-days) .he-page-title h1{font-size:31px}.he-day.today{margin:0 -8px!important;padding-left:8px!important;padding-right:8px!important}.he-day .he-meal{grid-template-columns:37px 1fr!important;gap:10px!important}.he-day .he-meal-actions{gap:5px!important}.he-day .he-meal-actions button{padding:7px 9px!important;font-size:9px!important}}
