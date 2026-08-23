@@ -1,0 +1,4 @@
+/* Isolated brand layer: intentionally does not alter app functionality. */
+.tt-auth-logo{display:block;width:min(210px,68vw);height:108px;object-fit:contain;object-position:center;margin:0 auto 8px;border-radius:14px}
+.tt-company{margin:-1px 0 2px;text-align:center;font-size:10px;font-weight:900;letter-spacing:1.6px;text-transform:uppercase;color:#a65f3b}
+@media(max-width:420px){.tt-auth-logo{width:min(180px,62vw);height:92px}.tt-company{font-size:9px;letter-spacing:1.4px}}
