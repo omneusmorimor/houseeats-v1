@@ -1,6 +1,6 @@
 import React,{useEffect,useMemo,useState}from"react";
 import{supabase}from"../lib/supabase";
-import NotificationCenter,{HouseNotification}from"../components/NotificationCenter";
+import NotificationCenter,{type HouseNotification}from"../components/NotificationCenter";
 import{addDays,memberWindow,toISODate}from"../lib/calendar";
 const allergens=["Milk","Eggs","Wheat","Soy","Peanuts","Tree Nuts","Fish","Shellfish","Sesame"];const mealOrder=["lunch","dinner"];
 type Props={user:any;profile:any};type Meal={id:string;meal_date:string;meal_type:string;name:string;description:string;allergens:string[]};type Tab="home"|"menu"|"allergies"|"late"|"notifications"|"profile";
