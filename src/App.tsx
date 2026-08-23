@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { supabase } from "./lib/supabase";
 import RoleRouter from "./roleRouter";
-import { TASTEFUL_TRADITIONS_LOGO } from "./tastefulTraditionsLogo";
+import base64File from "../base64.txt?raw";
 
 type Profile = { id:string; full_name:string|null; email:string|null; role:"member"|"chef"|"moderator"|"admin"|string };
 type AuthView = "login" | "signup" | "forgot";
 
 const logoStyle: React.CSSProperties = { width:"150px", maxWidth:"70%", height:"auto", display:"block", margin:"0 auto 14px", objectFit:"contain" };
-function BrandMark(){return <img className="tastefulLogo" src={TASTEFUL_TRADITIONS_LOGO} alt="Tasteful Traditions" style={logoStyle}/>}
+const uploadedLogo = (() => { try { const parsed = JSON.parse(base64File); return `data:image/jpeg;base64,${parsed.content}`; } catch { return ""; } })();
+function BrandMark(){ return uploadedLogo ? <img className="tastefulLogo" src={uploadedLogo} alt="Tasteful Traditions" style={logoStyle}/> : null; }
 
 function Login({onSignedIn}:{onSignedIn:()=>void}){
  const [view,setView]=useState<AuthView>("login"); const [email,setEmail]=useState(""),[password,setPassword]=useState(""),[name,setName]=useState("");
