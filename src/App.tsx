@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { supabase } from "./lib/supabase";
 import RoleRouter from "./roleRouter";
+import { TASTEFUL_TRADITIONS_LOGO } from "./tastefulTraditionsLogo";
 
 type Profile = { id:string; full_name:string|null; email:string|null; role:"member"|"chef"|"moderator"|"admin"|string };
 type AuthView = "login" | "signup" | "forgot";
+
+const logoStyle: React.CSSProperties = { width:"150px", maxWidth:"70%", height:"auto", display:"block", margin:"0 auto 14px", objectFit:"contain" };
 
 function Login({onSignedIn}:{onSignedIn:()=>void}){
  const [view,setView]=useState<AuthView>("login");
@@ -33,7 +36,7 @@ function Login({onSignedIn}:{onSignedIn:()=>void}){
  }
  const isSignup=view==="signup",isForgot=view==="forgot";
  return <main className="loginPage"><form className="loginCard" onSubmit={submit}>
-  <div className="brandMark">🍽️</div><h1>HouseEats</h1>
+  <img className="tastefulLogo" src={TASTEFUL_TRADITIONS_LOGO} alt="Tasteful Traditions" style={logoStyle}/><h1>HouseEats</h1>
   <p>{isSignup?"Create your HouseEats member account.":isForgot?"Reset your HouseEats password.":"Sign in to your meal workspace."}</p>
   {error&&<div className="error" role="alert">{error}</div>}{message&&<div className="message" role="status">{message}</div>}
   {isSignup&&<label>Full name<input type="text" autoComplete="name" value={name} onChange={e=>setName(e.target.value)} placeholder="Your name" required/></label>}
@@ -63,7 +66,7 @@ function UpdatePassword({onComplete}:{onComplete:()=>void}){
   finally{setBusy(false)}
  }
  return <main className="loginPage"><form className="loginCard" onSubmit={submit}>
-  <div className="brandMark">🔐</div><h1>New password</h1>
+  <img className="tastefulLogo" src={TASTEFUL_TRADITIONS_LOGO} alt="Tasteful Traditions" style={logoStyle}/><h1>New password</h1>
   <p>Choose a new password for your HouseEats account.</p>
   {error&&<div className="error" role="alert">{error}</div>}{message&&<div className="message" role="status">{message}</div>}
   <label>New password<input type="password" autoComplete="new-password" value={password} onChange={e=>setPassword(e.target.value)} placeholder="At least 6 characters" minLength={6} required/></label>
@@ -72,8 +75,8 @@ function UpdatePassword({onComplete}:{onComplete:()=>void}){
  </form></main>
 }
 
-function Loading(){return <main className="loginPage"><div className="loadingCard"><div className="brandMark">🍽️</div><h1>HouseEats</h1><p>Loading your workspace…</p></div></main>}
-function ProfileError({message,onSignOut}:{message:string;onSignOut:()=>void}){return <main className="loginPage"><div className="loginCard"><div className="brandMark">⚠️</div><h1>Profile unavailable</h1><p>We signed you in, but HouseEats could not load your member profile.</p><div className="error">{message}</div><button className="primary" onClick={onSignOut}>Sign out</button></div></main>}
+function Loading(){return <main className="loginPage"><div className="loadingCard"><img className="tastefulLogo" src={TASTEFUL_TRADITIONS_LOGO} alt="Tasteful Traditions" style={logoStyle}/><h1>HouseEats</h1><p>Loading your workspace…</p></div></main>}
+function ProfileError({message,onSignOut}:{message:string;onSignOut:()=>void}){return <main className="loginPage"><div className="loginCard"><img className="tastefulLogo" src={TASTEFUL_TRADITIONS_LOGO} alt="Tasteful Traditions" style={logoStyle}/><h1>Profile unavailable</h1><p>We signed you in, but HouseEats could not load your member profile.</p><div className="error">{message}</div><button className="primary" onClick={onSignOut}>Sign out</button></div></main>}
 
 export default function App(){
  const [user,setUser]=useState<any>(null),[profile,setProfile]=useState<Profile|null>(null),[loading,setLoading]=useState(true),[error,setError]=useState(""),[recovery,setRecovery]=useState(false);
