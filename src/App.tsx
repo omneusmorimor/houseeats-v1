@@ -7,8 +7,8 @@ type Profile = { id:string; full_name:string|null; email:string|null; role:"memb
 type AuthView = "login" | "signup" | "forgot";
 
 const logoStyle: React.CSSProperties = { width:"150px", maxWidth:"70%", height:"auto", display:"block", margin:"0 auto 14px", objectFit:"contain" };
-const uploadedLogo = (() => { try { const parsed = JSON.parse(base64File); return `data:image/jpeg;base64,${parsed.content}`; } catch { return ""; } })();
-function BrandMark(){ return uploadedLogo ? <img className="tastefulLogo" src={uploadedLogo} alt="Tasteful Traditions" style={logoStyle}/> : null; }
+const uploadedLogo = `data:image/jpeg;base64,${base64File.trim().replace(/^data:image\/[^;]+;base64,/, "")}`;
+function BrandMark(){ return <img className="tastefulLogo" src={uploadedLogo} alt="Tasteful Traditions" style={logoStyle}/>; }
 
 function Login({onSignedIn}:{onSignedIn:()=>void}){
  const [view,setView]=useState<AuthView>("login"); const [email,setEmail]=useState(""),[password,setPassword]=useState(""),[name,setName]=useState("");
