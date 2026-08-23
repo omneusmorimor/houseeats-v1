@@ -7,93 +7,28 @@ type Profile = { id:string; full_name:string|null; email:string|null; role:"memb
 type AuthView = "login" | "signup" | "forgot";
 
 const logoStyle: React.CSSProperties = { width:"150px", maxWidth:"70%", height:"auto", display:"block", margin:"0 auto 14px", objectFit:"contain" };
+function BrandMark(){return <img className="tastefulLogo" src={TASTEFUL_TRADITIONS_LOGO} alt="Tasteful Traditions" style={logoStyle}/>}
 
 function Login({onSignedIn}:{onSignedIn:()=>void}){
- const [view,setView]=useState<AuthView>("login");
- const [email,setEmail]=useState(""),[password,setPassword]=useState(""),[name,setName]=useState("");
+ const [view,setView]=useState<AuthView>("login"); const [email,setEmail]=useState(""),[password,setPassword]=useState(""),[name,setName]=useState("");
  const [busy,setBusy]=useState(false),[error,setError]=useState(""),[message,setMessage]=useState("");
  function switchView(next:AuthView){setView(next);setError("");setMessage("");setPassword("")}
- async function submit(e:React.FormEvent){
-  e.preventDefault();setBusy(true);setError("");setMessage("");
-  try{
-   if(view==="login"){
-    const {error}=await supabase.auth.signInWithPassword({email:email.trim(),password});
-    if(error) throw error;
-    onSignedIn();
-   } else if(view==="signup"){
-    if(password.length<6) throw new Error("Password must be at least 6 characters.");
-    const {data,error}=await supabase.auth.signUp({email:email.trim(),password,options:{data:{full_name:name.trim()||null}}});
-    if(error) throw error;
-    if(data.session) onSignedIn();
-    else setMessage("Account created. Check your email to confirm your account, then sign in.");
-   } else {
-    const {error}=await supabase.auth.resetPasswordForEmail(email.trim(),{redirectTo:`${window.location.origin}/`});
-    if(error) throw error;
-    setMessage("If an account exists for that email, we sent a password reset link.");
-   }
-  }catch(err:any){setError(err?.message||"Something went wrong. Please try again.")}
-  finally{setBusy(false)}
- }
+ async function submit(e:React.FormEvent){e.preventDefault();setBusy(true);setError("");setMessage("");try{
+  if(view==="login"){const {error}=await supabase.auth.signInWithPassword({email:email.trim(),password});if(error)throw error;onSignedIn()}
+  else if(view==="signup"){if(password.length<6)throw new Error("Password must be at least 6 characters.");const {data,error}=await supabase.auth.signUp({email:email.trim(),password,options:{data:{full_name:name.trim()||null}}});if(error)throw error;if(data.session)onSignedIn();else setMessage("Account created. Check your email to confirm your account, then sign in.")}
+  else{const {error}=await supabase.auth.resetPasswordForEmail(email.trim(),{redirectTo:`${window.location.origin}/`});if(error)throw error;setMessage("If an account exists for that email, we sent a password reset link.")}
+ }catch(err:any){setError(err?.message||"Something went wrong. Please try again")}finally{setBusy(false)}}
  const isSignup=view==="signup",isForgot=view==="forgot";
- return <main className="loginPage"><form className="loginCard" onSubmit={submit}>
-  <img className="tastefulLogo" src={TASTEFUL_TRADITIONS_LOGO} alt="Tasteful Traditions" style={logoStyle}/><h1>HouseEats</h1>
-  <p>{isSignup?"Create your HouseEats member account.":isForgot?"Reset your HouseEats password.":"Sign in to your meal workspace."}</p>
+ return <main className="loginPage"><form className="loginCard" onSubmit={submit}><BrandMark/><div className="tt-company">Tasteful Traditions</div><h1>HouseEats</h1><p>{isSignup?"Create your HouseEats member account.":isForgot?"Reset your HouseEats password.":"Sign in to your meal workspace."}</p>
   {error&&<div className="error" role="alert">{error}</div>}{message&&<div className="message" role="status">{message}</div>}
   {isSignup&&<label>Full name<input type="text" autoComplete="name" value={name} onChange={e=>setName(e.target.value)} placeholder="Your name" required/></label>}
   <label>Email<input type="email" autoComplete="email" value={email} onChange={e=>setEmail(e.target.value)} placeholder="you@example.com" required/></label>
   {!isForgot&&<label>Password<input type="password" autoComplete={isSignup?"new-password":"current-password"} value={password} onChange={e=>setPassword(e.target.value)} placeholder={isSignup?"At least 6 characters":"Your password"} required/></label>}
   <button className="primary" disabled={busy}>{busy?(isSignup?"Creating account…":isForgot?"Sending…":"Signing in…"):(isSignup?"Create account":isForgot?"Send reset link":"Sign in")}</button>
-  <div className="authLinks">
-   {view==="login"&&<><button type="button" onClick={()=>switchView("forgot")}>Forgot password?</button><span>Don't have an account?</span><button type="button" className="linkStrong" onClick={()=>switchView("signup")}>Create account</button></>}
-   {view!=="login"&&<button type="button" className="linkStrong" onClick={()=>switchView("login")}>Back to sign in</button>}
-  </div>
+  <div className="authLinks">{view==="login"&&<><button type="button" onClick={()=>switchView("forgot")}>Forgot password?</button><span>Don't have an account?</span><button type="button" className="linkStrong" onClick={()=>switchView("signup")}>Create account</button></>}{view!=="login"&&<button type="button" className="linkStrong" onClick={()=>switchView("login")}>Back to sign in</button>}</div>
  </form></main>
 }
-
-function UpdatePassword({onComplete}:{onComplete:()=>void}){
- const [password,setPassword]=useState(""),[confirm,setConfirm]=useState("");
- const [busy,setBusy]=useState(false),[error,setError]=useState(""),[message,setMessage]=useState("");
- async function submit(e:React.FormEvent){
-  e.preventDefault();setBusy(true);setError("");setMessage("");
-  try{
-   if(password.length<6) throw new Error("Password must be at least 6 characters.");
-   if(password!==confirm) throw new Error("Passwords do not match.");
-   const {error}=await supabase.auth.updateUser({password});
-   if(error) throw error;
-   setMessage("Your password has been updated. You can continue to HouseEats.");
-   window.setTimeout(onComplete,900);
-  }catch(err:any){setError(err?.message||"We couldn't update your password. Please request another reset link.")}
-  finally{setBusy(false)}
- }
- return <main className="loginPage"><form className="loginCard" onSubmit={submit}>
-  <div className="brandMark">🔐</div><h1>New password</h1>
-  <p>Choose a new password for your HouseEats account.</p>
-  {error&&<div className="error" role="alert">{error}</div>}{message&&<div className="message" role="status">{message}</div>}
-  <label>New password<input type="password" autoComplete="new-password" value={password} onChange={e=>setPassword(e.target.value)} placeholder="At least 6 characters" minLength={6} required/></label>
-  <label>Confirm password<input type="password" autoComplete="new-password" value={confirm} onChange={e=>setConfirm(e.target.value)} placeholder="Enter it again" minLength={6} required/></label>
-  <button className="primary" disabled={busy}>{busy?"Updating…":"Update password"}</button>
- </form></main>
-}
-
-function Loading(){return <main className="loginPage"><div className="loadingCard"><img className="tastefulLogo" src={TASTEFUL_TRADITIONS_LOGO} alt="Tasteful Traditions" style={logoStyle}/><h1>HouseEats</h1><p>Loading your workspace…</p></div></main>}
+function UpdatePassword({onComplete}:{onComplete:()=>void}){const [password,setPassword]=useState(""),[confirm,setConfirm]=useState("");const [busy,setBusy]=useState(false),[error,setError]=useState(""),[message,setMessage]=useState("");async function submit(e:React.FormEvent){e.preventDefault();setBusy(true);setError("");setMessage("");try{if(password.length<6)throw new Error("Password must be at least 6 characters.");if(password!==confirm)throw new Error("Passwords do not match.");const {error}=await supabase.auth.updateUser({password});if(error)throw error;setMessage("Your password has been updated. You can continue to HouseEats.");window.setTimeout(onComplete,900)}catch(err:any){setError(err?.message||"We couldn't update your password. Please request another reset link.")}finally{setBusy(false)}}return <main className="loginPage"><form className="loginCard" onSubmit={submit}><div className="brandMark">🔐</div><h1>New password</h1><p>Choose a new password for your HouseEats account.</p>{error&&<div className="error" role="alert">{error}</div>}{message&&<div className="message" role="status">{message}</div>}<label>New password<input type="password" autoComplete="new-password" value={password} onChange={e=>setPassword(e.target.value)} placeholder="At least 6 characters" minLength={6} required/></label><label>Confirm password<input type="password" autoComplete="new-password" value={confirm} onChange={e=>setConfirm(e.target.value)} placeholder="Enter it again" minLength={6} required/></label><button className="primary" disabled={busy}>{busy?"Updating…":"Update password"}</button></form></main>}
+function Loading(){return <main className="loginPage"><div className="loadingCard"><BrandMark/><div className="tt-company">Tasteful Traditions</div><h1>HouseEats</h1><p>Loading your workspace…</p></div></main>}
 function ProfileError({message,onSignOut}:{message:string;onSignOut:()=>void}){return <main className="loginPage"><div className="loginCard"><div className="brandMark">⚠️</div><h1>Profile unavailable</h1><p>We signed you in, but HouseEats could not load your member profile.</p><div className="error">{message}</div><button className="primary" onClick={onSignOut}>Sign out</button></div></main>}
-
-export default function App(){
- const [user,setUser]=useState<any>(null),[profile,setProfile]=useState<Profile|null>(null),[loading,setLoading]=useState(true),[error,setError]=useState(""),[recovery,setRecovery]=useState(false);
- async function loadSessionUser(currentUser?:any){
-  const activeUser=currentUser??(await supabase.auth.getUser()).data.user;
-  if(!activeUser){setUser(null);setProfile(null);setError("");setLoading(false);return}
-  setUser(activeUser);setLoading(true);
-  const {data,error:profileError}=await supabase.from("profiles").select("id,full_name,email,role").eq("id",activeUser.id).maybeSingle();
-  if(profileError){setError(profileError.message);setProfile(null)} else if(!data){setError("No profile exists for this account. An administrator may need to create or activate your profile.");setProfile(null)} else {setError("");setProfile(data as Profile)}
-  setLoading(false);
- }
- useEffect(()=>{let mounted=true;loadSessionUser();const {data:auth}=supabase.auth.onAuthStateChange((event,session)=>{if(!mounted)return;if(event==="PASSWORD_RECOVERY"){setRecovery(true);setLoading(false);return}window.setTimeout(()=>{if(mounted)void loadSessionUser(session?.user??null)},0)});return()=>{mounted=false;auth.subscription.unsubscribe()}},[]);
- async function finishRecovery(){setRecovery(false);await loadSessionUser()}
- async function signOut(){await supabase.auth.signOut();setUser(null);setProfile(null);setError("");setRecovery(false)}
- if(recovery)return <UpdatePassword onComplete={()=>void finishRecovery()}/>;
- if(loading)return <Loading/>;
- if(!user)return <Login onSignedIn={()=>void loadSessionUser()}/>;
- if(error||!profile)return <ProfileError message={error} onSignOut={signOut}/>;
- return <RoleRouter role={profile.role} user={user} profile={profile}/>;
-}
+export default function App(){const [user,setUser]=useState<any>(null),[profile,setProfile]=useState<Profile|null>(null),[loading,setLoading]=useState(true),[error,setError]=useState(""),[recovery,setRecovery]=useState(false);async function loadSessionUser(currentUser?:any){const activeUser=currentUser??(await supabase.auth.getUser()).data.user;if(!activeUser){setUser(null);setProfile(null);setError("");setLoading(false);return}setUser(activeUser);setLoading(true);const {data,error:profileError}=await supabase.from("profiles").select("id,full_name,email,role").eq("id",activeUser.id).maybeSingle();if(profileError){setError(profileError.message);setProfile(null)}else if(!data){setError("No profile exists for this account. An administrator may need to create or activate your profile.");setProfile(null)}else{setError("");setProfile(data as Profile)}setLoading(false)}useEffect(()=>{let mounted=true;loadSessionUser();const {data:auth}=supabase.auth.onAuthStateChange((event,session)=>{if(!mounted)return;if(event==="PASSWORD_RECOVERY"){setRecovery(true);setLoading(false);return}window.setTimeout(()=>{if(mounted)void loadSessionUser(session?.user??null)},0)});return()=>{mounted=false;auth.subscription.unsubscribe()}},[]);async function finishRecovery(){setRecovery(false);await loadSessionUser()}async function signOut(){await supabase.auth.signOut();setUser(null);setProfile(null);setError("");setRecovery(false)}if(recovery)return <UpdatePassword onComplete={()=>void finishRecovery()}/>;if(loading)return <Loading/>;if(!user)return <Login onSignedIn={()=>void loadSessionUser()}/>;if(error||!profile)return <ProfileError message={error} onSignOut={signOut}/>;return <RoleRouter role={profile.role} user={user} profile={profile}/>}
