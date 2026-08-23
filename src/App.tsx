@@ -75,7 +75,7 @@ function UpdatePassword({onComplete}:{onComplete:()=>void}){
  </form></main>
 }
 
-function Loading(){return <main className="loginPage"><div className="loadingCard"><div className="brandMark">🍽️</div><h1>HouseEats</h1><p>Loading your workspace…</p></div></main>}
+function Loading(){return <main className="loginPage"><div className="loadingCard"><img className="tastefulLogo" src={TASTEFUL_TRADITIONS_LOGO} alt="Tasteful Traditions" style={logoStyle}/><h1>HouseEats</h1><p>Loading your workspace…</p></div></main>}
 function ProfileError({message,onSignOut}:{message:string;onSignOut:()=>void}){return <main className="loginPage"><div className="loginCard"><div className="brandMark">⚠️</div><h1>Profile unavailable</h1><p>We signed you in, but HouseEats could not load your member profile.</p><div className="error">{message}</div><button className="primary" onClick={onSignOut}>Sign out</button></div></main>}
 
 export default function App(){
