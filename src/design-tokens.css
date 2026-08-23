@@ -1,0 +1,32 @@
+:root {
+  /* HouseEats / Tasteful Traditions foundation */
+  --he-color-ink: #18324a;
+  --he-color-ink-soft: #31556d;
+  --he-color-text: #24313b;
+  --he-color-muted: #7f8c94;
+  --he-color-muted-strong: #647682;
+  --he-color-cream: #f7f2e8;
+  --he-color-surface: #fffdf8;
+  --he-color-blue-soft: #e5edf2;
+  --he-color-blue-pale: #e7f0f4;
+  --he-color-blue-border: #cfdde4;
+  --he-color-accent: #a65f3b;
+  --he-color-accent-soft: #fff3ed;
+
+  --he-radius-sm: 10px;
+  --he-radius-md: 14px;
+  --he-radius-lg: 22px;
+  --he-radius-xl: 30px;
+
+  --he-shadow-sm: 0 3px 10px rgba(24, 50, 74, 0.06);
+  --he-shadow-md: 0 10px 30px rgba(24, 50, 74, 0.10);
+
+  --he-content-width: 520px;
+  --he-transition: 180ms ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --he-transition: 0ms;
+  }
+}
