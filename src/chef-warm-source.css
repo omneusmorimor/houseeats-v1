@@ -1,0 +1,20 @@
+/* Final Chef theme: neutralize legacy blue defaults from index.css */
+.chefWorkspace,
+.chefWorkspace .panel,
+.chefWorkspace .monthCalendar,
+.chefWorkspace .monthGrid{color:#3b211c!important}
+.chefWorkspace .workspaceNav{background:#fff9f0!important}
+.chefWorkspace .workspaceNav button{background:transparent!important;color:#806f67!important}
+.chefWorkspace .workspaceNav button.active{background:#7a1717!important;color:#fff!important}
+.chefWorkspace .panel{background:#fffdf9!important;border:1px solid #eadfd2!important;border-radius:18px!important;box-shadow:0 6px 20px rgba(59,33,28,.055)!important;padding:18px!important}
+.chefWorkspace .monthGrid{background:#eadfd2!important}
+.chefWorkspace .monthGrid .calendarHeader{background:#f7ead8!important;color:#7a1717!important;border-color:#ead0b5!important}
+.chefWorkspace .monthGrid .calendarCell{background:#fffdf9!important;color:#3b211c!important;border-color:#eadfd2!important}
+.chefWorkspace .monthGrid .calendarCell.today{background:#fff5e9!important;border-color:#d8a46d!important}
+.chefWorkspace .monthGrid .calendarDate,.chefWorkspace .monthGrid .today .calendarDate{color:#7a1717!important}
+.chefWorkspace .heading>button{background:#f7ead8!important;color:#7a1717!important;border-radius:10px!important}
+.chefWorkspace .panel input,.chefWorkspace .panel textarea{background:#fffdf9!important;color:#3b211c!important;border-color:#eadfd2!important}
+.chefWorkspace .panel>button{background:#7a1717!important;color:#fff!important}
+.chefWorkspace .message{background:#f7ead8!important;color:#7a1717!important;border-color:#ead0b5!important}
+.chefWorkspace .error{background:#fff0ed!important;color:#a83a24!important;border-color:#f0d4cd!important}
+.chefWorkspace .calendarMeal,.chefWorkspace .chefMealCard{background:#fffdf9!important;color:#3b211c!important}
