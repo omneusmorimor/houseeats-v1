@@ -9,6 +9,7 @@ import "./chef-mobile-final.css";
 import "./chef-launch-polish.css";
 import "./member-navigation.css";
 import "./tasteful-traditions-brand.css";
+import "./member-chef-theme.css";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
