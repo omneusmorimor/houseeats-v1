@@ -1,20 +1,12 @@
-/* Final Chef theme: neutralize legacy blue defaults from index.css */
-.chefWorkspace,
-.chefWorkspace .panel,
-.chefWorkspace .monthCalendar,
-.chefWorkspace .monthGrid{color:#3b211c!important}
-.chefWorkspace .workspaceNav{background:#fff9f0!important}
-.chefWorkspace .workspaceNav button{background:transparent!important;color:#806f67!important}
-.chefWorkspace .workspaceNav button.active{background:#7a1717!important;color:#fff!important}
-.chefWorkspace .panel{background:#fffdf9!important;border:1px solid #eadfd2!important;border-radius:18px!important;box-shadow:0 6px 20px rgba(59,33,28,.055)!important;padding:18px!important}
-.chefWorkspace .monthGrid{background:#eadfd2!important}
-.chefWorkspace .monthGrid .calendarHeader{background:#f7ead8!important;color:#7a1717!important;border-color:#ead0b5!important}
-.chefWorkspace .monthGrid .calendarCell{background:#fffdf9!important;color:#3b211c!important;border-color:#eadfd2!important}
-.chefWorkspace .monthGrid .calendarCell.today{background:#fff5e9!important;border-color:#d8a46d!important}
-.chefWorkspace .monthGrid .calendarDate,.chefWorkspace .monthGrid .today .calendarDate{color:#7a1717!important}
-.chefWorkspace .heading>button{background:#f7ead8!important;color:#7a1717!important;border-radius:10px!important}
-.chefWorkspace .panel input,.chefWorkspace .panel textarea{background:#fffdf9!important;color:#3b211c!important;border-color:#eadfd2!important}
-.chefWorkspace .panel>button{background:#7a1717!important;color:#fff!important}
-.chefWorkspace .message{background:#f7ead8!important;color:#7a1717!important;border-color:#ead0b5!important}
-.chefWorkspace .error{background:#fff0ed!important;color:#a83a24!important;border-color:#f0d4cd!important}
-.chefWorkspace .calendarMeal,.chefWorkspace .chefMealCard{background:#fffdf9!important;color:#3b211c!important}
+/* Chef visual system — desktop + mobile. Loaded after legacy CSS. */
+.chefWorkspace{box-sizing:border-box!important;width:min(1180px,100%)!important;margin:0 auto!important;padding:24px 28px 110px!important;background:#fff9f0!important;color:#3b211c!important;min-height:100vh!important}
+.chefWorkspace *{box-sizing:border-box}
+.chefWorkspace .roleHero{max-width:1120px!important;margin:0 auto!important;padding:8px 0 20px!important}.chefWorkspace .roleHero h1{color:#7a1717!important;font-size:32px!important}
+.chefWorkspace .workspaceNav{max-width:1120px!important;margin:0 auto 20px!important;background:#fffdf9!important;border:1px solid #eadfd2!important;border-radius:16px!important;padding:5px!important;box-shadow:0 5px 18px rgba(59,33,28,.055)!important}.chefWorkspace .workspaceNav button{background:transparent!important;color:#806f67!important;border-radius:11px!important}.chefWorkspace .workspaceNav button.active{background:#7a1717!important;color:#fff!important;box-shadow:0 5px 14px rgba(122,23,23,.14)!important}
+.chefWorkspace .panel{max-width:1120px!important;margin:0 auto 20px!important;background:#fffdf9!important;border:1px solid #eadfd2!important;border-radius:18px!important;box-shadow:0 7px 22px rgba(59,33,28,.055)!important;padding:22px!important;color:#3b211c!important}.chefWorkspace .panel h2{color:#7a1717!important}.chefWorkspace .panel input,.chefWorkspace .panel textarea{background:#fffdf9!important;color:#3b211c!important;border-color:#eadfd2!important}
+.chefWorkspace .chefIOSHome{max-width:1120px!important;margin:0 auto!important;display:grid!important;grid-template-columns:minmax(0,1.65fr) minmax(300px,.8fr)!important;gap:18px!important;align-items:start!important}.chefWorkspace .chefTodayHero{grid-column:1/-1!important}.chefWorkspace .chefMealTodayList{grid-column:1!important}.chefWorkspace .chefStatusRow{grid-column:2!important;grid-row:2!important}.chefWorkspace .chefTimeline{grid-column:1!important}.chefWorkspace .chefAlertList{grid-column:2!important}
+.chefWorkspace .chefTodayHero{background:linear-gradient(135deg,#7a1717,#a83a24)!important;color:#fff!important;border-radius:18px!important}.chefWorkspace .todayMealCard,.chefWorkspace .chefTimeline,.chefWorkspace .chefAlertList button,.chefWorkspace .chefStatusRow button,.chefWorkspace .chefMealCard,.chefWorkspace .headcountDay,.chefWorkspace .roleCard{background:#fffdf9!important;border:1px solid #eadfd2!important;color:#3b211c!important;border-radius:15px!important}.chefWorkspace .todayMealCount b,.chefWorkspace .chefStatusRow b,.chefWorkspace .headcountLine>strong{color:#7a1717!important}
+.chefWorkspace .monthGrid{max-width:1120px!important;margin:0 auto!important;background:#eadfd2!important;border:1px solid #eadfd2!important;border-radius:16px!important;overflow:hidden!important;box-shadow:0 7px 22px rgba(59,33,28,.055)!important}.chefWorkspace .monthGrid .calendarHeader{background:#f7ead8!important;color:#7a1717!important;border-color:#ead0b5!important}.chefWorkspace .monthGrid .calendarCell{background:#fffdf9!important;color:#3b211c!important;border-color:#eadfd2!important}.chefWorkspace .monthGrid .calendarCell.today{background:#fff5e9!important;border-color:#d8a46d!important}.chefWorkspace .monthGrid .calendarDate,.chefWorkspace .monthGrid .today .calendarDate{color:#7a1717!important}
+.chefWorkspace .heading>button,.chefWorkspace .calendarActions button,.chefWorkspace .chefEditButton{background:#f7ead8!important;color:#7a1717!important;border-color:#ead0b5!important;border-radius:10px!important}.chefWorkspace .panel>button,.chefWorkspace .chefSaveButton{background:#7a1717!important;color:#fff!important;border-radius:10px!important}.chefWorkspace .chefCancelButton{background:#f7ead8!important;color:#7a1717!important}
+.chefWorkspace .message{background:#f7ead8!important;color:#7a1717!important;border-color:#ead0b5!important}.chefWorkspace .error{background:#fff0ed!important;color:#a83a24!important;border-color:#f0d4cd!important}
+@media(max-width:900px){.chefWorkspace{width:min(100%,520px)!important;padding:10px 15px 100px!important}.chefWorkspace .chefIOSHome{display:grid!important;grid-template-columns:1fr!important}.chefWorkspace .chefTodayHero,.chefWorkspace .chefMealTodayList,.chefWorkspace .chefStatusRow,.chefWorkspace .chefTimeline,.chefWorkspace .chefAlertList{grid-column:auto!important;grid-row:auto!important}.chefWorkspace .panel{padding:18px!important}.chefWorkspace .workspaceNav{margin-bottom:14px!important}}
