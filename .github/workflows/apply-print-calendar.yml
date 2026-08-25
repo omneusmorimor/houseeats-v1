@@ -13,26 +13,43 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Convert Chef print view to calendar
+      - name: Apply full monthly calendar and print layout
         run: |
           python3 - <<'PY'
           from pathlib import Path
           import re
+
           p = Path('src/pages/ChefPage.tsx')
           s = p.read_text()
+
+          # Always build a complete 6-week calendar: previous-month filler days,
+          # every day of the selected month, and next-month filler days.
+          range_pattern = r'const range=useMemo\(\(\)=>\{.*?return\{start,end\}\},\[month\]\);'
+          range_replacement = '''const range=useMemo(()=>{const first=monthBounds(month).start;const start=new Date(first);start.setDate(start.getDate()-start.getDay());const end=new Date(start);end.setDate(end.getDate()+41);return{start,end}},[month]);'''
+          s,n = re.subn(range_pattern, range_replacement, s, count=1, flags=re.S)
+          if n != 1:
+              raise SystemExit(f'Calendar range replacement failed: {n}')
+
+          # Keep the print view as a true calendar rather than a stack of app cards.
           pattern = r'{tab==="print"&&<section className="panel printSheet">.*?</section>}'
           replacement = '''{tab==="print"&&<section className="panel printSheet"><div className="printCalendarHeader"><h2>{month.toLocaleDateString(undefined,{month:"long",year:"numeric"})} Menu</h2><p>HouseEats · Kitchen Monthly Menu</p></div><div className="printCalendar"><div className="printCalendarWeekdays">{["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"].map(d=><div key={d}>{d}</div>)}</div><div className="printCalendarGrid">{days.map(d=>{const ds=toISODate(d),outside=d.getMonth()!==month.getMonth();return <div className={`printCalendarDay ${outside?"outsideMonth":""}`}key={ds}><div className="printCalendarDate">{d.getDate()}</div><div className="printCalendarMeals">{mealFor(d).map(m=><article className="printCalendarMeal"key={m.id}><div className="printCalendarMealType">{m.meal_type}</div><strong>{m.name}</strong>{m.description&&<p>{m.description}</p>}{m.allergens?.length>0&&<small>⚠️ {m.allergens.join(", ")}</small>}<span>{count(m.id)} attending · {late.filter(l=>l.meal_id===m.id).length} late</span></article>)}</div></div>})}</div></div><button onClick={()=>window.print()}>Print Full Month</button></section>}'''
-          ns, n = re.subn(pattern, replacement, s, count=1, flags=re.S)
+          s,n = re.subn(pattern, replacement, s, count=1, flags=re.S)
           if n != 1:
               raise SystemExit(f'Print section replacement failed: {n}')
-          p.write_text(ns)
+          p.write_text(s)
 
           css = Path('src/chef-launch-polish.css')
           c = css.read_text()
           marker = '/* MONTHLY PRINT CALENDAR */'
-          if marker not in c:
-              c += '''\n\n/* MONTHLY PRINT CALENDAR */\n.printCalendarHeader{text-align:center;margin-bottom:16px}.printCalendarHeader h2{margin:0;color:#7a1717;font-size:28px}.printCalendarHeader p{margin:4px 0 0;color:#806f67;font-size:10px}.printCalendar{border:1px solid #d8c9ba;border-radius:14px;overflow:hidden;background:#fffdf9}.printCalendarWeekdays{display:grid;grid-template-columns:repeat(7,1fr);background:#7a1717;color:#fff;padding:0}.printCalendarWeekdays>div{text-align:center;padding:8px 4px;font-size:8px;font-weight:900;text-transform:uppercase;letter-spacing:.7px;border-right:1px solid rgba(255,255,255,.2)}.printCalendarGrid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));grid-auto-rows:minmax(125px,auto)}.printCalendarDay{min-width:0;padding:7px;border-right:1px solid #eadfd2;border-bottom:1px solid #eadfd2;background:#fffdf9}.printCalendarDay:nth-child(7n){border-right:0}.printCalendarDay.outsideMonth{background:#f7f1ea;color:#b8a99f}.printCalendarDate{font-size:11px;font-weight:900;color:#7a1717;margin-bottom:5px}.printCalendarDay.outsideMonth .printCalendarDate{color:#b8a99f}.printCalendarMeals{display:grid;gap:4px}.printCalendarMeal{padding:5px 6px;border-radius:7px;background:#fff5e9;border-left:3px solid #d58b28}.printCalendarMealType{font-size:6px;text-transform:uppercase;letter-spacing:.8px;color:#a36b42;font-weight:900}.printCalendarMeal strong{display:block;font-size:8px;line-height:1.2;color:#3b211c;margin-top:2px}.printCalendarMeal p{font-size:6px;line-height:1.25;color:#806f67;margin:3px 0}.printCalendarMeal small{display:block;font-size:5.5px;color:#8a4b3a;line-height:1.2}.printCalendarMeal span{display:block;font-size:5.5px;color:#806f67;margin-top:3px}.printSheet>button{margin-top:12px}\n@media(max-width:900px){.printCalendarGrid{grid-auto-rows:minmax(100px,auto)}.printCalendarDay{padding:5px}.printCalendarMeal{padding:4px}.printCalendarMeal strong{font-size:7px}.printCalendarMeal p,.printCalendarMeal small,.printCalendarMeal span{font-size:5px}}\n@media print{.printSheet{background:#fff!important;border:0!important;box-shadow:none!important;padding:0!important}.printSheet>button{display:none!important}.printCalendar{border:1px solid #777;border-radius:0}.printCalendarWeekdays{background:#7a1717!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}.printCalendarDay{min-height:0;background:#fff!important}.printCalendarDay.outsideMonth{background:#f5f5f5!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}.printCalendarMeal{background:#fff5e9!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}.printCalendarGrid{grid-auto-rows:minmax(112px,auto)}@page{size:landscape;margin:0.35in}}\n'''
-              css.write_text(c)
+          if marker in c:
+              c = c.split(marker)[0].rstrip()
+          c += '''
+
+/* MONTHLY PRINT CALENDAR */
+.printCalendarHeader{text-align:center;margin-bottom:12px}.printCalendarHeader h2{margin:0;color:#7a1717;font-size:28px}.printCalendarHeader p{margin:3px 0 0;color:#806f67;font-size:10px}.printCalendar{border:1px solid #b8aaa1;border-radius:0;overflow:hidden;background:#fff}.printCalendarWeekdays{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));background:#7a1717;color:#fff}.printCalendarWeekdays>div{text-align:center;padding:7px 3px;font-size:8px;font-weight:900;text-transform:uppercase;letter-spacing:.6px;border-right:1px solid rgba(255,255,255,.25)}.printCalendarGrid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));grid-template-rows:repeat(6,minmax(0,1fr));height:calc(100vh - 105px)}.printCalendarDay{min-width:0;min-height:0;overflow:hidden;padding:6px;border-right:1px solid #d7cec7;border-bottom:1px solid #d7cec7;background:#fff}.printCalendarDay:nth-child(7n){border-right:0}.printCalendarDay:nth-last-child(-n+7){border-bottom:0}.printCalendarDay.outsideMonth{background:#f6f1ec;color:#b3a69f}.printCalendarDate{font-size:10px;font-weight:900;color:#7a1717;margin-bottom:4px}.printCalendarDay.outsideMonth .printCalendarDate{color:#aaa09a}.printCalendarMeals{display:grid;gap:3px}.printCalendarMeal{padding:4px 5px;border-radius:4px;background:#fff5e9;border-left:2px solid #d58b28;box-shadow:none}.printCalendarMealType{font-size:5px;text-transform:uppercase;letter-spacing:.7px;color:#9a6240;font-weight:900}.printCalendarMeal strong{display:block;font-size:7px;line-height:1.15;color:#241714;margin-top:1px;overflow-wrap:anywhere}.printCalendarMeal p{font-size:5px;line-height:1.1;color:#665751;margin:2px 0;max-height:16px;overflow:hidden}.printCalendarMeal small{display:block;font-size:4.5px;color:#8a4b3a;line-height:1.1}.printCalendarMeal span{display:block;font-size:4.5px;color:#78675f;margin-top:2px}
+@media print{html,body{margin:0!important;padding:0!important;background:#fff!important}.printSheet{padding:0!important;margin:0!important;border:0!important;box-shadow:none!important;background:#fff!important}.printSheet>button{display:none!important}.printCalendarHeader{margin:0 0 7px!important}.printCalendarHeader h2{font-size:18px!important}.printCalendarHeader p{font-size:6px!important}.printCalendar{width:100%!important;border:1px solid #777!important;border-radius:0!important}.printCalendarWeekdays{background:#7a1717!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}.printCalendarWeekdays>div{font-size:6px!important;padding:4px 2px!important}.printCalendarGrid{height:calc(100vh - 55px)!important;grid-template-rows:repeat(6,minmax(0,1fr))!important}.printCalendarDay{padding:3px!important}.printCalendarDate{font-size:7px!important;margin-bottom:2px!important}.printCalendarMeal{padding:2px 3px!important;border-radius:2px!important}.printCalendarMealType{font-size:4px!important}.printCalendarMeal strong{font-size:5.5px!important}.printCalendarMeal p{font-size:4px!important;max-height:11px!important}.printCalendarMeal small,.printCalendarMeal span{font-size:3.8px!important}.printCalendarDay.outsideMonth{background:#f5f5f5!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}@page{size:landscape;margin:.25in}}
+'''
+          css.write_text(c)
           PY
       - name: Commit calendar print
         run: |
@@ -40,5 +57,5 @@ jobs:
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add src/pages/ChefPage.tsx src/chef-launch-polish.css
           git diff --cached --quiet && exit 0
-          git commit -m 'Print calendar: make Chef monthly menu a calendar'
+          git commit -m 'Print calendar: full six-week monthly layout'
           git push
