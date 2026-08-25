@@ -7,6 +7,7 @@ import "./chef-polish.css";
 import "./chef-responsive.css";
 import "./chef-mobile-final.css";
 import "./chef-launch-polish.css";
+import "./monthly-print-calendar.css";
 import "./member-navigation.css";
 import "./tasteful-traditions-brand.css";
 import "./member-chef-theme.css";
