@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Wire dedicated monthly print renderer
+      - name: Wire dedicated full-page print renderer
         run: |
           python3 - <<'PY'
           from pathlib import Path
@@ -27,12 +27,20 @@ jobs:
           s,n=re.subn(pattern,replacement,s,count=1,flags=re.S)
           if n!=1: raise SystemExit(f'Print renderer replacement failed: {n}')
           p.write_text(s)
+          main=Path('src/main.tsx'); ms=main.read_text()
+          if './monthly-print-calendar.css' not in ms:
+              ms=ms.replace('import "./chef-warm-source.css";','import "./chef-warm-source.css";\nimport "./monthly-print-calendar.css";')
+          main.write_text(ms)
           PY
+      - name: Verify production build
+        run: |
+          npm ci
+          npm run build
       - name: Commit wired renderer
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add src/pages/ChefPage.tsx
+          git add src/pages/ChefPage.tsx src/main.tsx
           git diff --cached --quiet && exit 0
           git commit -m 'Print calendar: wire dedicated renderer'
           git push
