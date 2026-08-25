@@ -1,0 +1,44 @@
+name: Apply monthly print calendar
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    if: startsWith(github.event.head_commit.message, 'Print calendar:') == false
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Convert Chef print view to calendar
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          p = Path('src/pages/ChefPage.tsx')
+          s = p.read_text()
+          pattern = r'{tab==="print"&&<section className="panel printSheet">.*?</section>}'
+          replacement = '''{tab==="print"&&<section className="panel printSheet"><div className="printCalendarHeader"><h2>{month.toLocaleDateString(undefined,{month:"long",year:"numeric"})} Menu</h2><p>HouseEats · Kitchen Monthly Menu</p></div><div className="printCalendar"><div className="printCalendarWeekdays">{["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"].map(d=><div key={d}>{d}</div>)}</div><div className="printCalendarGrid">{days.map(d=>{const ds=toISODate(d),outside=d.getMonth()!==month.getMonth();return <div className={`printCalendarDay ${outside?"outsideMonth":""}`}key={ds}><div className="printCalendarDate">{d.getDate()}</div><div className="printCalendarMeals">{mealFor(d).map(m=><article className="printCalendarMeal"key={m.id}><div className="printCalendarMealType">{m.meal_type}</div><strong>{m.name}</strong>{m.description&&<p>{m.description}</p>}{m.allergens?.length>0&&<small>⚠️ {m.allergens.join(", ")}</small>}<span>{count(m.id)} attending · {late.filter(l=>l.meal_id===m.id).length} late</span></article>)}</div></div>})}</div></div><button onClick={()=>window.print()}>Print Full Month</button></section>}'''
+          ns, n = re.subn(pattern, replacement, s, count=1, flags=re.S)
+          if n != 1:
+              raise SystemExit(f'Print section replacement failed: {n}')
+          p.write_text(ns)
+
+          css = Path('src/chef-launch-polish.css')
+          c = css.read_text()
+          marker = '/* MONTHLY PRINT CALENDAR */'
+          if marker not in c:
+              c += '''\n\n/* MONTHLY PRINT CALENDAR */\n.printCalendarHeader{text-align:center;margin-bottom:16px}.printCalendarHeader h2{margin:0;color:#7a1717;font-size:28px}.printCalendarHeader p{margin:4px 0 0;color:#806f67;font-size:10px}.printCalendar{border:1px solid #d8c9ba;border-radius:14px;overflow:hidden;background:#fffdf9}.printCalendarWeekdays{display:grid;grid-template-columns:repeat(7,1fr);background:#7a1717;color:#fff;padding:0}.printCalendarWeekdays>div{text-align:center;padding:8px 4px;font-size:8px;font-weight:900;text-transform:uppercase;letter-spacing:.7px;border-right:1px solid rgba(255,255,255,.2)}.printCalendarGrid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));grid-auto-rows:minmax(125px,auto)}.printCalendarDay{min-width:0;padding:7px;border-right:1px solid #eadfd2;border-bottom:1px solid #eadfd2;background:#fffdf9}.printCalendarDay:nth-child(7n){border-right:0}.printCalendarDay.outsideMonth{background:#f7f1ea;color:#b8a99f}.printCalendarDate{font-size:11px;font-weight:900;color:#7a1717;margin-bottom:5px}.printCalendarDay.outsideMonth .printCalendarDate{color:#b8a99f}.printCalendarMeals{display:grid;gap:4px}.printCalendarMeal{padding:5px 6px;border-radius:7px;background:#fff5e9;border-left:3px solid #d58b28}.printCalendarMealType{font-size:6px;text-transform:uppercase;letter-spacing:.8px;color:#a36b42;font-weight:900}.printCalendarMeal strong{display:block;font-size:8px;line-height:1.2;color:#3b211c;margin-top:2px}.printCalendarMeal p{font-size:6px;line-height:1.25;color:#806f67;margin:3px 0}.printCalendarMeal small{display:block;font-size:5.5px;color:#8a4b3a;line-height:1.2}.printCalendarMeal span{display:block;font-size:5.5px;color:#806f67;margin-top:3px}.printSheet>button{margin-top:12px}\n@media(max-width:900px){.printCalendarGrid{grid-auto-rows:minmax(100px,auto)}.printCalendarDay{padding:5px}.printCalendarMeal{padding:4px}.printCalendarMeal strong{font-size:7px}.printCalendarMeal p,.printCalendarMeal small,.printCalendarMeal span{font-size:5px}}\n@media print{.printSheet{background:#fff!important;border:0!important;box-shadow:none!important;padding:0!important}.printSheet>button{display:none!important}.printCalendar{border:1px solid #777;border-radius:0}.printCalendarWeekdays{background:#7a1717!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}.printCalendarDay{min-height:0;background:#fff!important}.printCalendarDay.outsideMonth{background:#f5f5f5!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}.printCalendarMeal{background:#fff5e9!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}.printCalendarGrid{grid-auto-rows:minmax(112px,auto)}@page{size:landscape;margin:0.35in}}\n'''
+              css.write_text(c)
+          PY
+      - name: Commit calendar print
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add src/pages/ChefPage.tsx src/chef-launch-polish.css
+          git diff --cached --quiet && exit 0
+          git commit -m 'Print calendar: make Chef monthly menu a calendar'
+          git push
