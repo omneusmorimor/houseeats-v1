@@ -9,7 +9,7 @@ export default function NotificationCenter({notifications,onRead,onReadAll}:Prop
  return <section className="panel notificationCenter">
   <div className="heading"><div><h2>Notifications</h2><p>{unread} unread</p></div>{unread>0&&<button onClick={onReadAll}>Mark all read</button>}</div>
   {notifications.length===0?<div className="message">You're all caught up.</div>:<div className="notificationList">
-   {notifications.map(n=><article key={n.id} className={n.read?"notification read":"notification"} onClick={()=>!n.read&&onRead(n.id)}>
+   {notifications.map(n=><article key={n.id} className={n.read?"notification read":"notification"} role={n.read?undefined:"button"} tabIndex={n.read?undefined:0} aria-label={n.read?undefined:`${n.title} — mark as read`} onClick={()=>!n.read&&onRead(n.id)} onKeyDown={e=>{if(!n.read&&(e.key==="Enter"||e.key===" ")){e.preventDefault();onRead(n.id)}}}>
     <div><b>{n.title}</b><small>{new Date(n.created_at).toLocaleString()}</small></div>
     <p>{n.message}</p>{!n.read&&<span>NEW</span>}
    </article>)}
