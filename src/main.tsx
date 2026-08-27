@@ -13,6 +13,7 @@ import "./tasteful-traditions-brand.css";
 import "./member-chef-theme.css";
 import "./chef-warm-source.css";
 import "./houseeats-member-center.css";
+import "./member-layout-fix.css";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
