@@ -14,10 +14,25 @@ import "./member-chef-theme.css";
 import "./chef-warm-source.css";
 import React from "react";
 import ReactDOM from "react-dom/client";
-import App from "./App";
+import ErrorBoundary from "./components/ErrorBoundary";
+import StartupError from "./components/StartupError";
+import { reportError } from "./lib/errors";
 
-ReactDOM.createRoot(document.getElementById("root")!).render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
+const rootElement = document.getElementById("root");
+if (!rootElement) {
+  throw new Error('HouseEats could not start: no element with id "root" was found.');
+}
+
+const root = ReactDOM.createRoot(rootElement);
+
+import("./App").then(
+  ({ default: App }) =>
+    root.render(
+      <React.StrictMode>
+        <ErrorBoundary>
+          <App />
+        </ErrorBoundary>
+      </React.StrictMode>
+    ),
+  (error: unknown) => root.render(<StartupError message={reportError("startup failed", error)} />)
 );
