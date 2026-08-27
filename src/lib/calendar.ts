@@ -5,6 +5,11 @@ export function toISODate(date: Date) {
   return `${y}-${m}-${d}`;
 }
 
+export function startOfToday() {
+  const now = new Date();
+  return new Date(now.getFullYear(), now.getMonth(), now.getDate());
+}
+
 export function startOfSundayWeek(date = new Date()) {
   const result = new Date(date);
   result.setHours(12, 0, 0, 0);
