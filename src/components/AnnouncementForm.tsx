@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { sendMemberAnnouncement } from "../lib/meals";
+import { MESSAGE_MAX, TITLE_MAX, sendMemberAnnouncement } from "../lib/meals";
 
 type Props = { heading: string };
 
@@ -25,12 +25,13 @@ export default function AnnouncementForm({ heading }: Props) {
     <>
       <h2>{heading}</h2>
       <p>Send an announcement to all Members.</p>
-      <input value={title} onChange={e => setTitle(e.target.value)} placeholder="Announcement title" />
+      <input value={title} onChange={e => setTitle(e.target.value)} placeholder="Announcement title" maxLength={TITLE_MAX} />
       <textarea
         value={message}
         onChange={e => setMessage(e.target.value)}
         placeholder="Message for Members"
         rows={5}
+        maxLength={MESSAGE_MAX}
       />
       <button onClick={send} disabled={busy}>
         Send notification

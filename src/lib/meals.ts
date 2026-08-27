@@ -1,5 +1,6 @@
 import { supabase } from "./supabase";
 import { toISODate } from "./calendar";
+import { COMMENT_MAX } from "./rating";
 
 export const ALLERGENS = ["Milk", "Eggs", "Wheat", "Soy", "Peanuts", "Tree Nuts", "Fish", "Shellfish", "Sesame"];
 
@@ -75,10 +76,18 @@ export async function fetchActiveMenuMeals(start: Date, end: Date) {
   return { meals: servedMeals((result.data || []) as Meal[]), error: result.error as SupabaseError };
 }
 
+export const TITLE_MAX = 120,
+  MESSAGE_MAX = 2000;
+
 export async function sendMemberAnnouncement(rawTitle: string, rawMessage: string) {
   const title = rawTitle.trim();
   const message = rawMessage.trim();
   if (!title || !message) return { status: "Title and message are required.", sent: false };
+  if (title.length > TITLE_MAX || message.length > MESSAGE_MAX)
+    return {
+      status: `Keep the title under ${TITLE_MAX} characters and the message under ${MESSAGE_MAX}.`,
+      sent: false,
+    };
   const { data, error } = await supabase.rpc("send_member_announcement", {
     p_title: title,
     p_message: message,
@@ -99,7 +108,7 @@ export async function upsertMealReview<T>(
         meal_id: input.mealId,
         user_id: input.userId,
         rating: input.rating,
-        comment: input.comment.trim() || null,
+        comment: input.comment.trim().slice(0, COMMENT_MAX) || null,
         updated_at: new Date().toISOString(),
       },
       { onConflict: "meal_id,user_id" }

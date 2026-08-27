@@ -16,3 +16,9 @@ export function ratingCountLabel(count: number) {
 }
 
 export const STAR_VALUES = [1, 2, 3, 4, 5];
+
+export const COMMENT_MAX = 1000;
+
+export function isValidRating(rating: number) {
+  return rating >= 1 && rating <= 5;
+}
