@@ -1,0 +1,37 @@
+/* HouseEats member dashboard alignment pass */
+.he-member .he-quick {
+  width:100% !important;
+  max-width:520px !important;
+  margin:27px auto 0 !important;
+  display:grid !important;
+  grid-template-columns:repeat(3,minmax(0,1fr)) !important;
+  gap:10px !important;
+  justify-items:stretch !important;
+}
+.he-member .he-quick button {
+  width:100% !important;
+  min-width:0 !important;
+  margin:0 !important;
+  justify-self:stretch !important;
+}
+.he-member .he-dashboard,
+.he-member .he-home,
+.he-member .he-content {
+  width:100% !important;
+  max-width:520px !important;
+  margin-left:auto !important;
+  margin-right:auto !important;
+  align-items:stretch !important;
+}
+.he-member .he-top,
+.he-member .he-section,
+.he-member .he-allergy-strip {
+  width:100% !important;
+  max-width:520px !important;
+  margin-left:auto !important;
+  margin-right:auto !important;
+}
+@media (max-width:380px) {
+  .he-member .he-quick { gap:7px !important; }
+  .he-member .he-quick button { padding-left:4px !important; padding-right:4px !important; }
+}
