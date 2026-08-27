@@ -83,11 +83,6 @@ export async function sendMemberAnnouncement(rawTitle: string, rawMessage: strin
   const title = rawTitle.trim();
   const message = rawMessage.trim();
   if (!title || !message) return { status: "Title and message are required.", sent: false };
-  if (title.length > TITLE_MAX || message.length > MESSAGE_MAX)
-    return {
-      status: `Keep the title under ${TITLE_MAX} characters and the message under ${MESSAGE_MAX}.`,
-      sent: false,
-    };
   const { data, error } = await supabase.rpc("send_member_announcement", {
     p_title: title,
     p_message: message,

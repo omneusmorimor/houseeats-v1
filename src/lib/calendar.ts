@@ -5,6 +5,11 @@ export function toISODate(date: Date) {
   return `${y}-${m}-${d}`;
 }
 
+export function startOfToday() {
+  const now = new Date();
+  return new Date(now.getFullYear(), now.getMonth(), now.getDate());
+}
+
 export function startOfSundayWeek(date = new Date()) {
   const result = new Date(date);
   result.setHours(12, 0, 0, 0);
@@ -44,12 +49,6 @@ export function eachDay(start: Date, end: Date) {
 export function monthGridDays(date = new Date(), weeks = 6) {
   const { start } = monthGridRange(date);
   return Array.from({ length: weeks * 7 }, (_, i) => addDays(start, i));
-}
-
-export function startOfToday() {
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-  return today;
 }
 
 export function todayISODate() {

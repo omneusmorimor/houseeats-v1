@@ -34,7 +34,7 @@ export default function AnnouncementForm({ heading }: Props) {
         maxLength={MESSAGE_MAX}
       />
       <button onClick={send} disabled={busy}>
-        Send notification
+        {busy ? "Sending…" : "Send notification"}
       </button>
       {status && <div className="message">{status}</div>}
     </>
