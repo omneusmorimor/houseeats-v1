@@ -1,0 +1,6 @@
+/* RSVP is intentionally removed from the Member experience. Keep RSVP data intact until all app dependencies are retired. */
+.he-member .he-tonight-buttons > button:first-child,
+.he-member .he-meal-actions > button:first-child,
+.he-member .he-menu-actions > button:first-child{display:none!important}
+.he-member .he-tonight-buttons{grid-template-columns:1fr!important}
+.he-member .he-meal-actions,.he-member .he-menu-actions{display:flex!important}
