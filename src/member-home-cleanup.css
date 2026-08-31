@@ -1,0 +1,4 @@
+/* HouseEats Home cleanup: one navigation system, no duplicate dashboard strip. */
+.he-member .he-quick{display:none!important}
+.he-member{padding-bottom:max(96px,calc(82px + env(safe-area-inset-bottom)))!important}
+.he-member .he-bottom-nav{z-index:50!important}
