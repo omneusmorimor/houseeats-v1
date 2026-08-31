@@ -13,7 +13,7 @@ import "./member-chef-theme.css";
 import "./chef-warm-source.css";
 import "./houseeats-member-center.css";
 import "./member-navigation.css";
-import "./startup-overhaul.css";
+import "./houseeats-startup.css";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
