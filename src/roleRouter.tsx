@@ -1,5 +1,5 @@
 import React from "react";
-import MemberPage from "./pages/MemberPage";
+import MemberPage from "./pages/MemberPage.redesign";
 import ChefPage from "./pages/ChefPage";
 import AdminPage from "./pages/AdminPage";
 
