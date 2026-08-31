@@ -1,0 +1,143 @@
+/* HouseEats — startup visual system
+   Visual-only layer. Existing React/Supabase behavior remains unchanged. */
+:root{
+  --he-bg:#f5f1ea;
+  --he-surface:#fffdfa;
+  --he-ink:#202a2f;
+  --he-muted:#7b817f;
+  --he-line:#e4ddd3;
+  --he-brand:#7a1717;
+  --he-brand-dark:#5f1111;
+  --he-soft:#f0e5dc;
+  --he-green:#35634f;
+  --he-warn:#a45c27;
+  --he-radius:14px;
+}
+html{background:var(--he-bg)}
+body{background:var(--he-bg);color:var(--he-ink);-webkit-font-smoothing:antialiased}
+button{transition:background-color .16s ease,border-color .16s ease,color .16s ease,transform .16s ease,box-shadow .16s ease}
+button:active{transform:translateY(1px) scale(.99)}
+
+/* Auth: restrained hospitality brand, not a generic SaaS card */
+.loginPage{background:var(--he-bg);padding:24px 18px;place-items:center}
+.loginCard,.loadingCard{width:min(100%,410px);background:var(--he-surface);border:1px solid var(--he-line);border-radius:18px;padding:30px;box-shadow:0 18px 50px rgba(42,32,25,.08)}
+.loginCard{position:relative}
+.loginCard:before{content:"";display:block;width:42px;height:3px;background:var(--he-brand);margin-bottom:25px;border-radius:3px}
+.loginCard .tastefulLogo{width:132px;max-width:60%;margin:0 0 16px}
+.tt-company{font-size:10px!important;letter-spacing:1.8px;text-transform:uppercase;color:var(--he-muted)!important;font-weight:800!important}
+.loginCard h1,.loadingCard h1{font-size:29px;letter-spacing:-1px;color:var(--he-ink);margin:5px 0 7px}
+.loginCard>p,.loadingCard>p{font-size:12px;color:var(--he-muted);line-height:1.5}
+.loginCard label{color:#555e5b;font-size:11px;letter-spacing:.1px}
+.loginCard input{background:#fff;border:1px solid #d9d3ca;border-radius:10px;height:46px;padding:0 13px;color:var(--he-ink)}
+.loginCard input:focus{border-color:#a87b72;box-shadow:0 0 0 3px rgba(122,23,23,.08);outline:0}
+.loginCard .primary{height:47px;background:var(--he-brand);border-radius:10px;box-shadow:none}
+.loginCard .primary:hover{background:var(--he-brand-dark);transform:translateY(-1px)}
+.authLinks{font-size:11px!important;color:var(--he-muted)!important;gap:8px!important}
+.authLinks button{padding:0!important;background:none!important;color:var(--he-brand)!important;border:0!important}
+.authLinks .linkStrong{font-weight:850!important}
+.error{background:#fbefeb;color:#8d3f31;border:1px solid #efd7d0;border-radius:10px}
+.message{background:#eef4ef;color:#41604f;border:1px solid #d9e6dc;border-radius:10px}
+
+/* Member shell */
+.he-member{width:min(100%,560px);background:var(--he-bg);color:var(--he-ink);padding:18px 20px 96px}
+.he-top{margin-bottom:25px!important}
+.he-top>button:first-child span:first-child{width:34px!important;height:34px!important;border-radius:9px!important;background:var(--he-brand)!important;box-shadow:none!important;font-size:16px!important}
+.he-brand{font-size:14px!important;letter-spacing:1.2px!important;font-weight:900!important;color:var(--he-ink)!important}
+.he-brand span{color:#8a8e8a!important;font-weight:500!important}
+.he-top-actions button{width:36px!important;height:36px!important;background:transparent!important;border:1px solid var(--he-line)!important;box-shadow:none!important;font-size:14px!important}
+.he-top-actions button:hover{background:var(--he-surface)!important;border-color:#cfc5ba!important;transform:none!important}
+.he-top-actions button+button{background:var(--he-brand)!important;border-color:var(--he-brand)!important}
+
+/* Hero becomes a clean editorial feature instead of a floating AI card */
+.he-tonight{min-height:286px;margin-bottom:25px;padding:27px 24px 22px;border-radius:18px;background:var(--he-brand);box-shadow:none}
+.he-tonight:before{background:linear-gradient(125deg,rgba(255,255,255,.04),transparent 55%);}
+.he-tonight-copy>span{font-size:9px;letter-spacing:2px;color:#e8c9c0}
+.he-tonight h1{font-size:31px;line-height:1.06;letter-spacing:-1.3px;max-width:88%;margin:9px 0 7px}
+.he-tonight p{color:#e8d8d2;font-size:11px}
+.he-plate{font-size:58px;opacity:.22;right:20px;top:20px;filter:none}
+.he-tonight-buttons{gap:8px;margin-top:22px}
+.he-light-primary,.he-light-secondary{min-height:43px!important;border-radius:10px!important;box-shadow:none!important;font-size:11px!important}
+.he-light-primary{background:#fffdfa!important;color:var(--he-brand)!important}
+.he-light-secondary{background:transparent!important;color:#fff!important;border:1px solid rgba(255,255,255,.35)!important}
+
+.he-allergy-strip{padding:12px 0 14px;margin-bottom:26px;border-bottom:1px solid var(--he-line);color:#4c5652}
+.he-allergy-strip>span{font-size:15px}
+.he-allergy-strip b{font-size:10px}
+.he-allergy-strip small{font-size:9px;color:var(--he-warn)}
+
+.he-section-head{margin-bottom:10px}
+.he-section-head span,.he-page-title>span{font-size:8px;letter-spacing:2px;color:#8a8d89}
+.he-section-head h2{font-size:20px;letter-spacing:-.5px;color:var(--he-ink)}
+.he-section-head button{background:transparent!important;color:var(--he-brand)!important;border:0!important;border-bottom:1px solid #c9aaa2!important;border-radius:0!important;padding:4px 0!important;font-size:10px!important}
+.he-feed{border-top:1px solid var(--he-line)}
+.he-meal{grid-template-columns:40px 1fr;gap:13px;padding:17px 0;border-bottom:1px solid var(--he-line)}
+.he-meal-date{border-right:1px solid var(--he-line);padding-right:10px}
+.he-meal-date span{font-size:7px;color:#999d99}
+.he-meal-date b{font-size:17px;color:var(--he-brand)}
+.he-meal-type{font-size:7px;letter-spacing:1.5px;color:#8b8e8a}
+.he-meal h3{font-size:15px;color:var(--he-ink);margin:4px 0}
+.he-meal p{font-size:10px;color:#777e7b}
+.he-meal-actions{margin-top:10px}
+.he-meal-actions button{min-height:34px!important;border-radius:8px!important;padding:7px 11px!important;font-size:9px!important;box-shadow:none!important}
+.he-primary{background:var(--he-brand)!important;border-color:var(--he-brand)!important}
+.he-primary:hover{background:var(--he-brand-dark)!important;transform:none!important}
+.he-going{background:#efe2dc!important;color:var(--he-brand)!important;border-color:#e4cbc2!important}
+.he-secondary{background:transparent!important;color:#626c68!important;border-color:#d4cec5!important}
+.he-secondary:hover{background:var(--he-surface)!important;transform:none!important}
+.he-alert{font-size:8px;color:var(--he-warn)}
+
+.he-quick{gap:0;margin-top:28px;border-top:1px solid var(--he-line);border-bottom:1px solid var(--he-line)}
+.he-quick button{min-height:58px!important;background:transparent!important;border:0!important;border-radius:0!important;box-shadow:none!important;color:#555f5b!important;position:relative}
+.he-quick button+button{border-left:1px solid var(--he-line)!important}
+.he-quick button:hover{background:rgba(255,253,250,.7)!important;transform:none!important}
+.he-quick b{font-size:13px}.he-quick span{font-size:9px}
+
+/* Interior pages */
+.he-page{padding-top:3px}
+.he-page-title{padding:5px 0 22px;border-bottom:1px solid var(--he-line);margin-bottom:3px}
+.he-page-title h1{font-size:28px;letter-spacing:-1px;color:var(--he-ink);margin:6px 0 4px}
+.he-page-title p{font-size:11px;color:#7c827f}
+.he-menu-intro{padding:4px 0 18px;display:flex;align-items:end;justify-content:space-between}
+.he-menu-kicker{font-size:8px!important;letter-spacing:2px!important;color:#8a8d89!important}
+.he-menu-intro h1{font-size:29px!important;letter-spacing:-1px!important;color:var(--he-ink)!important;margin:5px 0 3px!important}
+.he-menu-intro p{font-size:10px!important;color:#818683!important}
+.he-menu-mark{display:none}
+.he-menu-rule{height:1px;background:var(--he-line);margin-bottom:0}
+.he-day{padding:19px 0;border-bottom:1px solid var(--he-line)}
+.he-day.today{background:transparent!important;border-left:3px solid var(--he-brand);padding-left:13px;margin-left:-16px;padding-right:0}
+.he-day-head{margin-bottom:11px}
+.he-day-head b{font-size:13px;color:var(--he-ink)}
+.he-day-sub{font-size:9px;color:#8a8f8b;margin-left:7px}
+.he-day-head em{background:var(--he-brand)!important;color:#fff!important;border-radius:5px!important;padding:3px 6px!important;font-size:7px!important;font-style:normal!important;letter-spacing:.5px}
+.he-menu-meal{padding:13px 0;border-top:1px solid #ebe5dc}
+.he-menu-meal-heading span{font-size:7px!important;letter-spacing:1.5px!important;color:#898e8a!important}
+.he-menu-meal-heading b{font-size:7px!important;color:var(--he-warn)!important}
+.he-menu-meal h3{font-size:15px!important;color:var(--he-ink)!important;margin:5px 0 3px!important}
+.he-menu-meal p{font-size:10px!important;color:#777e7b!important;line-height:1.45!important}
+.he-menu-actions{gap:7px!important;margin-top:9px!important}
+.he-menu-actions button{border-radius:8px!important;font-size:9px!important;box-shadow:none!important}
+.he-no-meal{font-size:10px!important;color:#999d99!important}
+
+/* Allergy list: utility, not a giant card grid */
+.he-allergy-list{border-top:1px solid var(--he-line)}
+.he-allergy-list label{display:flex!important;align-items:center!important;min-height:49px!important;padding:0!important;background:transparent!important;border:0!important;border-bottom:1px solid var(--he-line)!important;border-radius:0!important;font-size:11px!important;color:#4f5955!important}
+.he-allergy-list label input{accent-color:var(--he-brand)}
+.he-allergy-list label i{margin-left:auto;font-style:normal;color:var(--he-brand);font-weight:900}
+
+/* Keep bottom navigation visually native and quiet */
+.he-bottom{background:rgba(255,253,250,.96)!important;border:1px solid var(--he-line)!important;border-radius:15px!important;box-shadow:0 10px 30px rgba(42,32,25,.10)!important;padding:6px!important;backdrop-filter:blur(12px)}
+.he-bottom button{border-radius:10px!important;background:transparent!important;color:#898d8a!important;font-size:8px!important;font-weight:800!important}
+.he-bottom button.active{background:#f1e6df!important;color:var(--he-brand)!important}
+.he-bottom button span{font-size:15px!important}
+
+/* Desktop: preserve the app feel instead of stretching into a dashboard */
+@media(min-width:760px){
+  .he-member{padding-top:25px}
+  .he-tonight{min-height:300px}
+}
+@media(max-width:420px){
+  .he-member{padding-left:16px;padding-right:16px}
+  .he-tonight{padding-left:20px;padding-right:20px}
+  .he-tonight h1{font-size:28px}
+  .he-tonight-buttons{grid-template-columns:1fr}
+}
