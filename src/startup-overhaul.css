@@ -1,0 +1,140 @@
+/* HouseEats — Tasteful Traditions startup visual system
+   Visual-only layer: intentionally leaves data, auth and navigation behavior untouched. */
+:root{
+  --tt-ink:#202a31;
+  --tt-muted:#6f7a80;
+  --tt-soft:#9aa2a6;
+  --tt-paper:#fffdfa;
+  --tt-bg:#f4f1eb;
+  --tt-line:#e4dfd7;
+  --tt-brand:#7a1717;
+  --tt-brand-dark:#5e1010;
+  --tt-brand-soft:#f2e3df;
+  --tt-green:#496b58;
+  --tt-shadow:0 10px 30px rgba(38,31,26,.07);
+}
+*{scrollbar-color:#cfc7bd transparent}
+body{background:var(--tt-bg)!important;color:var(--tt-ink)!important}
+button{font-weight:650!important;letter-spacing:-.01em}
+
+/* Auth: quieter, more credible, less template-like */
+.loginPage{background:radial-gradient(circle at 50% -10%,#fffdf8 0,#f4f1eb 52%,#eeeae3 100%)!important;padding:24px!important}
+.loginCard,.loadingCard{width:min(100%,420px)!important;background:rgba(255,253,250,.96)!important;border:1px solid var(--tt-line)!important;border-radius:20px!important;box-shadow:0 24px 70px rgba(43,35,28,.10)!important;padding:34px!important}
+.loginCard h1,.loadingCard h1{font-size:28px!important;letter-spacing:-1px!important;color:var(--tt-ink)!important;margin:8px 0 4px!important}
+.loginCard p,.loadingCard p{color:var(--tt-muted)!important;line-height:1.5!important}
+.loginCard label{color:#475158!important;font-size:12px!important;letter-spacing:.01em}
+.loginCard input{height:48px!important;border:1px solid #d9d4cd!important;border-radius:10px!important;background:#fff!important;color:var(--tt-ink)!important;padding:0 14px!important;box-shadow:none!important}
+.loginCard input:focus{border-color:#a97770!important;box-shadow:0 0 0 3px rgba(122,23,23,.08)!important}
+.loginCard .primary{height:48px!important;border-radius:10px!important;background:var(--tt-brand)!important;box-shadow:0 5px 14px rgba(122,23,23,.18)!important}
+.loginCard .primary:hover{background:var(--tt-brand-dark)!important;transform:translateY(-1px)}
+.authLinks{font-size:11px!important;color:var(--tt-muted)!important;gap:7px!important}
+.authLinks button{background:none!important;color:var(--tt-brand)!important;padding:0!important}
+.brandMark{background:var(--tt-brand)!important;border-radius:12px!important;width:48px!important;height:48px!important}
+.tt-company{font-size:10px!important;letter-spacing:1.8px!important;text-transform:uppercase!important;color:#8b817a!important;font-weight:800!important}
+.tastefulLogo{max-height:58px!important;width:auto!important;margin-bottom:10px!important}
+
+/* Shared workspace frame */
+.roleWorkspace{width:min(100%,1080px)!important;padding:24px 22px 92px!important;color:var(--tt-ink)!important}
+.roleHero{padding:5px 2px 20px!important}
+.roleHero span{color:#8a8179!important;letter-spacing:1.8px!important}
+.roleHero h1{font-size:32px!important;letter-spacing:-1.25px!important;color:var(--tt-ink)!important}
+.roleHero p{color:var(--tt-muted)!important}
+.workspaceNav{background:var(--tt-bg)!important;border-bottom:1px solid var(--tt-line)!important;padding:6px 0 12px!important;margin-bottom:24px!important}
+.workspaceNav button{border-radius:8px!important;padding:9px 12px!important;color:#6e767b!important}
+.workspaceNav button.active{background:var(--tt-brand)!important;color:#fff!important;box-shadow:0 3px 10px rgba(122,23,23,.15)!important}
+.panel{background:transparent!important;border:0!important;box-shadow:none!important}
+
+/* Member shell */
+.he-member{width:min(100%,560px)!important;background:var(--tt-bg)!important;color:var(--tt-ink)!important;padding:20px 18px 96px!important}
+.he-top{margin-bottom:24px!important}
+.he-brand{font-size:14px!important;letter-spacing:.1px!important;color:var(--tt-ink)!important;font-weight:850!important}
+.he-brand span{color:#827a73!important;font-weight:600!important}
+.he-top-actions button{width:38px!important;height:38px!important;background:var(--tt-paper)!important;border:1px solid var(--tt-line)!important;color:#4e585d!important;box-shadow:0 3px 12px rgba(30,25,21,.05)!important}
+.he-top-actions button[aria-label="Profile"]{background:var(--tt-brand)!important;border-color:var(--tt-brand)!important}
+
+/* Hero — one strong editorial surface instead of nested cards */
+.he-tonight{min-height:285px!important;border-radius:18px!important;background:var(--tt-brand)!important;padding:25px 22px 20px!important;box-shadow:0 14px 32px rgba(92,34,27,.13)!important}
+.he-tonight:before{background:radial-gradient(circle at 88% 15%,rgba(255,255,255,.12),transparent 36%)!important}
+.he-tonight-copy>span{color:#ead5cf!important;font-size:9px!important;letter-spacing:1.8px!important}
+.he-tonight h1{font-size:32px!important;letter-spacing:-1.4px!important;max-width:78%!important}
+.he-tonight p{color:#eadbd7!important}
+.he-plate{font-size:62px!important;opacity:.18!important;right:15px!important;top:15px!important;filter:none!important}
+.he-tonight-buttons{margin-top:22px!important}
+.he-light-primary{background:#fffdfa!important;color:var(--tt-brand)!important;border:0!important}
+.he-light-secondary{background:rgba(255,255,255,.09)!important;border:1px solid rgba(255,255,255,.22)!important;color:#fff!important}
+
+/* Content hierarchy */
+.he-section{margin-top:2px!important}
+.he-section-head{margin-bottom:10px!important}
+.he-section-head span,.he-page-title>span{color:#91877f!important;letter-spacing:1.7px!important}
+.he-section-head h2{font-size:20px!important;color:var(--tt-ink)!important;letter-spacing:-.65px!important}
+.he-section-head button{background:transparent!important;color:var(--tt-brand)!important;border:0!important;padding:6px 0!important}
+.he-feed{border-top:1px solid var(--tt-line)!important}
+.he-meal{grid-template-columns:48px 1fr!important;padding:18px 0!important;border-bottom:1px solid var(--tt-line)!important}
+.he-meal-date b{font-size:20px!important;color:var(--tt-ink)!important}
+.he-meal-date span,.he-meal-type{color:#928a83!important}
+.he-meal h3{font-size:16px!important;color:var(--tt-ink)!important}
+.he-meal p{color:#707a7f!important}
+.he-meal-actions button{min-height:36px!important;border-radius:9px!important}
+.he-primary{background:var(--tt-brand)!important;border-color:var(--tt-brand)!important;box-shadow:none!important}
+.he-primary:hover{background:var(--tt-brand-dark)!important}
+.he-going{background:var(--tt-brand-soft)!important;color:var(--tt-brand)!important;border-color:#e4c9c3!important}
+.he-secondary{background:var(--tt-paper)!important;border:1px solid #d7d0c8!important;color:#4e5b61!important;box-shadow:none!important}
+.he-alert{color:#9a5d35!important}
+
+/* Quick actions: compact utility row */
+.he-quick{gap:8px!important;margin-top:24px!important}
+.he-quick button{min-height:50px!important;background:transparent!important;border:1px solid var(--tt-line)!important;border-radius:10px!important;box-shadow:none!important;color:#536067!important}
+.he-quick button:hover{background:var(--tt-paper)!important;border-color:#cfc6bd!important;transform:none!important}
+.he-quick b{font-size:13px!important}
+
+/* Allergy banner */
+.he-allergy-strip{border-bottom:1px solid var(--tt-line)!important;padding:13px 0 15px!important;margin-bottom:23px!important}
+.he-allergy-strip>span{font-size:15px!important}
+.he-allergy-strip small{color:#8e5d43!important}
+
+/* Menu: editorial list, not dashboard cards */
+.he-menu-intro{padding:4px 0 18px!important}
+.he-menu-intro h1,.he-page-title h1{font-size:30px!important;letter-spacing:-1.2px!important;color:var(--tt-ink)!important}
+.he-menu-kicker{color:#91877f!important;letter-spacing:1.8px!important}
+.he-menu-mark{color:var(--tt-brand)!important;opacity:.65!important}
+.he-menu-rule,.he-day{border-color:var(--tt-line)!important}
+.he-day{padding:20px 0!important}
+.he-day-head b{font-size:16px!important;color:var(--tt-ink)!important}
+.he-day-head em{background:var(--tt-brand)!important;color:#fff!important;border-radius:5px!important;font-style:normal!important;font-size:9px!important;padding:5px 7px!important}
+.he-menu-meal{padding:14px 0!important;border-top:1px solid var(--tt-line)!important}
+.he-menu-meal-heading span{color:#91877f!important;letter-spacing:1.4px!important}
+.he-menu-meal h3{font-size:17px!important;color:var(--tt-ink)!important}
+.he-menu-meal p{color:#737d82!important}
+.he-menu-actions button{border-radius:9px!important}
+
+/* Allergies / late plate / alerts / profile pages */
+.he-page-title{padding:4px 0 20px!important}
+.he-page-title p{color:var(--tt-muted)!important}
+.he-allergy-list{border-top:1px solid var(--tt-line)!important}
+.he-allergy-list label{background:transparent!important;border:0!important;border-bottom:1px solid var(--tt-line)!important;border-radius:0!important;padding:15px 2px!important}
+.he-allergy-list label i{color:var(--tt-brand)!important}
+.he-request-list,.he-notification-list{background:transparent!important}
+.he-error{border:1px solid #ead1ca!important;background:#fbefec!important;color:#824a3f!important;border-radius:9px!important}
+.he-loading{color:#858d91!important;padding:35px 0!important}
+
+/* Bottom navigation */
+.he-bottom{position:fixed!important;left:50%!important;bottom:12px!important;transform:translateX(-50%)!important;width:min(calc(100% - 24px),530px)!important;height:64px!important;padding:7px!important;background:rgba(255,253,250,.96)!important;border:1px solid #ddd7cf!important;border-radius:16px!important;box-shadow:0 12px 34px rgba(35,28,22,.14)!important;backdrop-filter:blur(14px)!important;z-index:20!important}
+.he-bottom button{border-radius:10px!important;color:#8a8987!important;background:transparent!important}
+.he-bottom button.active{background:#f1e5e1!important;color:var(--tt-brand)!important}
+.he-bottom i{background:var(--tt-brand)!important}
+
+/* Desktop: keep the app-like member canvas centered without looking like a web dashboard */
+@media (min-width:760px){
+  .he-member{margin:18px auto!important;border:1px solid var(--tt-line)!important;border-radius:24px!important;min-height:calc(100vh - 36px)!important;box-shadow:0 12px 40px rgba(40,32,26,.06)!important}
+  .he-bottom{bottom:24px!important}
+}
+@media (max-width:520px){
+  .roleWorkspace{padding:18px 16px 88px!important}
+  .roleHero h1{font-size:28px!important}
+  .he-member{padding-left:16px!important;padding-right:16px!important}
+  .he-tonight{min-height:270px!important}
+  .he-tonight h1{font-size:29px!important}
+  .he-quick{grid-template-columns:repeat(3,1fr)!important}
+  .he-quick button{padding:9px 4px!important}
+}
