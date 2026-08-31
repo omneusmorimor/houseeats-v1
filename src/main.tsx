@@ -14,6 +14,7 @@ import "./chef-warm-source.css";
 import "./houseeats-member-center.css";
 import "./member-navigation.css";
 import "./houseeats-startup.css";
+import "./member-human.css";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
