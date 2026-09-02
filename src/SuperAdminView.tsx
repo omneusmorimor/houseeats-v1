@@ -1,5 +1,5 @@
 import React,{useState}from"react";
-import V2Workspace from"./V2Workspace";
+import V2RoleWorkspace from"./V2RoleWorkspace";
 import V2AdminWorkspace from"./V2AdminWorkspace";
 
 type Mode="admin"|"member"|"chef";
@@ -18,6 +18,6 @@ export default function SuperAdminView({user,profile,onSignOut}:Props){
        <button onClick={onSignOut} className="signout">Sign out</button>
      </div>
    </div>
-   {mode==="admin"?<V2AdminWorkspace user={user} profile={activeProfile} onSignOut={onSignOut}/>:<V2Workspace key={mode} user={user} profile={activeProfile}/>} 
+   {mode==="admin"?<V2AdminWorkspace user={user} profile={activeProfile} onSignOut={onSignOut}/>:<V2RoleWorkspace key={mode} user={user} profile={activeProfile}/>} 
  </div>
 }
