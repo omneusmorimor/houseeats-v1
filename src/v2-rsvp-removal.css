@@ -1,0 +1,7 @@
+/* V2 member experience: RSVP is intentionally removed from the Member UI.
+   Keep the underlying RSVP records available for kitchen/admin headcount and legacy data. */
+.v2-app .member-two-week .member-meal{pointer-events:none;cursor:default}
+.v2-app .member-two-week .member-meal strong{display:none}
+.v2-app .member-two-week .member-meal small{font-size:0}
+.v2-app .member-two-week .member-meal small::before{content:"MEAL";font-size:10px;letter-spacing:.08em;text-transform:uppercase}
+.v2-app .featured .split-actions{display:none!important}
