@@ -8,3 +8,4 @@
 /* Chef V2: production is contract-based. RSVP/headcount is not a kitchen metric. */
 .chef-v2 .chef-v2-service>strong{display:none!important}
 .chef-v2 .chef-v2-stats button:first-child svg{display:none!important}
+.chef-v2 .chef-v2-stats button:first-child::before{content:"🍽️";font-size:1.35rem;line-height:1;display:block;margin-bottom:2px}
