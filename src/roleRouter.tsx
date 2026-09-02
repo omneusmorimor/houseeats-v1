@@ -1,5 +1,6 @@
 import React from "react";
 import V2RoleWorkspace from "./V2RoleWorkspace";
+import MemberV2Clean from "./MemberV2Clean";
 import ChefV2 from "./ChefV2";
 import SuperAdminView from "./SuperAdminView";
 import {supabase} from "./lib/supabase";
@@ -12,5 +13,5 @@ export default function RoleRouter({role,user,profile}:Props){
  if(normalized==="admin"||normalized==="super_admin"||normalized==="superadmin")return <SuperAdminView user={user} profile={profile} onSignOut={signOut}/>;
  if(normalized==="chef")return <ChefV2 user={user} profile={{...profile,role:normalized}}/>;
  if(normalized==="moderator")return <ChefV2 user={user} profile={{...profile,role:normalized}}/>;
- return <V2RoleWorkspace user={user} profile={{...profile,role:"member"}}/>;
+ return <MemberV2Clean user={user} profile={{...profile,role:"member"}}/>;
 }
