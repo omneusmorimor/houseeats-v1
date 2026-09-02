@@ -13,9 +13,9 @@ export default function SuperAdminView({user,profile,onSignOut}:Props){
    <div className="super-admin-switcher">
      <div className="super-admin-title"><strong>SUPER ADMIN</strong><span>HouseEats control center</span></div>
      <div className="super-admin-modes">
-       <button onClick={()=>setMode("admin")} className={mode==="admin"?"active":""}>Admin</button>
-       <button onClick={()=>setMode("member")} className={mode==="member"?"active":""}>Member</button>
-       <button onClick={()=>setMode("chef")} className={mode==="chef"?"active":""}>Chef</button>
+       <button onClick={()=>setMode("admin")} className={mode==="admin"?"active":""}>View Admin</button>
+       <button onClick={()=>setMode("member")} className={mode==="member"?"active":""}>View Member</button>
+       <button onClick={()=>setMode("chef")} className={mode==="chef"?"active":""}>View Chef</button>
        <button onClick={onSignOut} className="signout">Sign out</button>
      </div>
    </div>
