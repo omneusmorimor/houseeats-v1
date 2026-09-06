@@ -1,22 +1,59 @@
-# HouseEats V1
+# Tasteful Traditions V2
 
 Mobile-first PWA for fraternity meal management.
 
-### Roles
-Member · Chef · Chapter Admin
+## Roles
 
-### Flows
-Member: Login → Dashboard → Menu → RSVP → Allergy Profile → Late Plate → Notifications
-Kitchen: Dashboard → Headcount → Allergy Alerts → Late Plates → Menu Management
+- Member
+- Chef / Kitchen
+- Chapter Admin
+- Super Admin preview
 
-### Production
+## Member experience
+
+- Rolling 2-week meal menu
+- Allergy profile and alerts
+- Late Plate requests
+- Notifications
+- Profile and account settings
+- Meal feedback
+
+## Chef / Kitchen experience
+
+- Full monthly menu calendar
+- Headcount and meal information
+- Allergy alerts
+- Late Plate management
+- Menu management
+- Kitchen operations
+
+## Chapter Admin
+
+- Chapter-level management and oversight
+- Menu and kitchen visibility
+- Member and operational controls
+
+## Super Admin
+
+Super Admin can preview the actual active V2 Member, Chef, and Chapter Admin experiences rather than a separate mock workspace.
+
+## Production setup
+
 1. Create a Supabase project.
-2. Run `supabase/schema.sql` in the SQL editor.
-3. Run `supabase/houseeats_seed_and_chef_policies.sql`, then `supabase/security_hardening.sql`.
-4. Enable email/password authentication.
-5. Copy `.env.example` to `.env` and add Supabase credentials. Never commit `.env`; only the anon key belongs in the client, never the service-role key.
-6. `npm ci && npm run build`.
-7. Deploy `dist/` to your preferred static host.
+2. Run the SQL files in `supabase/` required by the current schema and policies.
+3. Enable email/password authentication.
+4. Copy `.env.example` to `.env` and add Supabase credentials. Never commit `.env`; only the anon key belongs in the client, never the service-role key.
+5. Run `npm ci && npm run build`.
+6. Deploy the generated `dist/` directory to your preferred static host, or connect the repository to Vercel.
 
-### Security model
-The browser talks to Supabase directly with the anon key, so Row Level Security is the only authorization boundary — the role routing in `src/roleRouter.tsx` is presentation only. `supabase/security_hardening.sql` enables RLS on every table, restricts members to their own rows, gives chef/moderator/admin the wider kitchen access, blocks self service role escalation on `profiles.role`, and makes `send_member_announcement` a staff-only `SECURITY DEFINER` function. Allergy data stays readable only by the owning member and kitchen/admin roles.
+## Security model
+
+The browser talks to Supabase directly with the anon key, so Row Level Security remains the authorization boundary. Client-side role routing in `src/roleRouter.tsx` controls presentation only; it is not a substitute for Supabase RLS. Staff roles receive the broader operational access defined by the database policies, while members remain restricted to the data permitted by those policies.
+
+## V2 architecture
+
+The active application entry path is:
+
+`src/main.tsx` → `src/App.tsx` → `src/roleRouter.tsx`
+
+The role router loads the active V2 workspaces for Member, Chef/Kitchen, Chapter Admin, and Super Admin preview. Legacy V1 workspace implementations and obsolete V2 wrapper styles are no longer part of the active frontend path.
