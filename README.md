@@ -18,5 +18,13 @@ Kitchen: Dashboard → Headcount → Allergy Alerts → Late Plates → Menu Man
 6. `npm ci && npm run build`.
 7. Deploy `dist/` to your preferred static host.
 
+### Vercel
+This repository includes `vercel.json`, so Vercel uses the Vite build command and serves the generated `dist/` directory. Before deploying, add the following **Production**, **Preview**, and **Development** environment variables in **Project Settings → Environment Variables**:
+
+- `VITE_SUPABASE_URL`
+- `VITE_SUPABASE_ANON_KEY`
+
+Vite embeds `VITE_*` values during the build. Redeploy after adding or changing either variable; adding them only after a deployment does not update the already-built client bundle.
+
 ### Security model
 The browser talks to Supabase directly with the anon key, so Row Level Security is the only authorization boundary — the role routing in `src/roleRouter.tsx` is presentation only. `supabase/security_hardening.sql` enables RLS on every table, restricts members to their own rows, gives chef/moderator/admin the wider kitchen access, blocks self service role escalation on `profiles.role`, and makes `send_member_announcement` a staff-only `SECURITY DEFINER` function. Allergy data stays readable only by the owning member and kitchen/admin roles.
