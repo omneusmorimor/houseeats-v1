@@ -1,0 +1,6 @@
+.member-v2-clean .toast{left:50%;right:auto;bottom:92px;transform:translateX(-50%);width:min(560px,calc(100vw - 32px));}
+.chef-v2 .chef-v2-error{position:fixed;left:50%;right:auto;top:76px;transform:translateX(-50%);width:min(620px,calc(100vw - 32px));z-index:50;text-align:center;display:flex;justify-content:center;align-items:center;gap:10px;}
+.chef-v2 .chef-v2-error button{position:absolute;right:10px;}
+.clean-admin .service-exception{align-items:center;}
+.clean-admin .service-exception>div:first-child b{text-transform:capitalize;}
+.clean-admin .service-exception>div:first-child small{display:block;margin-top:4px;}
