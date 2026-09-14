@@ -1,5 +1,6 @@
 import "./v2.css";
 import "./v2-admin.css";
+import "./blue-gold-override.css";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
