@@ -7,6 +7,7 @@ import {supabase}from"./lib/supabase";
 import "./chef-v2.css";
 import "./late-plate-ui.css";
 import "./member-menu-v2.css";
+import "./member-menu-compact.css";
 export type HouseRole="member"|"chef"|"moderator"|"admin"|"super_admin";
 type Props={role?:string|null;user:any;profile:any};
 export default function RoleRouter({role,user,profile}:Props){
