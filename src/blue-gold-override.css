@@ -1,0 +1,10 @@
+:root{--navy:#071a33;--blue:#0c3766;--blue2:#164d82;--gold:#d5a84b;--gold2:#f0cc78;--cream:#f7f4ec;--paper:#fffdf8;--ink:#10243c;--muted:#66778b;--line:#dbe1e8}
+.loginPage{background:radial-gradient(circle at 20% 0,#174b7e 0,#0b294d 38%,#06162a 100%)!important}
+.loginCard,.loadingCard{background:rgba(255,253,248,.98)!important;border-color:rgba(213,168,75,.45)!important}
+.loginCard h1,.loadingCard h1{color:var(--navy)!important}
+.primary{background:var(--navy)!important}
+.authLinks button{color:var(--blue)!important}
+.loginCard input:focus{border-color:var(--gold)!important;box-shadow:0 0 0 3px rgba(213,168,75,.15)!important}
+/* Guard against stale V1 styling ever leaking into the active V2 tree. */
+.he-brand,.he-brand span{color:var(--navy)!important}
+.he-top-actions button[aria-label="Profile"]{background:var(--navy)!important;color:#fff!important;border-color:var(--navy)!important}
