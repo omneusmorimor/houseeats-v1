@@ -1,0 +1,43 @@
+.member-v2-clean .home-calendar{margin:22px 0 0;background:#fff;border:1px solid #e1e8f2;border-radius:22px;padding:18px;box-shadow:0 8px 24px rgba(16,47,92,.06)}
+.member-v2-clean .home-calendar-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:14px}
+.member-v2-clean .home-calendar-head small{display:block;color:#b4872f;font-size:11px;font-weight:800;letter-spacing:.12em}
+.member-v2-clean .home-calendar-head h2{margin:4px 0 2px;font-size:22px;color:#102f5c}
+.member-v2-clean .home-calendar-head p{margin:0;color:#718096;font-size:13px}
+.member-v2-clean .home-calendar-head button{border:1px solid #d9b866;background:#fff8e8;color:#8b681f;border-radius:11px;padding:9px 11px;font-weight:750;white-space:nowrap}
+.member-v2-clean .home-calendar-grid{display:block}
+.member-v2-clean .home-day{position:relative;display:grid;grid-template-columns:78px 1fr;gap:14px;padding:14px 0;border-top:1px solid #edf1f6}
+.member-v2-clean .home-day:first-child{border-top:0}
+.member-v2-clean .home-date{align-self:start;background:#f5f7fa;border-radius:14px;padding:9px 7px;text-align:center;min-height:62px;display:flex;flex-direction:column;justify-content:center}
+.member-v2-clean .home-date small{text-transform:uppercase;font-size:10px;font-weight:800;color:#748196;letter-spacing:.06em}
+.member-v2-clean .home-date b{font-size:22px;line-height:24px;color:#102f5c}
+.member-v2-clean .home-day.today{background:#f7fbff;margin:0 -10px;padding:14px 10px;border-radius:16px;border-top:0;box-shadow:inset 4px 0 0 #d6a94f}
+.member-v2-clean .home-day.today .home-date{background:#102f5c}
+.member-v2-clean .home-day.today .home-date small,.member-v2-clean .home-day.today .home-date b{color:#fff}
+.member-v2-clean .home-meal{display:grid;grid-template-columns:76px 1fr;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid #f0f3f7}
+.member-v2-clean .home-meal:last-child{border-bottom:0}
+.member-v2-clean .home-meal small{text-transform:capitalize;color:#9a6f21;font-size:10px;font-weight:800}
+.member-v2-clean .home-meal b{font-size:14px;color:#1d3554;font-weight:700;line-height:1.25}
+.member-v2-clean .home-none{color:#a1acbb;font-size:13px;align-self:center;padding:12px 0}
+.member-v2-clean .home-day:nth-child(8){margin-top:18px;border-top:3px solid #d6a94f;padding-top:18px}
+.member-v2-clean .home-day:nth-child(8)::before{content:"NEXT WEEK";position:absolute;top:-13px;left:0;background:#fff;color:#9a6f21;font-size:10px;font-weight:850;letter-spacing:.1em;padding-right:8px}
+.member-v2-clean .home-day:nth-child(1)::before{content:"CURRENT WEEK";display:block;position:absolute;top:-1px;left:0;transform:translateY(-100%);color:#9a6f21;font-size:10px;font-weight:850;letter-spacing:.1em}
+.member-v2-clean .home-day:nth-child(1){margin-top:18px}
+.member-v2-clean .home-calendar-grid .home-day:nth-child(1){border-top:1px solid #edf1f6}
+.member-v2-clean .weeks .week{border-radius:20px;border:1px solid #e1e8f2;background:#fff;overflow:hidden;margin-bottom:16px}
+.member-v2-clean .weeks .week-title{background:#102f5c;color:#fff;padding:15px 16px;display:flex;flex-direction:column;gap:3px}
+.member-v2-clean .weeks .week-title small{color:#e7bd62;font-size:10px;font-weight:850;letter-spacing:.12em}
+.member-v2-clean .weeks .week-title b{font-size:14px}
+.member-v2-clean .weeks .day{display:grid;grid-template-columns:68px 1fr;gap:14px;padding:14px 15px;border-top:1px solid #edf1f6}
+.member-v2-clean .weeks .day.today{background:#f7fbff;box-shadow:inset 4px 0 #d6a94f}
+.member-v2-clean .weeks .date{background:#f5f7fa;border-radius:12px;min-height:56px;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.member-v2-clean .weeks .date small{text-transform:uppercase;color:#748196;font-size:9px;font-weight:800}
+.member-v2-clean .weeks .date b{color:#102f5c;font-size:20px}
+.member-v2-clean .weeks .day.today .date{background:#102f5c}
+.member-v2-clean .weeks .day.today .date small,.member-v2-clean .weeks .day.today .date b{color:#fff}
+.member-v2-clean .menu-meal{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:9px 0;border-bottom:1px solid #f0f3f7}
+.member-v2-clean .menu-meal:last-child{border-bottom:0}
+.member-v2-clean .menu-meal small{display:block;color:#9a6f21;text-transform:capitalize;font-size:10px;font-weight:800;margin-bottom:2px}
+.member-v2-clean .menu-meal b{display:block;color:#1d3554;font-size:14px}
+.member-v2-clean .menu-meal button{flex:0 0 auto;border:1px solid #d9b866;background:#fff8e8;color:#8b681f;width:34px;height:34px;border-radius:10px;display:grid;place-items:center}
+.member-v2-clean .none{color:#a1acbb;font-size:13px;padding:8px 0}
+@media(max-width:520px){.member-v2-clean .home-calendar{padding:15px;border-radius:18px}.member-v2-clean .home-calendar-head{gap:8px}.member-v2-clean .home-calendar-head h2{font-size:20px}.member-v2-clean .home-calendar-head button{font-size:11px;padding:8px}.member-v2-clean .home-day{grid-template-columns:62px 1fr;gap:10px}.member-v2-clean .home-meal{grid-template-columns:64px 1fr}.member-v2-clean .weeks .day{grid-template-columns:58px 1fr;gap:10px}}
