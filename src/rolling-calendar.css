@@ -1,0 +1,38 @@
+/* HouseEats member rolling 14-day calendar — visual refresh */
+.home-calendar{margin:18px 0!important;padding:0!important;background:#fff!important;border:1px solid #e4eaf2!important;border-radius:20px!important;overflow:hidden!important;box-shadow:0 8px 28px rgba(16,47,92,.08)!important}
+.home-calendar-head{display:flex!important;align-items:center!important;justify-content:space-between!important;gap:14px!important;padding:18px 18px 14px!important;border-bottom:1px solid #e9eef5!important;background:linear-gradient(180deg,#fff,#fbfcfe)!important}
+.home-calendar-head small{display:block!important;font-size:9px!important;letter-spacing:.16em!important;font-weight:800!important;color:#b48732!important;margin-bottom:4px!important}
+.home-calendar-head h2{margin:0!important;font-size:20px!important;line-height:1.1!important;color:#102f5c!important}
+.home-calendar-head p{margin:5px 0 0!important;font-size:11px!important;color:#718096!important}
+.home-calendar-head>button{flex:0 0 auto!important;border:1px solid #dce5f0!important;background:#102f5c!important;color:#fff!important;border-radius:10px!important;padding:9px 12px!important;font-size:11px!important;font-weight:800!important;white-space:nowrap!important;box-shadow:0 3px 8px rgba(16,47,92,.15)!important}
+.home-calendar-grid{display:grid!important;grid-template-columns:repeat(7,minmax(0,1fr))!important;gap:0!important;background:#e8edf4!important}
+.home-day{min-width:0!important;min-height:116px!important;background:#fff!important;padding:10px 8px 9px!important;border-right:1px solid #e8edf4!important;border-bottom:1px solid #e8edf4!important;position:relative!important;transition:transform .15s ease,background .15s ease!important}
+.home-day:nth-child(7n){border-right:0!important}
+.home-day:nth-last-child(-n+7){border-bottom:0!important}
+.home-day.today{background:#f7fbff!important;box-shadow:inset 0 3px 0 #d6a94f!important}
+.home-date{display:flex!important;align-items:center!important;justify-content:space-between!important;gap:5px!important;margin-bottom:9px!important}
+.home-date small{font-size:9px!important;text-transform:uppercase!important;letter-spacing:.08em!important;font-weight:800!important;color:#7c899a!important}
+.home-date b{display:grid!important;place-items:center!important;width:25px!important;height:25px!important;border-radius:8px!important;background:#f1f4f8!important;color:#18385f!important;font-size:12px!important}
+.home-day.today .home-date small{color:#a27628!important}
+.home-day.today .home-date b{background:#102f5c!important;color:#fff!important}
+.home-meal{display:flex!important;flex-direction:column!important;gap:2px!important;margin:5px 0!important;padding:7px 7px!important;background:#f7f9fc!important;border:1px solid #e7ecf3!important;border-radius:9px!important;min-width:0!important}
+.home-meal small{font-size:7px!important;line-height:1!important;letter-spacing:.08em!important;color:#a27628!important;text-transform:uppercase!important;font-weight:900!important}
+.home-meal b{font-size:10px!important;line-height:1.2!important;color:#18385f!important;display:-webkit-box!important;-webkit-line-clamp:2!important;-webkit-box-orient:vertical!important;overflow:hidden!important}
+.home-none{display:block!important;color:#aab4c2!important;text-align:center!important;font-size:13px!important;padding-top:17px!important}
+@media(max-width:600px){
+ .home-calendar{border-radius:16px!important;margin:16px 0!important}
+ .home-calendar-head{padding:15px 14px 12px!important;align-items:flex-end!important}
+ .home-calendar-head h2{font-size:18px!important}
+ .home-calendar-head p{font-size:10px!important}
+ .home-calendar-head>button{padding:8px 10px!important;font-size:10px!important}
+ .home-calendar-grid{display:flex!important;overflow-x:auto!important;scroll-snap-type:x mandatory!important;-webkit-overflow-scrolling:touch!important;gap:1px!important;background:#e8edf4!important;padding-bottom:1px!important}
+ .home-day{flex:0 0 82px!important;width:82px!important;min-height:112px!important;scroll-snap-align:start!important;border:0!important;padding:9px 7px!important}
+ .home-day.today{box-shadow:inset 0 3px 0 #d6a94f!important}
+ .home-date{display:block!important;margin-bottom:8px!important}
+ .home-date small{display:block!important;margin-bottom:4px!important;font-size:8px!important}
+ .home-date b{width:23px!important;height:23px!important;font-size:11px!important}
+ .home-meal{padding:6px!important;margin:4px 0!important;border-radius:8px!important}
+ .home-meal small{font-size:6px!important}
+ .home-meal b{font-size:9px!important}
+ .home-none{font-size:12px!important;padding-top:14px!important}
+}
