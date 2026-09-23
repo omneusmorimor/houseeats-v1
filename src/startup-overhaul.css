@@ -158,3 +158,37 @@ button{font-weight:650!important;letter-spacing:-.01em}
 .chefWorkspace .calendarCell.today{border-color:#d5a84b!important;box-shadow:inset 0 0 0 1px #d5a84b!important;}
 .chefWorkspace .chefMealTop small,.chefWorkspace .chefTimelineTime b,.chefWorkspace .chefSectionTitle{color:var(--tt-brand)!important;}
 .chefWorkspace .chefMealFooter{border-top-color:var(--tt-line)!important;}
+
+
+/* Admin workspace — same V2 shell, with a cleaner management hierarchy */
+.adminWorkspace{background:var(--tt-bg)!important;}
+.adminWorkspace .roleHero{position:relative!important;padding-right:0!important;}
+.adminWorkspace .roleHero h1{color:var(--tt-ink)!important;}
+.adminWorkspace .roleHero p{color:var(--tt-muted)!important;}
+.adminWorkspace .adminPreviewButtons{display:flex!important;gap:8px!important;flex-wrap:wrap!important;margin-top:14px!important;}
+.adminWorkspace .adminPreviewButtons button{background:var(--tt-paper)!important;color:var(--tt-brand)!important;border:1px solid var(--tt-line)!important;border-radius:10px!important;padding:10px 13px!important;box-shadow:none!important;}
+.adminWorkspace .adminPreviewButtons button:hover{background:var(--tt-brand-soft)!important;}
+.adminWorkspace .workspaceNav{overflow-x:auto!important;display:flex!important;gap:5px!important;}
+.adminWorkspace .workspaceNav button{white-space:nowrap!important;}
+.adminWorkspace .adminPanel,.adminWorkspace .panel{background:transparent!important;border:0!important;box-shadow:none!important;}
+.adminWorkspace .heading{display:flex!important;align-items:center!important;justify-content:space-between!important;gap:14px!important;margin-bottom:14px!important;}
+.adminWorkspace .heading h2,.adminWorkspace .panel h2{color:var(--tt-ink)!important;letter-spacing:-.6px!important;}
+.adminWorkspace .heading p,.adminWorkspace .panel>p{color:var(--tt-muted)!important;}
+.adminWorkspace .heading button,.adminWorkspace .panel>button{background:var(--tt-brand)!important;color:#fff!important;border:1px solid var(--tt-brand)!important;border-radius:9px!important;padding:9px 13px!important;}
+.adminWorkspace .memberTable{border-top:1px solid var(--tt-line)!important;}
+.adminWorkspace .memberRow{display:flex!important;align-items:center!important;justify-content:space-between!important;gap:16px!important;padding:15px 2px!important;border-bottom:1px solid var(--tt-line)!important;background:transparent!important;}
+.adminWorkspace .memberRow b{color:var(--tt-ink)!important;display:block!important;}
+.adminWorkspace .memberRow small{color:var(--tt-muted)!important;display:block!important;margin-top:3px!important;}
+.adminWorkspace .memberRow>span{color:var(--tt-brand)!important;font-weight:800!important;text-transform:capitalize!important;}
+.adminWorkspace select,.adminWorkspace input,.adminWorkspace textarea{background:var(--tt-paper)!important;color:var(--tt-ink)!important;border:1px solid var(--tt-line)!important;border-radius:10px!important;}
+.adminWorkspace select{padding:9px 10px!important;}
+.adminWorkspace input,.adminWorkspace textarea{width:100%!important;padding:11px 12px!important;margin:5px 0 10px!important;box-sizing:border-box!important;}
+.adminWorkspace .roleCards{display:grid!important;gap:10px!important;}
+.adminWorkspace .roleCard{background:var(--tt-paper)!important;border:1px solid var(--tt-line)!important;border-radius:12px!important;box-shadow:none!important;padding:15px!important;}
+.adminWorkspace .roleCard b{color:var(--tt-ink)!important;display:block!important;}
+.adminWorkspace .roleCard span{color:var(--tt-brand)!important;font-weight:750!important;text-transform:capitalize!important;display:block!important;margin-top:4px!important;}
+.adminWorkspace .roleCard small{color:var(--tt-muted)!important;display:block!important;margin-top:5px!important;}
+.adminWorkspace .message{background:var(--tt-paper)!important;border:1px solid var(--tt-line)!important;color:var(--tt-muted)!important;border-radius:10px!important;padding:12px!important;}
+.adminWorkspace .errorBanner{background:#fbefec!important;border:1px solid #ead1ca!important;color:#824a3f!important;border-radius:10px!important;padding:10px 12px!important;}
+.adminWorkspace .previewBar{background:var(--tt-brand)!important;color:#fff!important;}
+.adminWorkspace .previewBar button{background:#fff!important;color:var(--tt-brand)!important;border-radius:9px!important;}
