@@ -21,7 +21,7 @@ export default function MemberV2Clean({user,profile}:Props){
  const markRead=async(id:string)=>{await supabase.from("notifications").update({read:true}).eq("id",id);void load()};
  const markAll=async()=>{await supabase.from("notifications").update({read:true}).eq("user_id",user.id);void load()};
  const signOut=async()=>{await supabase.auth.signOut()};
- return <div className="member-v2-clean v3-member"><main>
+ return <div className="v3-member"><main>
  {tab==="home"&&<Home name={name} meals={meals} loading={loading} onLate={requestLate}/>} 
  {tab==="late"&&<LateView meals={meals}requests={late}onRequest={requestLate}/>} 
  {tab==="notifications"&&<Notices notices={notices}onRead={markRead}onAll={markAll}/>} 
