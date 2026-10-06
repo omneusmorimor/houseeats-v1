@@ -1,5 +1,5 @@
 import React,{useEffect,useMemo,useState}from"react";
-import{Bell,CalendarDays,Check,ChevronRight,Clock3,LogOut,Save,ShieldAlert,UtensilsCrossed,X}from"lucide-react";
+import{Bell,CalendarDays,Check,ChevronRight,Clock3,CircleUserRound,LogOut,Save,ShieldAlert,UtensilsCrossed,X}from"lucide-react";
 import{supabase}from"./lib/supabase";
 
 type Props={user:any;profile:any};
@@ -27,7 +27,7 @@ export default function MemberV2Clean({user,profile}:Props){
  {tab==="notifications"&&<Notices notices={notices}onRead={markRead}onAll={markAll}/>} 
  {tab==="profile"&&<Profile name={name}email={user.email}allergies={allergies}setAllergies={setAllergies}diet={diet}setDiet={setDiet}notes={notes}setNotes={setNotes}onSave={saveProfile}onSignOut={signOut}toast={toast}/>} 
  {toast&&tab!=="profile"&&<div className="toast">{toast}<button onClick={()=>setToast("")}><X size={15}/></button></div>}
- </main><nav>{[["home","Home"],["late","Late Plate"],["notifications","Alerts"],["profile","Profile"]].map(([id,label])=><button key={id}className={tab===id?"active":""}onClick={()=>setTab(id)}>{label}{id==="notifications"&&unread>0?<em>{unread}</em>:null}</button>)}</nav></div>
+ </main><nav>{[["home","Home",UtensilsCrossed],["late","Late Plate",Clock3],["notifications","Alerts",Bell],["profile","Profile",CircleUserRound]].map(([id,label,Icon]:any)=><button key={id}className={tab===id?"active":""}onClick={()=>setTab(id)}><Icon size={19} strokeWidth={2.2}/><span>{label}</span>{id==="notifications"&&unread>0?<em>{unread}</em>:null}</button>)}</nav></div>
 }
 function Head({eyebrow,title,sub}:{eyebrow:string;title:string;sub?:string}){return <div className="head"><span>{eyebrow}</span><h1>{title}</h1>{sub&&<p>{sub}</p>}</div>}
 function Home({name,meals,loading,onLate}:{name:string;meals:Meal[];loading:boolean;onLate:(m:Meal)=>void}){const hour=new Date().getHours(),greeting=hour<12?"Good morning":hour<18?"Good afternoon":"Good evening";const firstName=String(name).trim().split(/\s+/)[0]||"Member";const days=Array.from({length:14},(_,i)=>{const d=new Date();d.setHours(12,0,0,0);d.setDate(d.getDate()+i);return d});const grouped=useMemo(()=>{const map=new Map<string,Meal[]>();meals.forEach(m=>map.set(m.meal_date,[...(map.get(m.meal_date)||[]),m]));return map},[meals]);const end=days[13];return <><section className="welcome-hero"><div><span>HOUSEEATS</span><h1>{greeting}, <i>{firstName}</i>.</h1><p>Here’s what’s being served over the next 14 days.</p></div></section><section className="menu-heading"><div><span>14-DAY MENU</span><h2>What’s being served</h2><p>{days[0].toLocaleDateString(undefined,{month:"short",day:"numeric"})} — {end.toLocaleDateString(undefined,{month:"short",day:"numeric"})}</p></div></section><section className="rolling-menu">{days.map(d=>{const key=iso(d),list=(grouped.get(key)||[]).filter(m=>m.meal_type==="lunch"||m.meal_type==="dinner").sort((a,b)=>order.indexOf(a.meal_type)-order.indexOf(b.meal_type));const lunch=list.find(m=>m.meal_type==="lunch"),dinner=list.find(m=>m.meal_type==="dinner");return <section className={"menu-day-row "+(key===today()?"today":"")} key={key}><div className="menu-day-label"><small>{d.toLocaleDateString(undefined,{weekday:"short"}).toUpperCase()}</small><b>{d.getDate()}</b><span>{d.toLocaleDateString(undefined,{month:"short"}).toUpperCase()}</span>{key===today()&&<em>Today</em>}</div><div className="menu-meals-stack"><MealLine meal={lunch} onLate={onLate}/><MealLine meal={dinner} onLate={onLate}/></div></section>})}{loading&&<div className="menu-loading">Loading menu…</div>}</section></>}
@@ -84,4 +84,13 @@ const css=`*{box-sizing:border-box}.member-v2-clean{min-height:100vh;background:
 .menu-heading span{font-size:8px;letter-spacing:.17em}
 .menu-heading p{font-size:10px}
 @media(max-width:430px){.welcome-hero{padding:17px 16px;border-radius:16px;margin-bottom:15px}.welcome-hero h1{font-size:21px}.welcome-hero p{font-size:9.5px}.menu-heading{padding-bottom:12px}.menu-heading h2{font-size:20px}}
+
+/* Member bottom navigation icons */
+nav button{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;border:0;background:transparent;color:#7d8998;font-size:10px;font-weight:800;letter-spacing:.01em}
+nav button svg{display:block}
+nav button.active{color:#102f5c}
+nav button.active svg{stroke:#c99b3d}
+nav button span{line-height:1}
+nav button em{position:absolute;top:9px;margin-left:24px;min-width:15px;height:15px;padding:0 4px;border-radius:99px;background:#c99b3d;color:#10233f;font-size:8px;font-style:normal;display:flex;align-items:center;justify-content:center;border:2px solid #fff}
+@media(max-width:430px){nav{height:70px}nav button{font-size:9px;gap:4px}}
 `;
