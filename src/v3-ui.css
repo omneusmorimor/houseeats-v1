@@ -154,3 +154,134 @@ button,input,textarea,select{font-family:inherit!important}
  .member-v2-clean,.chefWorkspace,.clean-admin{max-width:760px!important;margin:0 auto!important}
  .member-v2-clean{border-left:1px solid #e4e7e9!important;border-right:1px solid #e4e7e9!important}
 }
+
+
+/* === APPROVED MEMBER RENDERING — REFERENCE MATCH === */
+.v3-member{background:#f8f7f3!important}
+.v3-member main{max-width:none!important;padding:0 0 84px!important}
+.v3-member .home-shell{max-width:none!important;margin:0!important}
+.v3-member .reference-header{
+  position:relative!important;overflow:hidden!important;
+  min-height:318px!important;padding:28px 50px 18px!important;
+  background:#082846!important;color:#f8f7f3!important;
+}
+.v3-member .reference-top{display:flex!important;align-items:flex-start!important;justify-content:space-between!important;gap:24px!important}
+.v3-member .reference-brand{display:flex!important;align-items:center!important;gap:15px!important;color:#d8b45a!important}
+.v3-member .reference-brand svg{stroke:#d8b45a!important;stroke-width:1.8!important}
+.v3-member .reference-brand b{display:block!important;font-family:Georgia,"Times New Roman",serif!important;font-size:30px!important;line-height:1!important;letter-spacing:.06em!important;font-weight:400!important;color:#f7f3e8!important}
+.v3-member .reference-brand small{display:block!important;margin-top:7px!important;font-family:Georgia,"Times New Roman",serif!important;font-size:12px!important;letter-spacing:.13em!important;color:#d8b45a!important}
+.v3-member .reference-motto{display:grid!important;grid-template-columns:28px auto 28px!important;align-items:center!important;gap:9px!important;margin-top:8px!important;color:#d8b45a!important;font-size:12px!important;line-height:1.4!important;letter-spacing:.04em!important;text-transform:uppercase!important}
+.v3-member .reference-motto i{height:1px!important;background:#d8b45a!important;display:block!important}
+.v3-member .reference-greeting{margin:62px 0 0!important;font-family:Georgia,"Times New Roman",serif!important;font-size:31px!important;line-height:1.05!important;font-weight:400!important;color:#f7f3e8!important}
+.v3-member .reference-greeting em{font-family:Georgia,"Times New Roman",serif!important;font-size:43px!important;font-style:italic!important;color:#d8b45a!important}
+.v3-member .reference-menu-meta{margin-top:28px!important;display:flex!important;flex-direction:column!important;gap:5px!important}
+.v3-member .reference-menu-meta span{font-size:11px!important;letter-spacing:.22em!important;color:#d8b45a!important;font-weight:800!important}
+.v3-member .reference-menu-meta b{font-size:17px!important;font-weight:400!important;color:#f7f3e8!important}
+.v3-member .reference-gold-rule{position:absolute!important;left:50px!important;right:50px!important;bottom:13px!important;height:2px!important;background:#d8b45a!important}
+
+.v3-member .rolling-menu{margin:0!important;border:0!important;border-radius:0!important;background:#faf9f5!important;box-shadow:none!important;overflow:visible!important}
+.v3-member .menu-day-row{
+  display:block!important;min-height:0!important;padding:0 50px!important;
+  background:#faf9f5!important;border-bottom:1px solid #dfe3e5!important;
+}
+.v3-member .menu-day-row.today{
+  background:#faf9f5!important;box-shadow:none!important;
+  border-left:3px solid #d8b45a!important;padding-left:47px!important;
+}
+.v3-member .menu-day-label{
+  min-height:0!important;height:auto!important;padding:20px 0 12px!important;
+  border:0!important;display:flex!important;flex-direction:row!important;
+  align-items:baseline!important;gap:9px!important;
+}
+.v3-member .menu-day-label b{
+  font-family:Inter,ui-sans-serif,system-ui,sans-serif!important;
+  color:#c69e4a!important;font-size:24px!important;line-height:1!important;
+  font-weight:800!important;letter-spacing:.01em!important;
+}
+.v3-member .menu-day-label span{font-size:18px!important;color:#c69e4a!important}
+.v3-member .menu-day-label strong{
+  color:#173b5c!important;font-size:18px!important;font-weight:500!important;
+  letter-spacing:.01em!important
+}
+.v3-member .menu-meals-stack{padding:0!important}
+.v3-member .menu-meal-line{
+  display:grid!important;grid-template-columns:94px minmax(0,1fr) 158px!important;
+  align-items:center!important;gap:16px!important;min-height:112px!important;
+  padding:14px 0!important;border-bottom:1px solid #dfe3e5!important;
+}
+.v3-member .menu-meal-line:last-child{border-bottom:0!important}
+.v3-member .menu-meal-copy{min-width:0!important;align-self:center!important}
+.v3-member .meal-pill{
+  display:inline-flex!important;align-items:center!important;justify-content:center!important;
+  min-width:73px!important;padding:6px 10px!important;border-radius:999px!important;
+  font-size:12px!important;line-height:1!important;letter-spacing:.01em!important;
+  font-weight:500!important;background:#dec57d!important;color:#173b5c!important;
+  margin-bottom:8px!important;
+}
+.v3-member .meal-pill.dinner{background:#0d4169!important;color:#fff!important}
+.v3-member .menu-meal-copy>b{
+  display:block!important;color:#173b5c!important;font-family:Inter,ui-sans-serif,system-ui,sans-serif!important;
+  font-size:17px!important;line-height:1.2!important;font-weight:750!important
+}
+.v3-member .menu-meal-copy p{
+  margin:5px 0 0!important;color:#294b67!important;font-size:15px!important;
+  line-height:1.35!important;max-width:520px!important
+}
+.v3-member .meal-tags{display:flex!important;gap:7px!important;margin-top:7px!important;flex-wrap:wrap!important}
+.v3-member .meal-tags small{
+  display:inline-flex!important;background:#e7ebee!important;color:#31536d!important;
+  border-radius:999px!important;padding:5px 10px!important;font-size:10px!important;
+  line-height:1!important;letter-spacing:.04em!important;text-transform:uppercase!important
+}
+.v3-member .late-meal-action{
+  justify-self:end!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;
+  gap:10px!important;width:158px!important;height:45px!important;padding:0 16px!important;
+  border:2px solid #d3a94e!important;background:transparent!important;color:#173b5c!important;
+  border-radius:999px!important;font-size:14px!important;font-weight:650!important;
+  letter-spacing:0!important;text-transform:none!important
+}
+.v3-member .late-meal-action svg{stroke:#173b5c!important}
+.v3-member .empty-meal{display:block!important;padding:20px 0!important;min-height:0!important}
+.v3-member .empty-meal .meal-pill{display:none!important}
+
+.v3-member nav{
+  position:fixed!important;left:0!important;right:0!important;bottom:0!important;
+  height:78px!important;padding:8px 12px max(8px,env(safe-area-inset-bottom))!important;
+  background:#082846!important;border-top:0!important;box-shadow:0 -5px 20px rgba(0,0,0,.12)!important;
+}
+.v3-member nav button{
+  min-height:58px!important;background:transparent!important;color:#dce5ec!important;
+  border-radius:0!important;gap:4px!important;font-size:12px!important;font-weight:500!important;
+}
+.v3-member nav button svg{stroke:#dce5ec!important;stroke-width:1.8!important}
+.v3-member nav button.active{background:transparent!important;color:#d8b45a!important}
+.v3-member nav button.active svg{stroke:#d8b45a!important}
+.v3-member nav em{background:#d8b45a!important;color:#082846!important;border:0!important;top:2px!important}
+
+@media(max-width:600px){
+  .v3-member .reference-header{min-height:292px!important;padding:24px 20px 16px!important}
+  .v3-member .reference-top{gap:12px!important}
+  .v3-member .reference-brand{gap:10px!important}
+  .v3-member .reference-brand svg{width:25px!important;height:25px!important}
+  .v3-member .reference-brand b{font-size:23px!important}
+  .v3-member .reference-brand small{font-size:8px!important;margin-top:5px!important}
+  .v3-member .reference-motto{grid-template-columns:18px auto 18px!important;gap:6px!important;font-size:8px!important}
+  .v3-member .reference-greeting{margin-top:50px!important;font-size:23px!important}
+  .v3-member .reference-greeting em{font-size:33px!important}
+  .v3-member .reference-menu-meta{margin-top:23px!important}
+  .v3-member .reference-menu-meta span{font-size:9px!important}
+  .v3-member .reference-menu-meta b{font-size:15px!important}
+  .v3-member .reference-gold-rule{left:20px!important;right:20px!important;bottom:11px!important}
+  .v3-member .menu-day-row{padding:0 16px!important}
+  .v3-member .menu-day-row.today{padding-left:13px!important}
+  .v3-member .menu-day-label{padding:17px 0 10px!important;gap:7px!important}
+  .v3-member .menu-day-label b{font-size:20px!important}
+  .v3-member .menu-day-label strong{font-size:16px!important}
+  .v3-member .menu-day-label span{font-size:16px!important}
+  .v3-member .menu-meal-line{grid-template-columns:74px minmax(0,1fr)!important;gap:10px!important;min-height:116px!important;padding:13px 0!important}
+  .v3-member .meal-pill{min-width:58px!important;padding:6px 8px!important;font-size:10px!important;margin-bottom:6px!important}
+  .v3-member .menu-meal-copy>b{font-size:15px!important}
+  .v3-member .menu-meal-copy p{font-size:12px!important}
+  .v3-member .meal-tags small{font-size:8px!important;padding:4px 8px!important}
+  .v3-member .late-meal-action{grid-column:2!important;justify-self:start!important;width:auto!important;min-width:118px!important;height:37px!important;padding:0 12px!important;font-size:12px!important;margin-top:2px!important}
+}
