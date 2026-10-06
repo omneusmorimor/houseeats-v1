@@ -1,0 +1,156 @@
+/* HouseEats V3 — UI truth stylesheet
+   Visual contract: navy #082846, warm gold #d8b45a, ivory #f7f6f2,
+   editorial serif headlines, compact mobile rhythm, restrained borders. */
+:root{--v3-navy:#082846;--v3-navy2:#0d3557;--v3-gold:#d8b45a;--v3-gold2:#b88e32;--v3-ivory:#f7f6f2;--v3-paper:#fff;--v3-ink:#17344f;--v3-muted:#7a8995;--v3-line:#e2e6e8;--v3-danger:#a65b46}
+html,body,#root{background:var(--v3-ivory)!important;color:var(--v3-ink)!important}
+body{font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif!important}
+button,input,textarea,select{font-family:inherit!important}
+
+/* Login / recovery */
+.loginPage{min-height:100vh!important;background:var(--v3-navy)!important;padding:24px!important}
+.loginCard,.loadingCard{width:min(100%,410px)!important;background:var(--v3-ivory)!important;border:0!important;border-radius:18px!important;padding:30px!important;box-shadow:0 24px 70px rgba(0,0,0,.22)!important}
+.loginCard .tastefulLogo{max-height:95px!important}
+.loginCard .tt-company,.loadingCard .tt-company{color:var(--v3-gold2)!important;text-transform:uppercase!important;letter-spacing:.18em!important;font-size:9px!important;font-weight:900!important}
+.loginCard h1,.loadingCard h1{font-family:Georgia,"Times New Roman",serif!important;color:var(--v3-navy)!important;font-size:34px!important;font-weight:500!important}
+.loginCard p,.loadingCard p{color:var(--v3-muted)!important}
+.loginCard label{color:var(--v3-ink)!important}
+.loginCard input{background:#fff!important;border:1px solid #d9dfe3!important;border-radius:7px!important}
+.loginCard .primary{background:var(--v3-navy)!important;border-radius:7px!important;height:48px!important}
+.authLinks button{background:transparent!important;color:var(--v3-muted)!important}
+.authLinks .linkStrong{color:var(--v3-gold2)!important}
+
+/* Super-admin preview bar */
+.super-admin-shell{min-height:100vh!important;background:var(--v3-ivory)!important}
+.super-admin-switcher{background:var(--v3-navy)!important;border-bottom:1px solid rgba(216,180,90,.45)!important}
+.super-admin-title strong{color:var(--v3-gold)!important}
+.super-admin-modes button{border-color:rgba(216,180,90,.45)!important;border-radius:7px!important}
+.super-admin-modes button.active{background:var(--v3-gold)!important;color:var(--v3-navy)!important;border-color:var(--v3-gold)!important}
+
+/* Member shell */
+.member-v2-clean{width:100%!important;min-height:100vh!important;background:var(--v3-ivory)!important;color:var(--v3-ink)!important}
+.member-v2-clean main{max-width:760px!important;margin:0 auto!important;padding:0 16px 92px!important}
+.member-v2-clean .member-header{height:68px!important;background:var(--v3-navy)!important;color:#fff!important;border:0!important;padding:0 max(16px,calc((100vw - 760px)/2 + 16px))!important;display:flex!important;align-items:center!important;justify-content:space-between!important}
+.member-v2-clean .brand{display:flex!important;align-items:center!important;gap:10px!important}
+.member-v2-clean .brand>span{display:grid!important;place-items:center!important;color:var(--v3-gold)!important;background:transparent!important}
+.member-v2-clean .brand b{font-family:Georgia,"Times New Roman",serif!important;font-size:17px!important;font-weight:500!important;letter-spacing:.13em!important;color:#fff!important}
+.member-v2-clean .brand small{display:block!important;color:#b8c8d5!important;font-size:8px!important;letter-spacing:.14em!important;text-transform:uppercase!important;margin-top:3px!important}
+.member-v2-clean .header-actions{display:flex!important;gap:4px!important}
+.member-v2-clean .header-actions button{background:transparent!important;color:#fff!important;border:0!important;width:38px!important;height:38px!important;display:grid!important;place-items:center!important;position:relative!important}
+.member-v2-clean .header-actions .avatar{background:var(--v3-gold)!important;color:var(--v3-navy)!important;border-radius:50%!important;font-weight:900!important}
+.member-v2-clean .header-actions i{background:var(--v3-gold)!important;color:var(--v3-navy)!important;border-color:var(--v3-navy)!important}
+
+/* Member home — the reference structure */
+.v3-member .home-shell{max-width:760px!important;margin:0 auto!important}
+.v3-member .welcome-hero{position:relative!important;overflow:hidden!important;background:var(--v3-navy)!important;color:#fff!important;border-radius:0 0 2px 2px!important;padding:25px 18px 22px!important;margin:0 -16px 0!important;min-height:148px!important;box-shadow:none!important}
+.v3-member .welcome-hero:after{content:""!important;position:absolute!important;right:-85px!important;top:-105px!important;width:190px!important;height:190px!important;border:1px solid rgba(216,180,90,.18)!important;border-radius:50%!important;box-shadow:0 0 0 34px rgba(216,180,90,.025),0 0 0 68px rgba(216,180,90,.02)!important}
+.v3-member .welcome-brand{display:flex!important;align-items:center!important;gap:8px!important;color:var(--v3-gold)!important;font-size:8px!important;font-weight:900!important;letter-spacing:.19em!important}
+.v3-member .welcome-copy{margin-top:22px!important}
+.v3-member .welcome-greeting{margin:0!important;font-family:Georgia,"Times New Roman",serif!important;font-size:29px!important;line-height:1.05!important;font-weight:400!important;color:#fff!important;letter-spacing:-.025em!important}
+.v3-member .welcome-greeting i{font-family:Georgia,"Times New Roman",serif!important;font-style:italic!important;color:#ead18d!important}
+.v3-member .welcome-sub{margin:8px 0 0!important;color:#c1d0dc!important;font-size:9px!important;letter-spacing:.1em!important;text-transform:uppercase!important}
+.v3-member .welcome-rule{position:absolute!important;left:18px!important;right:18px!important;bottom:0!important;height:2px!important;background:var(--v3-gold)!important}
+.v3-member .menu-heading{background:var(--v3-ivory)!important;padding:22px 2px 12px!important;margin:0!important}
+.v3-member .menu-heading span{color:var(--v3-gold2)!important;font-size:8px!important;letter-spacing:.2em!important;font-weight:900!important}
+.v3-member .menu-heading h2{font-family:Georgia,"Times New Roman",serif!important;color:var(--v3-navy)!important;font-size:25px!important;font-weight:500!important;line-height:1.1!important;margin:5px 0 3px!important;letter-spacing:-.02em!important}
+.v3-member .menu-heading p{color:var(--v3-muted)!important;font-size:10px!important;margin:0!important}
+.v3-member .rolling-menu{background:var(--v3-paper)!important;border:1px solid var(--v3-line)!important;border-radius:12px!important;overflow:hidden!important;box-shadow:0 6px 22px rgba(8,40,70,.045)!important;margin:0!important}
+.v3-member .menu-day-row{display:grid!important;grid-template-columns:62px 1fr!important;gap:13px!important;min-height:112px!important;padding:0 12px 0 9px!important;background:#fff!important;border-bottom:1px solid var(--v3-line)!important}
+.v3-member .menu-day-row.today{background:#fffdf6!important;box-shadow:inset 3px 0 var(--v3-gold)!important}
+.v3-member .menu-day-label{min-height:101px!important;padding:12px 9px 12px 0!important;border-right:1px solid var(--v3-line)!important;display:flex!important;flex-direction:column!important;align-items:flex-start!important}
+.v3-member .menu-day-label small{font-size:7px!important;color:#70808d!important;letter-spacing:.12em!important}
+.v3-member .menu-day-label b{font-family:Georgia,"Times New Roman",serif!important;color:var(--v3-navy)!important;font-size:27px!important;font-weight:500!important;line-height:1!important;margin:2px 0!important}
+.v3-member .menu-day-label span{font-size:7px!important;color:#8c98a2!important;letter-spacing:.1em!important}
+.v3-member .menu-day-label em{margin-top:6px!important;background:var(--v3-gold)!important;color:var(--v3-navy)!important;border-radius:3px!important;padding:3px 5px!important;font-size:5.5px!important;letter-spacing:.11em!important;font-style:normal!important;text-transform:uppercase!important}
+.v3-member .menu-meals-stack{padding:5px 0!important}
+.v3-member .menu-meal-line{display:flex!important;justify-content:space-between!important;align-items:center!important;gap:10px!important;min-height:50px!important;padding:8px 0!important;border-bottom:1px solid #edf0f2!important}
+.v3-member .menu-meal-line:last-child{border-bottom:0!important}
+.v3-member .menu-meal-copy{min-width:0!important}
+.v3-member .menu-meal-copy>span{display:block!important;color:var(--v3-gold2)!important;font-size:6.5px!important;letter-spacing:.14em!important;margin-bottom:3px!important}
+.v3-member .menu-meal-copy>b{display:block!important;color:#25435d!important;font-family:Georgia,"Times New Roman",serif!important;font-size:15px!important;font-weight:600!important;line-height:1.15!important}
+.v3-member .menu-meal-copy p{margin:3px 0 0!important;color:#758492!important;font-size:9px!important;line-height:1.35!important}
+.v3-member .meal-allergen{display:block!important;color:#9a6e21!important;font-size:8px!important;margin-top:2px!important}
+.v3-member .late-meal-action{flex:0 0 auto!important;border:1px solid #d5b25d!important;background:#fff!important;color:var(--v3-navy)!important;border-radius:4px!important;padding:6px 8px!important;font-size:7px!important;font-weight:900!important;text-transform:uppercase!important;letter-spacing:.03em!important}
+.v3-member .empty-meal{color:#9aa5ad!important;font-family:Georgia,"Times New Roman",serif!important;font-size:13px!important}
+
+/* Member secondary pages */
+.v3-member .head{padding:22px 2px 15px!important}
+.v3-member .head span,.v3-member .page-head span{color:var(--v3-gold2)!important;letter-spacing:.18em!important;font-size:8px!important;font-weight:900!important}
+.v3-member .head h1,.v3-member .page-head h1{font-family:Georgia,"Times New Roman",serif!important;color:var(--v3-navy)!important;font-size:27px!important;font-weight:500!important;margin:5px 0!important}
+.v3-member .head p,.v3-member .page-head p{color:var(--v3-muted)!important;font-size:11px!important}
+.v3-member .late-panel,.v3-member .notice,.v3-member .profile,.v3-member .late-meal{background:#fff!important;border:1px solid var(--v3-line)!important;border-radius:10px!important;box-shadow:none!important}
+.v3-member .late-panel{overflow:hidden!important}
+.v3-member .late-intro{padding:16px!important;background:#fbfaf7!important;border-bottom:1px solid var(--v3-line)!important}
+.v3-member .late-meal{display:flex!important;align-items:center!important;justify-content:space-between!important;width:100%!important;border-width:0 0 1px!important;border-radius:0!important;padding:14px!important;text-align:left!important}
+.v3-member .late-meal strong{color:var(--v3-navy)!important;font-size:9px!important;text-transform:uppercase!important}
+.v3-member .notice{width:100%!important;display:flex!important;gap:11px!important;border-width:0 0 1px!important;border-radius:0!important;padding:14px!important;text-align:left!important}
+.v3-member .notice:last-child{border-bottom:0!important}
+.v3-member .notice .dot{background:var(--v3-gold)!important}
+.v3-member .profile{padding:17px!important}
+.v3-member .chips button,.v3-member .profile button{border:1px solid var(--v3-line)!important;background:#fff!important;color:var(--v3-ink)!important;border-radius:7px!important}
+.v3-member .chips button.selected{background:var(--v3-navy)!important;color:#fff!important;border-color:var(--v3-navy)!important}
+.v3-member .save{background:var(--v3-navy)!important;color:#fff!important;border-radius:7px!important}
+
+/* Member bottom nav — four icons, no emoji */
+.v3-member nav{position:fixed!important;left:0!important;right:0!important;bottom:0!important;height:72px!important;padding:7px 6px max(7px,calc(7px + env(safe-area-inset-bottom)))!important;display:grid!important;grid-template-columns:repeat(4,1fr)!important;background:rgba(255,255,255,.98)!important;border-top:1px solid #dfe4e8!important;box-shadow:0 -8px 24px rgba(8,40,70,.08)!important;z-index:1000!important}
+.v3-member nav button{min-height:52px!important;border:0!important;background:transparent!important;color:#b2bec8!important;border-radius:9px!important;display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;gap:4px!important;font-size:8px!important;font-weight:800!important}
+.v3-member nav button.active{color:var(--v3-navy)!important;background:#faf7ef!important}
+.v3-member nav button.active svg{stroke:var(--v3-gold2)!important}
+.v3-member nav em{background:var(--v3-gold)!important;color:var(--v3-navy)!important;border-color:#fff!important}
+
+/* Chef */
+.chefWorkspace{max-width:760px!important;margin:0 auto!important;padding:0 16px 92px!important;background:var(--v3-ivory)!important;color:var(--v3-ink)!important}
+.chefWorkspace .roleHero{padding:25px 2px 17px!important;background:transparent!important}
+.chefWorkspace .roleHero span{color:var(--v3-gold2)!important;letter-spacing:.18em!important}
+.chefWorkspace .roleHero h1{font-family:Georgia,"Times New Roman",serif!important;font-weight:500!important;color:var(--v3-navy)!important;font-size:29px!important}
+.chefWorkspace .roleHero p{color:var(--v3-muted)!important}
+.chefWorkspace .workspaceNav{background:var(--v3-ivory)!important;border-bottom:1px solid var(--v3-line)!important;padding:0 0 9px!important}
+.chefWorkspace .workspaceNav button{border-radius:5px!important;color:#758492!important}
+.chefWorkspace .workspaceNav button.active{background:var(--v3-navy)!important;color:#fff!important}
+.chefWorkspace .chefTodayHero{background:var(--v3-navy)!important;border-radius:10px!important;box-shadow:none!important;padding:20px!important}
+.chefWorkspace .chefTodayHero span,.chefWorkspace .chefSectionTitle,.chefWorkspace .chefMealTop small{color:var(--v3-gold)!important}
+.chefWorkspace .chefTodayHero h2{font-family:Georgia,"Times New Roman",serif!important;font-weight:500!important}
+.chefWorkspace .todayMealCard,.chefWorkspace .roleCard,.chefWorkspace .calendarMeal,.chefWorkspace .panel{background:#fff!important;border:1px solid var(--v3-line)!important;border-radius:9px!important;box-shadow:none!important}
+.chefWorkspace .todayMealCard button,.chefWorkspace .chefEditButton,.chefWorkspace .chefSaveButton{background:var(--v3-navy)!important;color:#fff!important;border-radius:6px!important;border-color:var(--v3-navy)!important}
+.chefWorkspace .chefStatusRow button{background:#fff!important;border:1px solid var(--v3-line)!important;border-radius:8px!important;color:var(--v3-navy)!important}
+.chefWorkspace .calendarHeader{background:var(--v3-navy)!important;color:#fff!important}
+.chefWorkspace .calendarCell.today{border-color:var(--v3-gold)!important}
+.chefWorkspace input,.chefWorkspace textarea,.chefWorkspace select{background:#fff!important;border:1px solid #d9e0e4!important;border-radius:6px!important}
+.chefWorkspace .chefEditorActions button{border-radius:6px!important}
+
+/* Admin */
+.v2-admin.clean-admin{min-height:100vh!important;background:var(--v3-ivory)!important;color:var(--v3-ink)!important}
+.clean-admin .v2-admin-top{background:var(--v3-navy)!important;color:#fff!important;border-bottom:1px solid rgba(216,180,90,.35)!important}
+.clean-admin .v2-admin-brand b{font-family:Georgia,"Times New Roman",serif!important;font-weight:500!important;letter-spacing:.08em!important}
+.clean-admin .v2-admin-brand span{color:#b8c8d5!important}
+.clean-admin .v2-admin-main{max-width:760px!important;margin:0 auto!important;padding:24px 16px 50px!important}
+.clean-admin .v2-admin-welcome span{color:var(--v3-gold2)!important;letter-spacing:.18em!important;font-size:8px!important;font-weight:900!important}
+.clean-admin .v2-admin-welcome h1{font-family:Georgia,"Times New Roman",serif!important;font-size:30px!important;font-weight:500!important;color:var(--v3-navy)!important}
+.clean-admin .v2-admin-welcome p{color:var(--v3-muted)!important}
+.clean-admin .v2-admin-tabs{border-bottom:1px solid var(--v3-line)!important}
+.clean-admin .v2-admin-tabs button{background:transparent!important;color:#778793!important;border-radius:6px!important}
+.clean-admin .v2-admin-tabs button.active{background:var(--v3-navy)!important;color:#fff!important}
+.clean-admin .v2-admin-card,.clean-admin .v2-admin-stat{background:#fff!important;border:1px solid var(--v3-line)!important;border-radius:9px!important;box-shadow:none!important}
+.clean-admin .v2-admin-stat b,.clean-admin .v2-admin-card h2{font-family:Georgia,"Times New Roman",serif!important;color:var(--v3-navy)!important;font-weight:500!important}
+.clean-admin .v2-admin-card-head span{color:var(--v3-gold2)!important;letter-spacing:.16em!important;font-size:8px!important;font-weight:900!important}
+.clean-admin .v2-admin-row{border-bottom:1px solid var(--v3-line)!important}
+.clean-admin .person-avatar{background:var(--v3-gold)!important;color:var(--v3-navy)!important}
+.clean-admin select,.clean-admin input,.clean-admin textarea{background:#fff!important;border:1px solid #d9e0e4!important;border-radius:6px!important}
+.clean-admin .v2-admin-actions button,.clean-admin .v2-admin-card button{border-radius:6px!important}
+
+/* Super-admin preview should never distort the actual role surface */
+@media(max-width:520px){
+ .member-v2-clean main{padding-left:12px!important;padding-right:12px!important}
+ .v3-member .welcome-hero{margin-left:-12px!important;margin-right:-12px!important;padding:22px 16px 20px!important;min-height:142px!important}
+ .v3-member .welcome-greeting{font-size:25px!important}
+ .v3-member .menu-heading{padding-top:19px!important}
+ .v3-member .menu-day-row{grid-template-columns:55px 1fr!important;gap:10px!important}
+ .v3-member .menu-day-label b{font-size:24px!important}
+ .v3-member .menu-meal-copy>b{font-size:13px!important}
+ .v3-member .late-meal-action{padding:6px 7px!important;font-size:6.5px!important}
+ .chefWorkspace{padding-left:12px!important;padding-right:12px!important}
+ .clean-admin .v2-admin-main{padding-left:12px!important;padding-right:12px!important}
+}
+@media(min-width:760px){
+ .member-v2-clean,.chefWorkspace,.clean-admin{max-width:760px!important;margin:0 auto!important}
+ .member-v2-clean{border-left:1px solid #e4e7e9!important;border-right:1px solid #e4e7e9!important}
+}
