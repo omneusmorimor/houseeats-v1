@@ -80,8 +80,17 @@ export default function ChefV3({user,profile}:Props){
    </section>
  };
 
- const Header=()=> <header className="chef3-header"><div className="chef3-brand"><Utensils size={19}/><div><b>HOUSEEATS</b><small>TASTEFUL TRADITIONS · CHEF</small></div></div><button className="chef3-bell"onClick={()=>setTab("alerts")}><Bell size={19}/>{unread>0&&<em>{unread}</em>}</button></header>;
- const Home=()=> <><Header/><section className="chef3-greeting"><span>CHEF WORKSPACE</span><p>Good {new Date().getHours()<12?"morning":new Date().getHours()<18?"afternoon":"evening"},</p><h1>{String(profile?.full_name||"Chef").split(" ")[0]}.</h1><small>Here’s what’s being served.</small></section><main className="chef3-main"><div className="chef3-stats"><button onClick={()=>setTab("menu")}><Utensils/><b>{todayMeals.length}</b><span>Meals today</span></button><button onClick={()=>setTab("allergies")}><AlertTriangle/><b>{conflicts.filter(x=>x.meal_date===today()).length}</b><span>Allergy alerts</span></button><button onClick={()=>setTab("late")}><Clock3/><b>{openLate}</b><span>Late plates</span></button></div><div className="chef3-section"><div className="chef3-section-title"><span>TODAY</span><h2>Lunch & Dinner</h2></div>{todayMeals.length?todayMeals.map(mealCard):<p className="chef3-empty">No meals posted for today.</p>}</div></main></>;
+ const Header=()=> <header className="reference-header role-reference-header">
+  <div className="reference-top">
+    <div className="reference-brand"><Utensils className="brand-mark" size={19}/><div><b>HOUSEEATS</b><small>TASTEFUL TRADITIONS</small></div></div>
+    <button className="role-header-alert" onClick={()=>setTab("alerts")} aria-label="Alerts"><Bell size={19}/>{unread>0&&<em>{unread}</em>}</button>
+  </div>
+</header>;
+ const Home=()=> <><Header/><section className="reference-greeting role-greeting">
+  <p>Good {new Date().getHours()<12?"morning":new Date().getHours()<18?"afternoon":"evening"}, <em>{String(profile?.full_name||"Chef").split(" ")[0]}.</em></p>
+  <div className="reference-menu-meta"><span>Here’s what’s being served.</span></div>
+  <div className="reference-gold-rule"/>
+</section><main className="chef3-main role-main"><div className="chef3-stats"><button onClick={()=>setTab("menu")}><Utensils/><b>{todayMeals.length}</b><span>Meals today</span></button><button onClick={()=>setTab("allergies")}><AlertTriangle/><b>{conflicts.filter(x=>x.meal_date===today()).length}</b><span>Allergy alerts</span></button><button onClick={()=>setTab("late")}><Clock3/><b>{openLate}</b><span>Late plates</span></button></div><div className="chef3-section"><div className="chef3-section-title"><span>TODAY</span><h2>Lunch & Dinner</h2></div>{todayMeals.length?todayMeals.map(mealCard):<p className="chef3-empty">No meals posted for today.</p>}</div></main></>;
 
  const Menu=()=> <><Header/><main className="chef3-main chef3-menu"><div className="chef3-page-title"><span>MENU MANAGEMENT</span><h1>Rolling menu</h1><p>Lunch and dinner, one day at a time.</p><div className="chef3-week-nav"><button onClick={()=>setWeekOffset(x=>x-1)}><ChevronLeft/></button><button onClick={()=>setWeekOffset(0)}>Today</button><button onClick={()=>setWeekOffset(x=>x+1)}><ChevronRight/></button></div></div>{days.map(day)}</main></>;
 
