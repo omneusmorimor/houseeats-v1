@@ -29,7 +29,8 @@ export default function MemberV2Clean({user,profile}:Props){
  {toast&&tab!=="profile"&&<div className="toast">{toast}<button onClick={()=>setToast("")}><X size={15}/></button></div>}
  </main><nav>{[["home","Home",HomeIcon],["late","Late Plate",Clock3],["notifications","Alerts",Bell],["profile","Profile",CircleUserRound]].map(([id,label,Icon]:any)=><button key={id}className={tab===id?"active":""}onClick={()=>setTab(id)}><Icon size={19} strokeWidth={2.2}/><span>{label}</span>{id==="notifications"&&unread>0?<em>{unread}</em>:null}</button>)}</nav></div>
 }
-function BrandMark(){return <svg className="brand-mark" viewBox="0 0 36 36" aria-hidden="true"><path d="M10 5v9c0 3 2 5 5 5V31M7 5v8M10 5v8M13 5v8M20 5c3 4 3 9 0 13l-1 1v12M20 5h3v8c0 2-1 3-3 4" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>}\nfunction Head({eyebrow,title,sub}:{eyebrow:string;title:string;sub?:string}){return <div className="head"><span>{eyebrow}</span><h1>{title}</h1>{sub&&<p>{sub}</p>}</div>}
+function BrandMark(){return <svg className="brand-mark" viewBox="0 0 36 36" aria-hidden="true"><path d="M10 5v9c0 3 2 5 5 5V31M7 5v8M10 5v8M13 5v8M20 5c3 4 3 9 0 13l-1 1v12M20 5h3v8c0 2-1 3-3 4" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>}
+function Head({eyebrow,title,sub}:{eyebrow:string;title:string;sub?:string}){return <div className="head"><span>{eyebrow}</span><h1>{title}</h1>{sub&&<p>{sub}</p>}</div>}
 function Home({name,meals,loading,onLate}:{name:string;meals:Meal[];loading:boolean;onLate:(m:Meal)=>void}){
  const hour=new Date().getHours(),greeting=hour<12?"Good morning":hour<18?"Good afternoon":"Good evening";
  const firstName=String(name).trim().split(/\s+/)[0]||"Member";
