@@ -797,3 +797,44 @@ button{cursor:pointer}
 .chef3-nav em{position:absolute!important;top:7px!important;right:calc(50% - 19px)!important;min-width:14px!important;height:14px!important;display:grid!important;place-items:center!important;border-radius:99px!important;background:var(--v3-gold)!important;color:var(--v3-navy)!important;font-size:7px!important;font-style:normal!important;font-weight:800!important}
 @media(max-width:520px){.chef3-header{padding:0 16px!important}.chef3-main{padding-left:16px!important;padding-right:16px!important}.chef3-greeting{padding-left:20px!important;padding-right:20px!important}.chef3-brand b{font-size:15px!important}}
 @media(max-width:360px){.chef3-meal{grid-template-columns:48px minmax(0,1fr) auto!important;gap:6px!important}.chef3-meal-type span{min-width:45px!important;font-size:6.5px!important}}
+
+
+/* V3 role-shell pass: Member is the visual source of truth */
+.role-reference-header{padding-bottom:0!important}
+.role-reference-header .reference-top{min-height:68px!important}
+.role-reference-header .role-header-alert{position:relative!important;width:34px!important;height:34px!important;display:grid!important;place-items:center!important;border:0!important;background:transparent!important;color:#f8f4e9!important;border-radius:50%!important}
+.role-reference-header .role-header-alert em{position:absolute!important;top:0!important;right:-2px!important;min-width:15px!important;height:15px!important;padding:0 4px!important;display:grid!important;place-items:center!important;border-radius:99px!important;background:var(--v3-gold)!important;color:var(--v3-navy)!important;font-size:8px!important;font-style:normal!important;font-weight:800!important}
+.role-greeting{padding-top:17px!important;padding-bottom:17px!important}
+.role-greeting>p{margin:0!important;color:#f8f4e9!important;font-family:Georgia,"Times New Roman",serif!important;font-size:24px!important;line-height:1.08!important}
+.role-greeting>p em{font-family:Georgia,"Times New Roman",serif!important;font-size:35px!important;font-style:italic!important;color:var(--v3-gold)!important}
+.role-greeting .reference-menu-meta{margin-top:10px!important}
+.role-greeting .reference-gold-rule{margin-top:14px!important}
+.role-main{background:var(--v3-cream)!important}
+.chef3{background:var(--v3-cream)!important;color:var(--v3-blue)!important}
+.chef3-header{display:none!important}
+.chef3-greeting{display:none!important}
+.chef3-nav{height:72px!important;border-radius:0!important}
+.chef3-nav button{font-family:inherit!important}
+.role-admin{min-height:100dvh!important;background:var(--v3-cream)!important}
+.role-admin .reference-header{background:var(--v3-navy)!important}
+.role-admin-actions{display:flex!important;align-items:center!important;gap:4px!important}
+.role-admin-actions button{height:34px!important;padding:0 9px!important;border:0!important;background:transparent!important;color:#f8f4e9!important;font-size:8px!important}
+.role-admin-actions button:first-child{width:34px!important;padding:0!important;display:grid!important;place-items:center!important}
+.role-admin-welcome{padding:17px 24px 14px!important;background:var(--v3-navy)!important;color:#f8f4e9!important;border:0!important;border-radius:0!important}
+.role-admin-welcome p{margin:0!important;font-family:Georgia,"Times New Roman",serif!important;font-size:24px!important;line-height:1.08!important;color:#f8f4e9!important}
+.role-admin-welcome em{font-size:35px!important;font-style:italic!important;color:var(--v3-gold)!important}
+.role-admin-welcome span{display:block!important;margin-top:10px!important;color:#e6dfcf!important;font-size:9px!important}
+.role-admin .v2-admin-main{padding:0 24px 30px!important;background:var(--v3-cream)!important}
+.role-admin .v2-admin-tabs{display:flex!important;gap:7px!important;overflow-x:auto!important;padding:12px 0!important;background:transparent!important;border:0!important}
+.role-admin .v2-admin-tabs button{flex:0 0 auto!important;display:inline-flex!important;align-items:center!important;gap:6px!important;height:32px!important;padding:0 11px!important;border:1px solid #d5dde1!important;border-radius:999px!important;background:#fffefa!important;color:var(--v3-blue)!important;font-size:8px!important}
+.role-admin .v2-admin-tabs button.active{border-color:var(--v3-gold)!important;background:#eee6cf!important;color:var(--v3-navy)!important}
+.role-admin .v2-admin-card,.role-admin .v2-admin-stat{background:#fffefa!important;border:1px solid var(--v3-line)!important;border-radius:8px!important;box-shadow:none!important}
+.role-admin .v2-admin-grid{gap:8px!important}
+.role-admin .v2-admin-stat{padding:13px!important}
+.role-admin .v2-admin-card{padding:15px!important}
+@media(max-width:520px){
+ .role-reference-header .reference-top{padding-left:16px!important;padding-right:16px!important}
+ .role-greeting{padding-left:20px!important;padding-right:20px!important}
+ .role-admin .v2-admin-main{padding-left:16px!important;padding-right:16px!important}
+ .role-admin-welcome{padding-left:20px!important;padding-right:20px!important}
+}
