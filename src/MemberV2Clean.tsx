@@ -93,4 +93,34 @@ nav button.active svg{stroke:#c99b3d}
 nav button span{line-height:1}
 nav button em{position:absolute;top:9px;margin-left:24px;min-width:15px;height:15px;padding:0 4px;border-radius:99px;background:#c99b3d;color:#10233f;font-size:8px;font-style:normal;display:flex;align-items:center;justify-content:center;border:2px solid #fff}
 @media(max-width:430px){nav{height:70px}nav button{font-size:9px;gap:4px}}
+
+/* Final elegant member home */
+.member-v2-clean main{padding:14px 14px 88px}
+.welcome-hero{background:linear-gradient(135deg,#0c2c52 0%,#163f68 100%);border-radius:16px;padding:15px 17px;margin:0 0 13px;min-height:0;box-shadow:0 6px 16px rgba(12,44,82,.10)}
+.welcome-hero:after{width:82px;height:82px;right:-34px;top:-40px;border-color:rgba(213,168,75,.22)}
+.welcome-hero span{font-size:7px;letter-spacing:.18em}
+.welcome-hero h1{margin:4px 0 3px;font-size:20px;line-height:1.1}
+.welcome-hero h1 i{font-family:Georgia,"Times New Roman",serif;font-style:italic;font-weight:400;color:#f0d28a}
+.welcome-hero p{font-size:9px;line-height:1.35;color:#d7e3ee}
+.menu-heading{padding:0 3px 10px;margin:0}
+.menu-heading>div{margin:0}
+.menu-heading span{font-size:7px;letter-spacing:.16em}
+.menu-heading h2{margin:3px 0 2px;font-size:19px;line-height:1.15;color:#122b49}
+.menu-heading p{font-size:9px;color:#8793a2}
+.rolling-menu{margin:0;border-radius:15px;border:1px solid #e0e6ed;box-shadow:0 5px 16px rgba(16,35,63,.035)}
+.menu-day-row{grid-template-columns:56px 1fr;gap:11px;padding:0 11px 0 8px;min-height:92px}
+.menu-day-label{padding:9px 8px 9px 0;min-height:78px}
+.menu-day-label small{font-size:7px}
+.menu-day-label b{font-size:21px}
+.menu-day-label span{font-size:7px}
+.menu-day-label em{margin-top:4px;padding:3px 5px;font-size:5.5px}
+.menu-meals-stack{padding:3px 0}
+.menu-meal-line{min-height:42px;padding:6px 0;gap:8px}
+.menu-meal-copy>span{font-size:6px;margin-bottom:2px}
+.menu-meal-copy>b{font-size:11.5px}
+.menu-meal-copy p{font-size:9px;margin:2px 0}
+.meal-allergen{font-size:8px}
+.late-meal-action{padding:5px 7px;font-size:7px;border-radius:8px}
+.empty-meal .menu-meal-copy>b{font-size:10px}
+@media(max-width:430px){.member-v2-clean main{padding:12px 12px 86px}.welcome-hero{padding:14px 15px;border-radius:15px;margin-bottom:12px}.welcome-hero h1{font-size:19px}.welcome-hero p{font-size:8.5px}.menu-heading{padding:0 2px 9px}.menu-heading h2{font-size:18px}.rolling-menu{border-radius:14px}.menu-day-row{grid-template-columns:52px 1fr;gap:9px;padding-right:9px}.menu-day-label{padding-right:7px}.menu-day-label b{font-size:20px}.menu-meal-copy>b{font-size:11px}.late-meal-action{padding:5px 6px;font-size:7px}}
 `;
