@@ -1,6 +1,6 @@
 import React,{useState}from"react";
-import V2AdminWorkspace from"./V2AdminWorkspace";
-import ChefV2 from"./ChefV2";
+import V2AdminWorkspaceClean from"./V2AdminWorkspaceClean";
+import ChefV3 from"./ChefV3";
 import MemberV2Clean from"./MemberV2Clean";
 
 type Mode="admin"|"member"|"chef";
@@ -30,6 +30,6 @@ export default function SuperAdminView({user,profile,onSignOut}:Props){
      .super-admin-modes button.signout{border-color:rgba(255,255,255,.2);color:#b9c7d4}
      @media(max-width:430px){.super-admin-switcher{gap:8px;padding:6px 9px;min-height:48px}.super-admin-title{min-width:70px}.super-admin-title strong{font-size:8px}.super-admin-title span{font-size:7px}.super-admin-modes button{padding:7px 8px;font-size:8px}}
    `}</style>
-   {mode==="admin"?<V2AdminWorkspace user={user} profile={activeProfile} onSignOut={onSignOut}/>:mode==="chef"?<ChefV2 user={user} profile={activeProfile}/>:<MemberV2Clean key={mode} user={user} profile={activeProfile}/>} 
+   {mode==="admin"?<V2AdminWorkspaceClean user={user} profile={activeProfile} onSignOut={onSignOut}/>:mode==="chef"?<ChefV3 user={user} profile={activeProfile}/>:<MemberV2Clean key={mode} user={user} profile={activeProfile}/>} 
  </div>
 }
