@@ -23,7 +23,7 @@ export default function MemberV2Clean({user,profile}:Props){
  const markAll=async()=>{await supabase.from("notifications").update({read:true}).eq("user_id",user.id);void load()};
  const signOut=async()=>{await supabase.auth.signOut()};
  return <div className="member-v2-clean"><style>{css}</style><header><div className="brand"><span><UtensilsCrossed size={18}/></span><div><b>HouseEats</b><small>Tasteful Traditions</small></div></div><div className="actions"><button onClick={()=>setTab("notifications")}aria-label="Notifications"><Bell size={20}/>{unread>0&&<i>{unread>9?"9+":unread}</i>}</button><button className="avatar"onClick={()=>setTab("profile")}>{String(name).slice(0,1).toUpperCase()}</button></div></header><main>
- {tab==="home"&&<Home name={name} meals={meals} loading={loading} rsvps={rsvps} toggleRsvp={toggleRsvp} onLate={requestLate}/> 
+ {tab==="home"&&<Home name={name} meals={meals} loading={loading} rsvps={rsvps} toggleRsvp={toggleRsvp} onLate={requestLate}/>} 
  {tab==="late"&&<LateView meals={meals}requests={late}onRequest={requestLate}/>} 
  {tab==="notifications"&&<Notices notices={notices}onRead={markRead}onAll={markAll}/>} 
  {tab==="profile"&&<Profile name={name}email={user.email}allergies={allergies}setAllergies={setAllergies}diet={diet}setDiet={setDiet}notes={notes}setNotes={setNotes}onSave={saveProfile}onSignOut={signOut}toast={toast}/>} 
