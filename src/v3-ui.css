@@ -415,3 +415,32 @@ button{cursor:pointer}
 .chefWorkspace .chefTodayHero,.clean-admin .v2-admin-top{background:var(--v3-navy)!important}
 .chefWorkspace .todayMealCard,.chefWorkspace .roleCard,.chefWorkspace .calendarMeal,.chefWorkspace .panel,.clean-admin .v2-admin-card,.clean-admin .v2-admin-stat{background:#fff!important;border:1px solid var(--v3-line)!important;box-shadow:none!important;border-radius:9px!important}
 .chefWorkspace input,.chefWorkspace textarea,.chefWorkspace select,.clean-admin input,.clean-admin textarea,.clean-admin select{background:#fff!important;border:1px solid #d9e0e4!important;border-radius:6px!important}
+
+.v3-member .meal-type-slot{
+  width:59px!important;
+  min-width:59px!important;
+  align-self:center!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:flex-start!important;
+}
+.v3-member .meal-type-slot .meal-pill{
+  margin:0!important;
+}
+.v3-member .empty-meal .menu-meal-copy{
+  grid-column:auto!important;
+}
+@media (max-width:380px){
+  .v3-member .reference-header{padding-left:20px!important;padding-right:20px!important}
+  .v3-member .reference-brand b{font-size:19px!important}
+  .v3-member .reference-motto{font-size:6px!important;grid-template-columns:9px auto!important}
+  .v3-member .reference-motto i{width:9px!important}
+  .v3-member .reference-greeting{margin-top:25px!important;font-size:20px!important}
+  .v3-member .reference-greeting em{font-size:29px!important}
+  .v3-member .reference-menu-meta{margin-top:17px!important}
+  .v3-member .menu-day-row{padding-left:20px!important;padding-right:20px!important}
+  .v3-member .menu-day-row.today{padding-left:17px!important}
+  .v3-member .menu-meal-line{grid-template-columns:55px minmax(0,1fr) 96px!important;column-gap:5px!important}
+  .v3-member .meal-type-slot{width:55px!important;min-width:55px!important}
+  .v3-member .late-meal-action{width:96px!important;font-size:7px!important}
+}
