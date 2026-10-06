@@ -1,10 +1,11 @@
 import React from "react";
 import MemberV2Clean from "./MemberV2Clean";
-import ChefV2 from "./ChefV2";
+import ChefPage from "./pages/ChefPage";
 import SuperAdminView from "./SuperAdminView";
 import V2AdminWorkspaceClean from "./V2AdminWorkspaceClean";
 import {supabase}from"./lib/supabase";
 import "./chef-v2.css";
+import "./startup-overhaul.css";
 import "./late-plate-ui.css";
 import "./member-menu-v2.css";
 import "./member-menu-compact.css";
@@ -17,6 +18,6 @@ export default function RoleRouter({role,user,profile}:Props){
  const signOut=async()=>{await supabase.auth.signOut()};
  if(normalized==="super_admin"||normalized==="superadmin")return <SuperAdminView user={user} profile={profile} onSignOut={signOut}/>;
  if(normalized==="admin")return <V2AdminWorkspaceClean user={user} profile={{...profile,role:normalized}} onSignOut={signOut}/>;
- if(normalized==="chef"||normalized==="moderator")return <ChefV2 user={user} profile={{...profile,role:normalized}}/>;
+ if(normalized==="chef"||normalized==="moderator")return <ChefPage user={user} profile={{...profile,role:normalized}}/>;
  return <MemberV2Clean user={user} profile={{...profile,role:"member"}}/>;
 }
