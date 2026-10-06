@@ -1,287 +1,417 @@
-/* HouseEats V3 — UI truth stylesheet
-   Visual contract: navy #082846, warm gold #d8b45a, ivory #f7f6f2,
-   editorial serif headlines, compact mobile rhythm, restrained borders. */
-:root{--v3-navy:#082846;--v3-navy2:#0d3557;--v3-gold:#d8b45a;--v3-gold2:#b88e32;--v3-ivory:#f7f6f2;--v3-paper:#fff;--v3-ink:#17344f;--v3-muted:#7a8995;--v3-line:#e2e6e8;--v3-danger:#a65b46}
-html,body,#root{background:var(--v3-ivory)!important;color:var(--v3-ink)!important}
+/* HouseEats V3 — production UI
+   Member Home is built to the supplied mobile rendering, not a dashboard approximation. */
+
+:root{
+  --v3-navy:#082846;
+  --v3-blue:#123b60;
+  --v3-gold:#d8b45a;
+  --v3-gold-dark:#b98c2f;
+  --v3-cream:#f8f6ef;
+  --v3-paper:#fffefa;
+  --v3-line:#dfe3e5;
+  --v3-muted:#6f7e89;
+  --v3-tag:#e7ebee;
+}
+
+html,body,#root{margin:0;min-height:100%;background:var(--v3-cream)!important;color:var(--v3-blue)!important}
 body{font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif!important}
-button,input,textarea,select{font-family:inherit!important}
+button,input,textarea,select{font:inherit}
+button{cursor:pointer}
 
-/* Login / recovery */
+/* Authentication */
 .loginPage{min-height:100vh!important;background:var(--v3-navy)!important;padding:24px!important}
-.loginCard,.loadingCard{width:min(100%,410px)!important;background:var(--v3-ivory)!important;border:0!important;border-radius:18px!important;padding:30px!important;box-shadow:0 24px 70px rgba(0,0,0,.22)!important}
-.loginCard .tastefulLogo{max-height:95px!important}
-.loginCard .tt-company,.loadingCard .tt-company{color:var(--v3-gold2)!important;text-transform:uppercase!important;letter-spacing:.18em!important;font-size:9px!important;font-weight:900!important}
-.loginCard h1,.loadingCard h1{font-family:Georgia,"Times New Roman",serif!important;color:var(--v3-navy)!important;font-size:34px!important;font-weight:500!important}
-.loginCard p,.loadingCard p{color:var(--v3-muted)!important}
-.loginCard label{color:var(--v3-ink)!important}
-.loginCard input{background:#fff!important;border:1px solid #d9dfe3!important;border-radius:7px!important}
+.loginCard,.loadingCard{width:min(100%,410px)!important;background:var(--v3-cream)!important;border:0!important;border-radius:16px!important;padding:30px!important;box-shadow:0 24px 70px rgba(0,0,0,.22)!important}
+.loginCard h1,.loadingCard h1{font-family:Georgia,"Times New Roman",serif!important;color:var(--v3-navy)!important;font-weight:500!important}
 .loginCard .primary{background:var(--v3-navy)!important;border-radius:7px!important;height:48px!important}
-.authLinks button{background:transparent!important;color:var(--v3-muted)!important}
-.authLinks .linkStrong{color:var(--v3-gold2)!important}
 
-/* Super-admin preview bar */
-.super-admin-shell{min-height:100vh!important;background:var(--v3-ivory)!important}
-.super-admin-switcher{background:var(--v3-navy)!important;border-bottom:1px solid rgba(216,180,90,.45)!important}
-.super-admin-title strong{color:var(--v3-gold)!important}
-.super-admin-modes button{border-color:rgba(216,180,90,.45)!important;border-radius:7px!important}
-.super-admin-modes button.active{background:var(--v3-gold)!important;color:var(--v3-navy)!important;border-color:var(--v3-gold)!important}
+/* Member app */
+.v3-member{
+  min-height:100dvh!important;
+  background:var(--v3-cream)!important;
+  color:var(--v3-blue)!important;
+}
+.v3-member main{
+  width:100%!important;
+  max-width: none!important;
+  margin:0!important;
+  padding:0 0 76px!important;
+}
+.v3-member .home-shell{width:100%!important;margin:0!important}
 
-/* Member shell */
-.member-v2-clean{width:100%!important;min-height:100vh!important;background:var(--v3-ivory)!important;color:var(--v3-ink)!important}
-.member-v2-clean main{max-width:760px!important;margin:0 auto!important;padding:0 16px 92px!important}
-.member-v2-clean .member-header{height:68px!important;background:var(--v3-navy)!important;color:#fff!important;border:0!important;padding:0 max(16px,calc((100vw - 760px)/2 + 16px))!important;display:flex!important;align-items:center!important;justify-content:space-between!important}
-.member-v2-clean .brand{display:flex!important;align-items:center!important;gap:10px!important}
-.member-v2-clean .brand>span{display:grid!important;place-items:center!important;color:var(--v3-gold)!important;background:transparent!important}
-.member-v2-clean .brand b{font-family:Georgia,"Times New Roman",serif!important;font-size:17px!important;font-weight:500!important;letter-spacing:.13em!important;color:#fff!important}
-.member-v2-clean .brand small{display:block!important;color:#b8c8d5!important;font-size:8px!important;letter-spacing:.14em!important;text-transform:uppercase!important;margin-top:3px!important}
-.member-v2-clean .header-actions{display:flex!important;gap:4px!important}
-.member-v2-clean .header-actions button{background:transparent!important;color:#fff!important;border:0!important;width:38px!important;height:38px!important;display:grid!important;place-items:center!important;position:relative!important}
-.member-v2-clean .header-actions .avatar{background:var(--v3-gold)!important;color:var(--v3-navy)!important;border-radius:50%!important;font-weight:900!important}
-.member-v2-clean .header-actions i{background:var(--v3-gold)!important;color:var(--v3-navy)!important;border-color:var(--v3-navy)!important}
+/* Navy header — dimensions intentionally match the supplied phone rendering at ~416 CSS px. */
+.v3-member .reference-header{
+  position:relative!important;
+  box-sizing:border-box!important;
+  height:160px!important;
+  padding:16px 24px 8px!important;
+  overflow:hidden!important;
+  background:var(--v3-navy)!important;
+  color:var(--v3-cream)!important;
+}
+.v3-member .reference-top{
+  display:flex!important;
+  align-items:flex-start!important;
+  justify-content:space-between!important;
+  gap:14px!important;
+}
+.v3-member .reference-brand{
+  display:flex!important;
+  align-items:center!important;
+  gap:8px!important;
+  min-width:0!important;
+  color:var(--v3-gold)!important;
+}
+.v3-member .brand-mark{
+  width:23px!important;
+  height:23px!important;
+  flex:0 0 23px!important;
+  color:var(--v3-gold)!important;
+}
+.v3-member .reference-brand b{
+  display:block!important;
+  font-family:Georgia,"Times New Roman",serif!important;
+  font-size:21px!important;
+  line-height:1!important;
+  letter-spacing:.065em!important;
+  font-weight:400!important;
+  color:#f8f4e9!important;
+  white-space:nowrap!important;
+}
+.v3-member .reference-brand small{
+  display:block!important;
+  margin-top:4px!important;
+  font-family:Georgia,"Times New Roman",serif!important;
+  font-size:7px!important;
+  line-height:1!important;
+  letter-spacing:.15em!important;
+  color:var(--v3-gold)!important;
+  white-space:nowrap!important;
+}
+.v3-member .reference-motto{
+  display:grid!important;
+  grid-template-columns:12px auto!important;
+  gap:4px 6px!important;
+  align-items:center!important;
+  margin-top:1px!important;
+  flex:0 0 auto!important;
+  color:var(--v3-gold)!important;
+  font-family:Georgia,"Times New Roman",serif!important;
+  font-size:6.5px!important;
+  line-height:1.05!important;
+  letter-spacing:.06em!important;
+  text-align:right!important;
+  white-space:nowrap!important;
+}
+.v3-member .reference-motto i{
+  display:block!important;
+  width:12px!important;
+  height:1px!important;
+  background:var(--v3-gold)!important;
+  opacity:.9!important;
+}
+.v3-member .reference-greeting{
+  margin:27px 0 0!important;
+  font-family:Georgia,"Times New Roman",serif!important;
+  font-size:21px!important;
+  line-height:1.02!important;
+  font-weight:400!important;
+  letter-spacing:-.015em!important;
+  color:#f8f4e9!important;
+}
+.v3-member .reference-greeting em{
+  font-family:Georgia,"Times New Roman",serif!important;
+  font-size:31px!important;
+  font-style:italic!important;
+  color:var(--v3-gold)!important;
+}
+.v3-member .reference-menu-meta{
+  display:flex!important;
+  flex-direction:column!important;
+  gap:3px!important;
+  margin-top:19px!important;
+}
+.v3-member .reference-menu-meta span{
+  font-size:7px!important;
+  line-height:1!important;
+  font-weight:800!important;
+  letter-spacing:.22em!important;
+  color:var(--v3-gold)!important;
+}
+.v3-member .reference-menu-meta b{
+  font-family:Inter,ui-sans-serif,system-ui,sans-serif!important;
+  font-size:11px!important;
+  line-height:1!important;
+  font-weight:400!important;
+  color:#f8f4e9!important;
+}
+.v3-member .reference-gold-rule{
+  position:absolute!important;
+  left:24px!important;
+  right:24px!important;
+  bottom:7px!important;
+  height:1px!important;
+  background:var(--v3-gold)!important;
+}
 
-/* Member home — the reference structure */
-.v3-member .home-shell{max-width:760px!important;margin:0 auto!important}
-.v3-member .welcome-hero{position:relative!important;overflow:hidden!important;background:var(--v3-navy)!important;color:#fff!important;border-radius:0 0 2px 2px!important;padding:25px 18px 22px!important;margin:0 -16px 0!important;min-height:148px!important;box-shadow:none!important}
-.v3-member .welcome-hero:after{content:""!important;position:absolute!important;right:-85px!important;top:-105px!important;width:190px!important;height:190px!important;border:1px solid rgba(216,180,90,.18)!important;border-radius:50%!important;box-shadow:0 0 0 34px rgba(216,180,90,.025),0 0 0 68px rgba(216,180,90,.02)!important}
-.v3-member .welcome-brand{display:flex!important;align-items:center!important;gap:8px!important;color:var(--v3-gold)!important;font-size:8px!important;font-weight:900!important;letter-spacing:.19em!important}
-.v3-member .welcome-copy{margin-top:22px!important}
-.v3-member .welcome-greeting{margin:0!important;font-family:Georgia,"Times New Roman",serif!important;font-size:29px!important;line-height:1.05!important;font-weight:400!important;color:#fff!important;letter-spacing:-.025em!important}
-.v3-member .welcome-greeting i{font-family:Georgia,"Times New Roman",serif!important;font-style:italic!important;color:#ead18d!important}
-.v3-member .welcome-sub{margin:8px 0 0!important;color:#c1d0dc!important;font-size:9px!important;letter-spacing:.1em!important;text-transform:uppercase!important}
-.v3-member .welcome-rule{position:absolute!important;left:18px!important;right:18px!important;bottom:0!important;height:2px!important;background:var(--v3-gold)!important}
-.v3-member .menu-heading{background:var(--v3-ivory)!important;padding:22px 2px 12px!important;margin:0!important}
-.v3-member .menu-heading span{color:var(--v3-gold2)!important;font-size:8px!important;letter-spacing:.2em!important;font-weight:900!important}
-.v3-member .menu-heading h2{font-family:Georgia,"Times New Roman",serif!important;color:var(--v3-navy)!important;font-size:25px!important;font-weight:500!important;line-height:1.1!important;margin:5px 0 3px!important;letter-spacing:-.02em!important}
-.v3-member .menu-heading p{color:var(--v3-muted)!important;font-size:10px!important;margin:0!important}
-.v3-member .rolling-menu{background:var(--v3-paper)!important;border:1px solid var(--v3-line)!important;border-radius:12px!important;overflow:hidden!important;box-shadow:0 6px 22px rgba(8,40,70,.045)!important;margin:0!important}
-.v3-member .menu-day-row{display:grid!important;grid-template-columns:62px 1fr!important;gap:13px!important;min-height:112px!important;padding:0 12px 0 9px!important;background:#fff!important;border-bottom:1px solid var(--v3-line)!important}
-.v3-member .menu-day-row.today{background:#fffdf6!important;box-shadow:inset 3px 0 var(--v3-gold)!important}
-.v3-member .menu-day-label{min-height:101px!important;padding:12px 9px 12px 0!important;border-right:1px solid var(--v3-line)!important;display:flex!important;flex-direction:column!important;align-items:flex-start!important}
-.v3-member .menu-day-label small{font-size:7px!important;color:#70808d!important;letter-spacing:.12em!important}
-.v3-member .menu-day-label b{font-family:Georgia,"Times New Roman",serif!important;color:var(--v3-navy)!important;font-size:27px!important;font-weight:500!important;line-height:1!important;margin:2px 0!important}
-.v3-member .menu-day-label span{font-size:7px!important;color:#8c98a2!important;letter-spacing:.1em!important}
-.v3-member .menu-day-label em{margin-top:6px!important;background:var(--v3-gold)!important;color:var(--v3-navy)!important;border-radius:3px!important;padding:3px 5px!important;font-size:5.5px!important;letter-spacing:.11em!important;font-style:normal!important;text-transform:uppercase!important}
-.v3-member .menu-meals-stack{padding:5px 0!important}
-.v3-member .menu-meal-line{display:flex!important;justify-content:space-between!important;align-items:center!important;gap:10px!important;min-height:50px!important;padding:8px 0!important;border-bottom:1px solid #edf0f2!important}
+/* Rolling menu */
+.v3-member .rolling-menu{
+  margin:0!important;
+  padding:0!important;
+  background:#faf9f5!important;
+  border:0!important;
+  border-radius:0!important;
+  box-shadow:none!important;
+  overflow:visible!important;
+}
+.v3-member .menu-day-row{
+  display:block!important;
+  box-sizing:border-box!important;
+  width:100%!important;
+  padding:0 24px!important;
+  margin:0!important;
+  background:#faf9f5!important;
+  border-bottom:1px solid var(--v3-line)!important;
+}
+.v3-member .menu-day-row.today{
+  padding-left:21px!important;
+  border-left:3px solid var(--v3-gold)!important;
+  background:#faf9f5!important;
+  box-shadow:none!important;
+}
+.v3-member .menu-day-label{
+  display:flex!important;
+  align-items:baseline!important;
+  min-height:0!important;
+  height:31px!important;
+  padding:11px 0 5px!important;
+  margin:0!important;
+  border:0!important;
+  gap:6px!important;
+}
+.v3-member .menu-day-label b{
+  color:#c59a42!important;
+  font-family:Inter,ui-sans-serif,system-ui,sans-serif!important;
+  font-size:10px!important;
+  line-height:1!important;
+  font-weight:800!important;
+  letter-spacing:.05em!important;
+}
+.v3-member .menu-day-label span{
+  color:#c59a42!important;
+  font-size:11px!important;
+  line-height:1!important;
+}
+.v3-member .menu-day-label strong{
+  color:var(--v3-blue)!important;
+  font-family:Inter,ui-sans-serif,system-ui,sans-serif!important;
+  font-size:10px!important;
+  line-height:1!important;
+  font-weight:550!important;
+  letter-spacing:.015em!important;
+  text-transform:uppercase!important;
+}
+
+/* The reference uses a fixed three-column meal row: type | food | late plate. */
+.v3-member .menu-meals-stack{padding:0!important;margin:0!important}
+.v3-member .menu-meal-line{
+  display:grid!important;
+  grid-template-columns:59px minmax(0,1fr) 102px!important;
+  align-items:center!important;
+  column-gap:7px!important;
+  min-height:69px!important;
+  box-sizing:border-box!important;
+  padding:8px 0!important;
+  margin:0!important;
+  border-bottom:1px solid #e5e8e9!important;
+}
 .v3-member .menu-meal-line:last-child{border-bottom:0!important}
-.v3-member .menu-meal-copy{min-width:0!important}
-.v3-member .menu-meal-copy>span{display:block!important;color:var(--v3-gold2)!important;font-size:6.5px!important;letter-spacing:.14em!important;margin-bottom:3px!important}
-.v3-member .menu-meal-copy>b{display:block!important;color:#25435d!important;font-family:Georgia,"Times New Roman",serif!important;font-size:15px!important;font-weight:600!important;line-height:1.15!important}
-.v3-member .menu-meal-copy p{margin:3px 0 0!important;color:#758492!important;font-size:9px!important;line-height:1.35!important}
-.v3-member .meal-allergen{display:block!important;color:#9a6e21!important;font-size:8px!important;margin-top:2px!important}
-.v3-member .late-meal-action{flex:0 0 auto!important;border:1px solid #d5b25d!important;background:#fff!important;color:var(--v3-navy)!important;border-radius:4px!important;padding:6px 8px!important;font-size:7px!important;font-weight:900!important;text-transform:uppercase!important;letter-spacing:.03em!important}
-.v3-member .empty-meal{color:#9aa5ad!important;font-family:Georgia,"Times New Roman",serif!important;font-size:13px!important}
+.v3-member .menu-meal-copy{
+  min-width:0!important;
+  align-self:center!important;
+}
+.v3-member .meal-pill{
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  width:54px!important;
+  height:20px!important;
+  box-sizing:border-box!important;
+  padding:0 6px!important;
+  margin:0 0 4px!important;
+  border-radius:999px!important;
+  background:#dfc77f!important;
+  color:var(--v3-blue)!important;
+  font-size:7px!important;
+  line-height:1!important;
+  font-weight:700!important;
+  letter-spacing:.02em!important;
+}
+.v3-member .meal-pill.dinner{
+  background:#0d4169!important;
+  color:#fff!important;
+}
+.v3-member .menu-meal-copy>b{
+  display:block!important;
+  overflow:hidden!important;
+  color:#173b5c!important;
+  font-family:Inter,ui-sans-serif,system-ui,sans-serif!important;
+  font-size:11px!important;
+  line-height:1.15!important;
+  font-weight:750!important;
+  white-space:nowrap!important;
+  text-overflow:ellipsis!important;
+}
+.v3-member .menu-meal-copy p{
+  margin:3px 0 0!important;
+  color:#38566d!important;
+  font-family:Inter,ui-sans-serif,system-ui,sans-serif!important;
+  font-size:8px!important;
+  line-height:1.3!important;
+  max-width:none!important;
+  display:-webkit-box!important;
+  -webkit-line-clamp:2!important;
+  -webkit-box-orient:vertical!important;
+  overflow:hidden!important;
+}
+.v3-member .meal-tags{
+  display:flex!important;
+  flex-wrap:wrap!important;
+  gap:3px!important;
+  margin-top:4px!important;
+}
+.v3-member .meal-tags small{
+  display:inline-flex!important;
+  align-items:center!important;
+  height:14px!important;
+  box-sizing:border-box!important;
+  padding:0 5px!important;
+  border-radius:999px!important;
+  background:var(--v3-tag)!important;
+  color:#31536d!important;
+  font-size:6px!important;
+  line-height:1!important;
+  font-weight:600!important;
+  letter-spacing:.035em!important;
+  text-transform:uppercase!important;
+}
+.v3-member .late-meal-action{
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:5px!important;
+  width:102px!important;
+  height:29px!important;
+  box-sizing:border-box!important;
+  padding:0 7px!important;
+  margin:0!important;
+  justify-self:end!important;
+  border:1px solid #d3a94e!important;
+  border-radius:999px!important;
+  background:transparent!important;
+  color:var(--v3-blue)!important;
+  font-family:Inter,ui-sans-serif,system-ui,sans-serif!important;
+  font-size:7.5px!important;
+  line-height:1!important;
+  font-weight:650!important;
+  letter-spacing:0!important;
+  text-transform:none!important;
+  box-shadow:none!important;
+}
+.v3-member .late-meal-action svg{width:12px!important;height:12px!important;stroke:#173b5c!important;stroke-width:1.9!important}
+.v3-member .empty-meal{
+  display:flex!important;
+  align-items:center!important;
+  min-height:45px!important;
+  border-bottom:1px solid #e5e8e9!important;
+}
+.v3-member .empty-meal .meal-pill{display:none!important}
+.v3-member .empty-meal .menu-meal-copy{grid-column:1/-1!important;color:var(--v3-muted)!important}
+.v3-member .menu-loading{
+  padding:22px 24px!important;
+  color:var(--v3-muted)!important;
+  font-size:11px!important;
+}
 
-/* Member secondary pages */
-.v3-member .head{padding:22px 2px 15px!important}
-.v3-member .head span,.v3-member .page-head span{color:var(--v3-gold2)!important;letter-spacing:.18em!important;font-size:8px!important;font-weight:900!important}
-.v3-member .head h1,.v3-member .page-head h1{font-family:Georgia,"Times New Roman",serif!important;color:var(--v3-navy)!important;font-size:27px!important;font-weight:500!important;margin:5px 0!important}
-.v3-member .head p,.v3-member .page-head p{color:var(--v3-muted)!important;font-size:11px!important}
-.v3-member .late-panel,.v3-member .notice,.v3-member .profile,.v3-member .late-meal{background:#fff!important;border:1px solid var(--v3-line)!important;border-radius:10px!important;box-shadow:none!important}
-.v3-member .late-panel{overflow:hidden!important}
-.v3-member .late-intro{padding:16px!important;background:#fbfaf7!important;border-bottom:1px solid var(--v3-line)!important}
-.v3-member .late-meal{display:flex!important;align-items:center!important;justify-content:space-between!important;width:100%!important;border-width:0 0 1px!important;border-radius:0!important;padding:14px!important;text-align:left!important}
+/* Four-item navy bottom navigation exactly matching the reference. */
+.v3-member nav{
+  position:fixed!important;
+  left:0!important;
+  right:0!important;
+  bottom:0!important;
+  z-index:1000!important;
+  height:70px!important;
+  box-sizing:border-box!important;
+  padding:5px 9px max(5px,env(safe-area-inset-bottom))!important;
+  display:grid!important;
+  grid-template-columns:repeat(4,1fr)!important;
+  gap:0!important;
+  background:var(--v3-navy)!important;
+  border:0!important;
+  box-shadow:0 -5px 18px rgba(0,0,0,.12)!important;
+}
+.v3-member nav button{
+  position:relative!important;
+  min-height:58px!important;
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:3px!important;
+  border:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+  color:#d8e1e8!important;
+  font-size:7px!important;
+  line-height:1!important;
+  font-weight:500!important;
+}
+.v3-member nav button svg{width:17px!important;height:17px!important;stroke:#d8e1e8!important;stroke-width:1.8!important}
+.v3-member nav button.active{background:transparent!important;color:var(--v3-gold)!important}
+.v3-member nav button.active svg{stroke:var(--v3-gold)!important}
+.v3-member nav em{
+  position:absolute!important;
+  top:8px!important;
+  right:calc(50% - 20px)!important;
+  min-width:14px!important;
+  height:14px!important;
+  padding:0 4px!important;
+  box-sizing:border-box!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  border:0!important;
+  border-radius:999px!important;
+  background:var(--v3-gold)!important;
+  color:var(--v3-navy)!important;
+  font-size:7px!important;
+  line-height:1!important;
+  font-style:normal!important;
+  font-weight:800!important;
+}
+
+/* Secondary member pages */
+.v3-member .head{padding:22px 24px 14px!important}
+.v3-member .head span{display:block!important;color:var(--v3-gold-dark)!important;font-size:8px!important;font-weight:800!important;letter-spacing:.18em!important}
+.v3-member .head h1{margin:5px 0!important;color:var(--v3-navy)!important;font-family:Georgia,"Times New Roman",serif!important;font-size:28px!important;font-weight:500!important}
+.v3-member .head p{margin:0!important;color:var(--v3-muted)!important;font-size:11px!important}
+.v3-member .late-panel,.v3-member .profile{margin:0 24px!important;background:#fff!important;border:1px solid var(--v3-line)!important;border-radius:10px!important;box-shadow:none!important}
+.v3-member .late-intro{display:flex!important;gap:11px!important;padding:15px!important;background:#fbfaf7!important;border-bottom:1px solid var(--v3-line)!important}
+.v3-member .late-meal{width:100%!important;display:flex!important;align-items:center!important;justify-content:space-between!important;padding:13px 15px!important;background:#fff!important;border:0!important;border-bottom:1px solid var(--v3-line)!important;text-align:left!important}
+.v3-member .late-meal:last-child{border-bottom:0!important}
 .v3-member .late-meal strong{color:var(--v3-navy)!important;font-size:9px!important;text-transform:uppercase!important}
-.v3-member .notice{width:100%!important;display:flex!important;gap:11px!important;border-width:0 0 1px!important;border-radius:0!important;padding:14px!important;text-align:left!important}
-.v3-member .notice:last-child{border-bottom:0!important}
+.v3-member .notice-head{margin:0 24px 8px!important}
+.v3-member .notice{width:calc(100% - 48px)!important;margin:0 24px!important;display:flex!important;gap:10px!important;padding:13px!important;background:#fff!important;border:1px solid var(--v3-line)!important;border-bottom:0!important;text-align:left!important}
+.v3-member .notice:last-child{border-bottom:1px solid var(--v3-line)!important}
 .v3-member .notice .dot{background:var(--v3-gold)!important}
-.v3-member .profile{padding:17px!important}
-.v3-member .chips button,.v3-member .profile button{border:1px solid var(--v3-line)!important;background:#fff!important;color:var(--v3-ink)!important;border-radius:7px!important}
+.v3-member .profile{padding:16px!important}
+.v3-member .chips button,.v3-member .profile button{border:1px solid var(--v3-line)!important;background:#fff!important;border-radius:7px!important}
 .v3-member .chips button.selected{background:var(--v3-navy)!important;color:#fff!important;border-color:var(--v3-navy)!important}
 .v3-member .save{background:var(--v3-navy)!important;color:#fff!important;border-radius:7px!important}
 
-/* Member bottom nav — four icons, no emoji */
-.v3-member nav{position:fixed!important;left:0!important;right:0!important;bottom:0!important;height:72px!important;padding:7px 6px max(7px,calc(7px + env(safe-area-inset-bottom)))!important;display:grid!important;grid-template-columns:repeat(4,1fr)!important;background:rgba(255,255,255,.98)!important;border-top:1px solid #dfe4e8!important;box-shadow:0 -8px 24px rgba(8,40,70,.08)!important;z-index:1000!important}
-.v3-member nav button{min-height:52px!important;border:0!important;background:transparent!important;color:#b2bec8!important;border-radius:9px!important;display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;gap:4px!important;font-size:8px!important;font-weight:800!important}
-.v3-member nav button.active{color:var(--v3-navy)!important;background:#faf7ef!important}
-.v3-member nav button.active svg{stroke:var(--v3-gold2)!important}
-.v3-member nav em{background:var(--v3-gold)!important;color:var(--v3-navy)!important;border-color:#fff!important}
-
-/* Chef */
-.chefWorkspace{max-width:760px!important;margin:0 auto!important;padding:0 16px 92px!important;background:var(--v3-ivory)!important;color:var(--v3-ink)!important}
-.chefWorkspace .roleHero{padding:25px 2px 17px!important;background:transparent!important}
-.chefWorkspace .roleHero span{color:var(--v3-gold2)!important;letter-spacing:.18em!important}
-.chefWorkspace .roleHero h1{font-family:Georgia,"Times New Roman",serif!important;font-weight:500!important;color:var(--v3-navy)!important;font-size:29px!important}
-.chefWorkspace .roleHero p{color:var(--v3-muted)!important}
-.chefWorkspace .workspaceNav{background:var(--v3-ivory)!important;border-bottom:1px solid var(--v3-line)!important;padding:0 0 9px!important}
-.chefWorkspace .workspaceNav button{border-radius:5px!important;color:#758492!important}
-.chefWorkspace .workspaceNav button.active{background:var(--v3-navy)!important;color:#fff!important}
-.chefWorkspace .chefTodayHero{background:var(--v3-navy)!important;border-radius:10px!important;box-shadow:none!important;padding:20px!important}
-.chefWorkspace .chefTodayHero span,.chefWorkspace .chefSectionTitle,.chefWorkspace .chefMealTop small{color:var(--v3-gold)!important}
-.chefWorkspace .chefTodayHero h2{font-family:Georgia,"Times New Roman",serif!important;font-weight:500!important}
-.chefWorkspace .todayMealCard,.chefWorkspace .roleCard,.chefWorkspace .calendarMeal,.chefWorkspace .panel{background:#fff!important;border:1px solid var(--v3-line)!important;border-radius:9px!important;box-shadow:none!important}
-.chefWorkspace .todayMealCard button,.chefWorkspace .chefEditButton,.chefWorkspace .chefSaveButton{background:var(--v3-navy)!important;color:#fff!important;border-radius:6px!important;border-color:var(--v3-navy)!important}
-.chefWorkspace .chefStatusRow button{background:#fff!important;border:1px solid var(--v3-line)!important;border-radius:8px!important;color:var(--v3-navy)!important}
-.chefWorkspace .calendarHeader{background:var(--v3-navy)!important;color:#fff!important}
-.chefWorkspace .calendarCell.today{border-color:var(--v3-gold)!important}
-.chefWorkspace input,.chefWorkspace textarea,.chefWorkspace select{background:#fff!important;border:1px solid #d9e0e4!important;border-radius:6px!important}
-.chefWorkspace .chefEditorActions button{border-radius:6px!important}
-
-/* Admin */
-.v2-admin.clean-admin{min-height:100vh!important;background:var(--v3-ivory)!important;color:var(--v3-ink)!important}
-.clean-admin .v2-admin-top{background:var(--v3-navy)!important;color:#fff!important;border-bottom:1px solid rgba(216,180,90,.35)!important}
-.clean-admin .v2-admin-brand b{font-family:Georgia,"Times New Roman",serif!important;font-weight:500!important;letter-spacing:.08em!important}
-.clean-admin .v2-admin-brand span{color:#b8c8d5!important}
-.clean-admin .v2-admin-main{max-width:760px!important;margin:0 auto!important;padding:24px 16px 50px!important}
-.clean-admin .v2-admin-welcome span{color:var(--v3-gold2)!important;letter-spacing:.18em!important;font-size:8px!important;font-weight:900!important}
-.clean-admin .v2-admin-welcome h1{font-family:Georgia,"Times New Roman",serif!important;font-size:30px!important;font-weight:500!important;color:var(--v3-navy)!important}
-.clean-admin .v2-admin-welcome p{color:var(--v3-muted)!important}
-.clean-admin .v2-admin-tabs{border-bottom:1px solid var(--v3-line)!important}
-.clean-admin .v2-admin-tabs button{background:transparent!important;color:#778793!important;border-radius:6px!important}
-.clean-admin .v2-admin-tabs button.active{background:var(--v3-navy)!important;color:#fff!important}
-.clean-admin .v2-admin-card,.clean-admin .v2-admin-stat{background:#fff!important;border:1px solid var(--v3-line)!important;border-radius:9px!important;box-shadow:none!important}
-.clean-admin .v2-admin-stat b,.clean-admin .v2-admin-card h2{font-family:Georgia,"Times New Roman",serif!important;color:var(--v3-navy)!important;font-weight:500!important}
-.clean-admin .v2-admin-card-head span{color:var(--v3-gold2)!important;letter-spacing:.16em!important;font-size:8px!important;font-weight:900!important}
-.clean-admin .v2-admin-row{border-bottom:1px solid var(--v3-line)!important}
-.clean-admin .person-avatar{background:var(--v3-gold)!important;color:var(--v3-navy)!important}
-.clean-admin select,.clean-admin input,.clean-admin textarea{background:#fff!important;border:1px solid #d9e0e4!important;border-radius:6px!important}
-.clean-admin .v2-admin-actions button,.clean-admin .v2-admin-card button{border-radius:6px!important}
-
-/* Super-admin preview should never distort the actual role surface */
-@media(max-width:520px){
- .member-v2-clean main{padding-left:12px!important;padding-right:12px!important}
- .v3-member .welcome-hero{margin-left:-12px!important;margin-right:-12px!important;padding:22px 16px 20px!important;min-height:142px!important}
- .v3-member .welcome-greeting{font-size:25px!important}
- .v3-member .menu-heading{padding-top:19px!important}
- .v3-member .menu-day-row{grid-template-columns:55px 1fr!important;gap:10px!important}
- .v3-member .menu-day-label b{font-size:24px!important}
- .v3-member .menu-meal-copy>b{font-size:13px!important}
- .v3-member .late-meal-action{padding:6px 7px!important;font-size:6.5px!important}
- .chefWorkspace{padding-left:12px!important;padding-right:12px!important}
- .clean-admin .v2-admin-main{padding-left:12px!important;padding-right:12px!important}
-}
-@media(min-width:760px){
- .member-v2-clean,.chefWorkspace,.clean-admin{max-width:760px!important;margin:0 auto!important}
- .member-v2-clean{border-left:1px solid #e4e7e9!important;border-right:1px solid #e4e7e9!important}
-}
-
-
-/* === APPROVED MEMBER RENDERING — REFERENCE MATCH === */
-.v3-member{background:#f8f7f3!important}
-.v3-member main{max-width:none!important;padding:0 0 84px!important}
-.v3-member .home-shell{max-width:none!important;margin:0!important}
-.v3-member .reference-header{
-  position:relative!important;overflow:hidden!important;
-  min-height:318px!important;padding:28px 50px 18px!important;
-  background:#082846!important;color:#f8f7f3!important;
-}
-.v3-member .reference-top{display:flex!important;align-items:flex-start!important;justify-content:space-between!important;gap:24px!important}
-.v3-member .reference-brand{display:flex!important;align-items:center!important;gap:15px!important;color:#d8b45a!important}
-.v3-member .reference-brand svg{stroke:#d8b45a!important;stroke-width:1.8!important}
-.v3-member .reference-brand b{display:block!important;font-family:Georgia,"Times New Roman",serif!important;font-size:30px!important;line-height:1!important;letter-spacing:.06em!important;font-weight:400!important;color:#f7f3e8!important}
-.v3-member .reference-brand small{display:block!important;margin-top:7px!important;font-family:Georgia,"Times New Roman",serif!important;font-size:12px!important;letter-spacing:.13em!important;color:#d8b45a!important}
-.v3-member .reference-motto{display:grid!important;grid-template-columns:28px auto 28px!important;align-items:center!important;gap:9px!important;margin-top:8px!important;color:#d8b45a!important;font-size:12px!important;line-height:1.4!important;letter-spacing:.04em!important;text-transform:uppercase!important}
-.v3-member .reference-motto i{height:1px!important;background:#d8b45a!important;display:block!important}
-.v3-member .reference-greeting{margin:62px 0 0!important;font-family:Georgia,"Times New Roman",serif!important;font-size:31px!important;line-height:1.05!important;font-weight:400!important;color:#f7f3e8!important}
-.v3-member .reference-greeting em{font-family:Georgia,"Times New Roman",serif!important;font-size:43px!important;font-style:italic!important;color:#d8b45a!important}
-.v3-member .reference-menu-meta{margin-top:28px!important;display:flex!important;flex-direction:column!important;gap:5px!important}
-.v3-member .reference-menu-meta span{font-size:11px!important;letter-spacing:.22em!important;color:#d8b45a!important;font-weight:800!important}
-.v3-member .reference-menu-meta b{font-size:17px!important;font-weight:400!important;color:#f7f3e8!important}
-.v3-member .reference-gold-rule{position:absolute!important;left:50px!important;right:50px!important;bottom:13px!important;height:2px!important;background:#d8b45a!important}
-
-.v3-member .rolling-menu{margin:0!important;border:0!important;border-radius:0!important;background:#faf9f5!important;box-shadow:none!important;overflow:visible!important}
-.v3-member .menu-day-row{
-  display:block!important;min-height:0!important;padding:0 50px!important;
-  background:#faf9f5!important;border-bottom:1px solid #dfe3e5!important;
-}
-.v3-member .menu-day-row.today{
-  background:#faf9f5!important;box-shadow:none!important;
-  border-left:3px solid #d8b45a!important;padding-left:47px!important;
-}
-.v3-member .menu-day-label{
-  min-height:0!important;height:auto!important;padding:20px 0 12px!important;
-  border:0!important;display:flex!important;flex-direction:row!important;
-  align-items:baseline!important;gap:9px!important;
-}
-.v3-member .menu-day-label b{
-  font-family:Inter,ui-sans-serif,system-ui,sans-serif!important;
-  color:#c69e4a!important;font-size:24px!important;line-height:1!important;
-  font-weight:800!important;letter-spacing:.01em!important;
-}
-.v3-member .menu-day-label span{font-size:18px!important;color:#c69e4a!important}
-.v3-member .menu-day-label strong{
-  color:#173b5c!important;font-size:18px!important;font-weight:500!important;
-  letter-spacing:.01em!important
-}
-.v3-member .menu-meals-stack{padding:0!important}
-.v3-member .menu-meal-line{
-  display:grid!important;grid-template-columns:94px minmax(0,1fr) 158px!important;
-  align-items:center!important;gap:16px!important;min-height:112px!important;
-  padding:14px 0!important;border-bottom:1px solid #dfe3e5!important;
-}
-.v3-member .menu-meal-line:last-child{border-bottom:0!important}
-.v3-member .menu-meal-copy{min-width:0!important;align-self:center!important}
-.v3-member .meal-pill{
-  display:inline-flex!important;align-items:center!important;justify-content:center!important;
-  min-width:73px!important;padding:6px 10px!important;border-radius:999px!important;
-  font-size:12px!important;line-height:1!important;letter-spacing:.01em!important;
-  font-weight:500!important;background:#dec57d!important;color:#173b5c!important;
-  margin-bottom:8px!important;
-}
-.v3-member .meal-pill.dinner{background:#0d4169!important;color:#fff!important}
-.v3-member .menu-meal-copy>b{
-  display:block!important;color:#173b5c!important;font-family:Inter,ui-sans-serif,system-ui,sans-serif!important;
-  font-size:17px!important;line-height:1.2!important;font-weight:750!important
-}
-.v3-member .menu-meal-copy p{
-  margin:5px 0 0!important;color:#294b67!important;font-size:15px!important;
-  line-height:1.35!important;max-width:520px!important
-}
-.v3-member .meal-tags{display:flex!important;gap:7px!important;margin-top:7px!important;flex-wrap:wrap!important}
-.v3-member .meal-tags small{
-  display:inline-flex!important;background:#e7ebee!important;color:#31536d!important;
-  border-radius:999px!important;padding:5px 10px!important;font-size:10px!important;
-  line-height:1!important;letter-spacing:.04em!important;text-transform:uppercase!important
-}
-.v3-member .late-meal-action{
-  justify-self:end!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;
-  gap:10px!important;width:158px!important;height:45px!important;padding:0 16px!important;
-  border:2px solid #d3a94e!important;background:transparent!important;color:#173b5c!important;
-  border-radius:999px!important;font-size:14px!important;font-weight:650!important;
-  letter-spacing:0!important;text-transform:none!important
-}
-.v3-member .late-meal-action svg{stroke:#173b5c!important}
-.v3-member .empty-meal{display:block!important;padding:20px 0!important;min-height:0!important}
-.v3-member .empty-meal .meal-pill{display:none!important}
-
-.v3-member nav{
-  position:fixed!important;left:0!important;right:0!important;bottom:0!important;
-  height:78px!important;padding:8px 12px max(8px,env(safe-area-inset-bottom))!important;
-  background:#082846!important;border-top:0!important;box-shadow:0 -5px 20px rgba(0,0,0,.12)!important;
-}
-.v3-member nav button{
-  min-height:58px!important;background:transparent!important;color:#dce5ec!important;
-  border-radius:0!important;gap:4px!important;font-size:12px!important;font-weight:500!important;
-}
-.v3-member nav button svg{stroke:#dce5ec!important;stroke-width:1.8!important}
-.v3-member nav button.active{background:transparent!important;color:#d8b45a!important}
-.v3-member nav button.active svg{stroke:#d8b45a!important}
-.v3-member nav em{background:#d8b45a!important;color:#082846!important;border:0!important;top:2px!important}
-
-@media(max-width:600px){
-  .v3-member .reference-header{min-height:292px!important;padding:24px 20px 16px!important}
-  .v3-member .reference-top{gap:12px!important}
-  .v3-member .reference-brand{gap:10px!important}
-  .v3-member .reference-brand svg{width:25px!important;height:25px!important}
-  .v3-member .reference-brand b{font-size:23px!important}
-  .v3-member .reference-brand small{font-size:8px!important;margin-top:5px!important}
-  .v3-member .reference-motto{grid-template-columns:18px auto 18px!important;gap:6px!important;font-size:8px!important}
-  .v3-member .reference-greeting{margin-top:50px!important;font-size:23px!important}
-  .v3-member .reference-greeting em{font-size:33px!important}
-  .v3-member .reference-menu-meta{margin-top:23px!important}
-  .v3-member .reference-menu-meta span{font-size:9px!important}
-  .v3-member .reference-menu-meta b{font-size:15px!important}
-  .v3-member .reference-gold-rule{left:20px!important;right:20px!important;bottom:11px!important}
-  .v3-member .menu-day-row{padding:0 16px!important}
-  .v3-member .menu-day-row.today{padding-left:13px!important}
-  .v3-member .menu-day-label{padding:17px 0 10px!important;gap:7px!important}
-  .v3-member .menu-day-label b{font-size:20px!important}
-  .v3-member .menu-day-label strong{font-size:16px!important}
-  .v3-member .menu-day-label span{font-size:16px!important}
-  .v3-member .menu-meal-line{grid-template-columns:74px minmax(0,1fr)!important;gap:10px!important;min-height:116px!important;padding:13px 0!important}
-  .v3-member .meal-pill{min-width:58px!important;padding:6px 8px!important;font-size:10px!important;margin-bottom:6px!important}
-  .v3-member .menu-meal-copy>b{font-size:15px!important}
-  .v3-member .menu-meal-copy p{font-size:12px!important}
-  .v3-member .meal-tags small{font-size:8px!important;padding:4px 8px!important}
-  .v3-member .late-meal-action{grid-column:2!important;justify-self:start!important;width:auto!important;min-width:118px!important;height:37px!important;padding:0 12px!important;font-size:12px!important;margin-top:2px!important}
-}
+/* Chef/admin retain the same understated visual system. */
+.chefWorkspace,.clean-admin{background:var(--v3-cream)!important;color:var(--v3-blue)!important}
+.chefWorkspace .roleHero h1,.clean-admin .v2-admin-welcome h1{font-family:Georgia,"Times New Roman",serif!important;font-weight:500!important;color:var(--v3-navy)!important}
+.chefWorkspace .roleHero span,.clean-admin .v2-admin-welcome span{color:var(--v3-gold-dark)!important}
+.chefWorkspace .chefTodayHero,.clean-admin .v2-admin-top{background:var(--v3-navy)!important}
+.chefWorkspace .todayMealCard,.chefWorkspace .roleCard,.chefWorkspace .calendarMeal,.chefWorkspace .panel,.clean-admin .v2-admin-card,.clean-admin .v2-admin-stat{background:#fff!important;border:1px solid var(--v3-line)!important;box-shadow:none!important;border-radius:9px!important}
+.chefWorkspace input,.chefWorkspace textarea,.chefWorkspace select,.clean-admin input,.clean-admin textarea,.clean-admin select{background:#fff!important;border:1px solid #d9e0e4!important;border-radius:6px!important}
