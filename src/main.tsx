@@ -1,6 +1,3 @@
-import "./v2.css";
-import "./v2-admin.css";
-import "./blue-gold-override.css";
 import "./v3-ui.css";
 import React from "react";
 import ReactDOM from "react-dom/client";
