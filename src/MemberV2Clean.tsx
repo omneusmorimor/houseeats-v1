@@ -44,7 +44,7 @@ function Home({name,meals,loading,onLate}:{name:string;meals:Meal[];loading:bool
        <div className="reference-motto"><span>GOOD FOOD</span><i/><span>STRONGER BONDS</span><i/></div>
      </div>
      <p className="reference-greeting">{greeting}, <em>{firstName}.</em></p>
-     <div className="reference-menu-meta"><span>14-DAY MENU</span><b>{days[0].toLocaleDateString(undefined,{month:"long",day:"numeric"})} — {end.toLocaleDateString(undefined,{month:"long",day:"numeric"})}</b></div>
+     <div className="reference-menu-meta"><span>Here’s what’s being served.</span></div>
      <div className="reference-gold-rule"/>
    </section>
    <section className="rolling-menu">
