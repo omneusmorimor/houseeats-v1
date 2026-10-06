@@ -838,3 +838,35 @@ button{cursor:pointer}
  .role-admin .v2-admin-main{padding-left:16px!important;padding-right:16px!important}
  .role-admin-welcome{padding-left:20px!important;padding-right:20px!important}
 }
+
+
+/* Final V3 polish — one restrained visual language across every role */
+.chef3 .role-reference-header{height:82px!important;padding:16px 20px 0!important;overflow:hidden!important}
+.chef3 .role-reference-header .reference-top{min-height:50px!important}
+.chef3 .role-greeting{box-sizing:border-box!important;min-height:78px!important;margin:0!important;padding:0 20px 15px!important;background:var(--v3-navy)!important;color:#f8f4e9!important}
+.chef3 .role-greeting .reference-gold-rule{position:static!important;margin:13px 0 0!important;width:100%!important}
+.chef3 .role-main{padding:14px 20px 92px!important}
+.chef3 .chef3-stats{display:grid!important;grid-template-columns:repeat(3,1fr)!important;gap:7px!important;margin:0 0 16px!important}
+.chef3 .chef3-stats button{min-width:0!important;padding:12px 7px!important;background:#fffefa!important;border:1px solid var(--v3-line)!important;border-radius:8px!important;box-shadow:none!important;color:var(--v3-blue)!important}
+.chef3 .chef3-stats svg{width:16px!important;height:16px!important;color:var(--v3-gold-dark)!important;margin-bottom:6px!important}
+.chef3 .chef3-stats b{font-size:18px!important;font-weight:600!important;color:var(--v3-navy)!important}
+.chef3 .chef3-stats span{font-size:7px!important;color:var(--v3-muted)!important}
+.chef3 .chef3-section{background:#fffefa!important;border:1px solid var(--v3-line)!important;border-radius:8px!important;padding:14px!important}
+.chef3 .chef3-section-title{border-bottom:1px solid var(--v3-line)!important;padding-bottom:9px!important;margin-bottom:0!important}
+.chef3 .chef3-section-title span,.chef3 .chef3-page-title>span{color:var(--v3-gold-dark)!important;font-size:7px!important;font-weight:800!important;letter-spacing:.15em!important}
+.chef3 .chef3-section-title h2{margin:3px 0 0!important;font-family:Georgia,"Times New Roman",serif!important;font-size:17px!important;font-weight:500!important;color:var(--v3-navy)!important}
+.chef3 .chef3-section .chef3-meal{border-bottom:1px solid var(--v3-line)!important;padding:11px 0!important}
+.chef3 .chef3-section .chef3-meal:last-child{border-bottom:0!important}
+.chef3 .chef3-page-title{padding:0 0 13px!important}
+.chef3 .chef3-menu{padding-top:16px!important}
+.chef3 .chef3-day{border-radius:7px!important;box-shadow:none!important}
+.chef3 .chef3-day-head button{background:#fffefa!important}
+.role-admin .v2-admin-welcome{margin:0 -24px!important}
+.role-admin .v2-admin-card-head{border-bottom:1px solid var(--v3-line)!important;padding-bottom:10px!important;margin-bottom:0!important}
+.role-admin .v2-admin-card-head h2{font-family:Georgia,"Times New Roman",serif!important;font-weight:500!important;color:var(--v3-navy)!important}
+.role-admin .v2-admin-row{border-bottom:1px solid var(--v3-line)!important;padding:11px 0!important;background:transparent!important}
+.role-admin .v2-admin-primary{background:var(--v3-navy)!important;border:1px solid var(--v3-navy)!important;border-radius:7px!important;color:#fff!important}
+.role-admin .risk-pill{border-color:var(--v3-gold)!important;background:#eee6cf!important;color:var(--v3-blue)!important}
+.role-admin label{color:var(--v3-navy)!important;font-size:9px!important;font-weight:700!important}
+.role-admin input,.role-admin textarea,.role-admin select{background:#fffefa!important;border:1px solid #d5dde1!important;border-radius:6px!important;color:var(--v3-blue)!important}
+@media(max-width:520px){.role-admin .v2-admin-welcome{margin:0 -16px!important}.chef3 .role-greeting>p{font-size:21px!important}.chef3 .role-greeting>p em{font-size:31px!important}}
