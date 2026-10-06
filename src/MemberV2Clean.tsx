@@ -1,5 +1,5 @@
 import React,{useEffect,useMemo,useState}from"react";
-import{Bell,CalendarDays,Check,ChevronRight,Clock3,CircleUserRound,LogOut,Save,ShieldAlert,UtensilsCrossed,X}from"lucide-react";
+import{Bell,Check,Clock3,CircleUserRound,Home as HomeIcon,LogOut,Save,ShieldAlert,UtensilsCrossed,X}from"lucide-react";
 import{supabase}from"./lib/supabase";
 
 type Props={user:any;profile:any};
@@ -21,13 +21,13 @@ export default function MemberV2Clean({user,profile}:Props){
  const markRead=async(id:string)=>{await supabase.from("notifications").update({read:true}).eq("id",id);void load()};
  const markAll=async()=>{await supabase.from("notifications").update({read:true}).eq("user_id",user.id);void load()};
  const signOut=async()=>{await supabase.auth.signOut()};
- return <div className="member-v2-clean v3-member"><header className="member-header"><div className="brand"><span><UtensilsCrossed size={19}/></span><div><b>HOUSEEATS</b><small>Tasteful Traditions</small></div></div><div className="header-actions"><button onClick={()=>setTab("notifications")}aria-label="Notifications"><Bell size={20}/>{unread>0&&<i>{unread>9?"9+":unread}</i>}</button><button className="avatar"onClick={()=>setTab("profile")}>{String(name).slice(0,1).toUpperCase()}</button></div></header><main>
+ return <div className="member-v2-clean v3-member"><main>
  {tab==="home"&&<Home name={name} meals={meals} loading={loading} onLate={requestLate}/>} 
  {tab==="late"&&<LateView meals={meals}requests={late}onRequest={requestLate}/>} 
  {tab==="notifications"&&<Notices notices={notices}onRead={markRead}onAll={markAll}/>} 
  {tab==="profile"&&<Profile name={name}email={user.email}allergies={allergies}setAllergies={setAllergies}diet={diet}setDiet={setDiet}notes={notes}setNotes={setNotes}onSave={saveProfile}onSignOut={signOut}toast={toast}/>} 
  {toast&&tab!=="profile"&&<div className="toast">{toast}<button onClick={()=>setToast("")}><X size={15}/></button></div>}
- </main><nav>{[["home","Home",UtensilsCrossed],["late","Late Plate",Clock3],["notifications","Alerts",Bell],["profile","Profile",CircleUserRound]].map(([id,label,Icon]:any)=><button key={id}className={tab===id?"active":""}onClick={()=>setTab(id)}><Icon size={19} strokeWidth={2.2}/><span>{label}</span>{id==="notifications"&&unread>0?<em>{unread}</em>:null}</button>)}</nav></div>
+ </main><nav>{[["home","Home",HomeIcon],["late","Late Plate",Clock3],["notifications","Alerts",Bell],["profile","Profile",CircleUserRound]].map(([id,label,Icon]:any)=><button key={id}className={tab===id?"active":""}onClick={()=>setTab(id)}><Icon size={19} strokeWidth={2.2}/><span>{label}</span>{id==="notifications"&&unread>0?<em>{unread}</em>:null}</button>)}</nav></div>
 }
 function Head({eyebrow,title,sub}:{eyebrow:string;title:string;sub?:string}){return <div className="head"><span>{eyebrow}</span><h1>{title}</h1>{sub&&<p>{sub}</p>}</div>}
 function Home({name,meals,loading,onLate}:{name:string;meals:Meal[];loading:boolean;onLate:(m:Meal)=>void}){
@@ -37,23 +37,21 @@ function Home({name,meals,loading,onLate}:{name:string;meals:Meal[];loading:bool
  const grouped=useMemo(()=>{const map=new Map<string,Meal[]>();meals.forEach(m=>map.set(m.meal_date,[...(map.get(m.meal_date)||[]),m]));return map},[meals]);
  const end=days[13];
  return <div className="home-shell">
-   <section className="welcome-hero">
-     <div className="welcome-brand"><UtensilsCrossed size={19}/><span>HOUSEEATS</span></div>
-     <div className="welcome-copy">
-       <p className="welcome-greeting">{greeting}, <i>{firstName}.</i></p>
-       <p className="welcome-sub">Good food. Stronger bonds.</p>
+   <section className="reference-header">
+     <div className="reference-top">
+       <div className="reference-brand"><UtensilsCrossed size={31}/><div><b>HOUSEEATS</b><small>TASTEFUL TRADITIONS</small></div></div>
+       <div className="reference-motto"><span>GOOD FOOD</span><i/><span>STRONGER BONDS</span><i/></div>
      </div>
-     <div className="welcome-rule"/>
-   </section>
-   <section className="menu-heading">
-     <div><span>14-DAY MENU</span><h2>What’s being served</h2><p>{days[0].toLocaleDateString(undefined,{month:"long",day:"numeric"})} — {end.toLocaleDateString(undefined,{month:"long",day:"numeric"})}</p></div>
+     <p className="reference-greeting">{greeting}, <em>{firstName}.</em></p>
+     <div className="reference-menu-meta"><span>14-DAY MENU</span><b>{days[0].toLocaleDateString(undefined,{month:"long",day:"numeric"})} — {end.toLocaleDateString(undefined,{month:"long",day:"numeric"})}</b></div>
+     <div className="reference-gold-rule"/>
    </section>
    <section className="rolling-menu">
      {days.map(d=>{
        const key=iso(d),list=(grouped.get(key)||[]).filter(m=>m.meal_type==="lunch"||m.meal_type==="dinner").sort((a,b)=>order.indexOf(a.meal_type)-order.indexOf(b.meal_type));
        const lunch=list.find(m=>m.meal_type==="lunch"),dinner=list.find(m=>m.meal_type==="dinner");
        return <section className={"menu-day-row "+(key===today()?"today":"")} key={key}>
-         <div className="menu-day-label"><small>{d.toLocaleDateString(undefined,{weekday:"short"}).toUpperCase()}</small><b>{d.getDate()}</b><span>{d.toLocaleDateString(undefined,{month:"short"}).toUpperCase()}</span>{key===today()&&<em>Today</em>}</div>
+         <div className="menu-day-label">{key===today()?<><b>TODAY</b><span>·</span></>:null}<strong>{d.toLocaleDateString(undefined,{weekday:"short"}).toUpperCase()}, {d.toLocaleDateString(undefined,{month:"short"})} {d.getDate()}</strong></div>
          <div className="menu-meals-stack"><MealLine meal={lunch} onLate={onLate}/><MealLine meal={dinner} onLate={onLate}/></div>
        </section>
      })}
@@ -62,7 +60,7 @@ function Home({name,meals,loading,onLate}:{name:string;meals:Meal[];loading:bool
  </div>
 }
 
-function MealLine({meal,onLate}:{meal?:Meal;onLate:(m:Meal)=>void}){if(!meal)return <div className="menu-meal-line empty-meal"><div className="menu-meal-copy"><span>MEAL</span><b>Menu not posted</b></div></div>;return <article className="menu-meal-line"><div className="menu-meal-copy"><span>{meal.meal_type.toUpperCase()}</span><b>{meal.name}</b>{meal.description&&<p>{meal.description}</p>}{meal.allergens?.length?<small className="meal-allergen"><ShieldAlert size={12}/>{meal.allergens.length} allergen{meal.allergens.length>1?"s":""} listed</small>:null}</div><button className="late-meal-action"onClick={()=>onLate(meal)}>Late plate</button></article>}
+function MealLine({meal,onLate}:{meal?:Meal;onLate:(m:Meal)=>void}){if(!meal)return <div className="menu-meal-line empty-meal"><div className="menu-meal-copy"><span>MEAL</span><b>Menu not posted</b></div></div>;return <article className="menu-meal-line"><div className="menu-meal-copy"><span className={"meal-pill "+meal.meal_type}>{meal.meal_type.toUpperCase()}</span><b>{meal.name}</b>{meal.description&&<p>{meal.description}</p>}{meal.allergens?.length?<div className="meal-tags">{meal.allergens.slice(0,4).map(a=><small key={a}>{a}</small>)}</div>:null}</div><button className="late-meal-action"onClick={()=>onLate(meal)}><Clock3 size={17}/><span>Late Plate</span></button></article>}
 
 function LateView({meals,requests,onRequest}:{meals:Meal[];requests:Late[];onRequest:(m:Meal)=>void}){const upcoming=meals.filter(m=>m.meal_date>=today()).slice(0,14);const active=new Map(requests.map(r=>[r.meal_id,r]));return <><Head eyebrow="DINING SUPPORT" title="Late plate" sub="Tell the kitchen which meal you need held for you."/><section className="late-panel"><div className="late-intro"><Clock3 size={24}/><div><b>Need extra time?</b><p>Request a late plate before service so the kitchen knows to hold yours.</p></div></div>{upcoming.length?upcoming.map(m=>{const r=active.get(m.id);return <button className="late-meal"key={m.id}onClick={()=>!r&&onRequest(m)}disabled={!!r}><span><b>{m.name}</b><small>{fmt(m.meal_date)} · {m.meal_type}</small></span><strong>{r?r.status==="picked_up"?"Picked up":r.status==="ready"?"Ready":"Requested":"Request"}</strong></button>}):<div className="empty">No upcoming meals have been posted.</div>}</section><p className="late-note">Once requested, the kitchen can move your plate through its normal preparation and ready process.</p></>}
 function Notices({notices,onRead,onAll}:{notices:Notice[];onRead:(id:string)=>void;onAll:()=>void}){return <><Head eyebrow="INBOX" title="Updates" sub="Kitchen and chapter notices in one place."/><div className="notice-head"><span>{notices.filter(n=>!n.read).length} unread</span><button onClick={onAll}>Mark all read</button></div>{notices.length?notices.map(n=><button className={"notice "+(n.read?"read":"")}key={n.id}onClick={()=>onRead(n.id)}><span className="dot"/><div><b>{n.title}</b><p>{n.message}</p><small>{new Date(n.created_at).toLocaleDateString()}</small></div></button>):<div className="empty"><Bell/><b>You're all caught up.</b></div>}</>}
