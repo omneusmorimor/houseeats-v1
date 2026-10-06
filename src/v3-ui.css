@@ -87,21 +87,7 @@ button{cursor:pointer}
   color:var(--v3-gold)!important;
   white-space:nowrap!important;
 }
-.v3-member .reference-motto{
-  display:grid!important;
-  grid-template-columns:12px auto!important;
-  gap:4px 6px!important;
-  align-items:center!important;
-  margin-top:1px!important;
-  flex:0 0 auto!important;
-  color:var(--v3-gold)!important;
-  font-family:Georgia,"Times New Roman",serif!important;
-  font-size:6.5px!important;
-  line-height:1.05!important;
-  letter-spacing:.06em!important;
-  text-align:right!important;
-  white-space:nowrap!important;
-}
+.v3-member .reference-motto{display:none!important}
 .v3-member .reference-motto i{
   display:block!important;
   width:12px!important;
@@ -109,41 +95,16 @@ button{cursor:pointer}
   background:var(--v3-gold)!important;
   opacity:.9!important;
 }
-.v3-member .reference-greeting{
-  margin:27px 0 0!important;
-  font-family:Georgia,"Times New Roman",serif!important;
-  font-size:21px!important;
-  line-height:1.02!important;
-  font-weight:400!important;
-  letter-spacing:-.015em!important;
-  color:#f8f4e9!important;
-}
+.v3-member .reference-greeting{margin:27px 0 0!important;font-family:Georgia,"Times New Roman",serif!important;font-size:21px!important;line-height:1.02!important;font-weight:400!important;letter-spacing:-.015em!important;color:#f8f4e9!important}
 .v3-member .reference-greeting em{
   font-family:Georgia,"Times New Roman",serif!important;
   font-size:31px!important;
   font-style:italic!important;
   color:var(--v3-gold)!important;
 }
-.v3-member .reference-menu-meta{
-  display:flex!important;
-  flex-direction:column!important;
-  gap:3px!important;
-  margin-top:19px!important;
-}
-.v3-member .reference-menu-meta span{
-  font-size:7px!important;
-  line-height:1!important;
-  font-weight:800!important;
-  letter-spacing:.22em!important;
-  color:var(--v3-gold)!important;
-}
-.v3-member .reference-menu-meta b{
-  font-family:Inter,ui-sans-serif,system-ui,sans-serif!important;
-  font-size:11px!important;
-  line-height:1!important;
-  font-weight:400!important;
-  color:#f8f4e9!important;
-}
+.v3-member .reference-menu-meta{display:block!important;margin-top:19px!important}
+.v3-member .reference-menu-meta span{display:block!important;font-family:Georgia,"Times New Roman",serif!important;font-size:10px!important;line-height:1.2!important;font-weight:400!important;letter-spacing:.01em!important;color:#f8f4e9!important}
+.v3-member .reference-menu-meta b{display:none!important}
 .v3-member .reference-gold-rule{
   position:absolute!important;
   left:24px!important;
