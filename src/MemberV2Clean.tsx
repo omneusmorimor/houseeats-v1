@@ -53,6 +53,7 @@ function Home({name,meals,loading,onLate}:{name:string;meals:Meal[];loading:bool
   <div className="menu-day-label"><span>{key===today()?"TODAY":"".toUpperCase()}</span><em>{d.toLocaleDateString(undefined,{weekday:"short",month:"short",day:"numeric"})}</em></div>
   <div className="menu-meals-stack"><MealLine meal={lunch} onLate={onLate}/><MealLine meal={dinner} onLate={onLate}/></div>
 </section>
+     })}
      {loading&&<div className="menu-loading">Loading menu…</div>}
    </section>
  </div>
