@@ -10,7 +10,8 @@ type Late={id:string;meal_id:string;requested_at:string;status:string;notes?:str
 
 const iso=(d:Date)=>{const y=d.getFullYear(),m=String(d.getMonth()+1).padStart(2,"0"),day=String(d.getDate()).padStart(2,"0");return`${y}-${m}-${day}`};
 const today=()=>iso(new Date());
-const fmt=(s:string)=>new Date(s+"T12:00:00").toLocaleDateString(undefined,{weekday:"short",month:"short",day:"numeric"});\nconst dayLabel=(s:string)=>fmt(s).replace(/^\\w+/,x=>x.toUpperCase());
+const fmt=(s:string)=>new Date(s+"T12:00:00").toLocaleDateString(undefined,{weekday:"short",month:"short",day:"numeric"});
+const dayLabel=(s:string)=>fmt(s).replace(/^\w+/,x=>x.toUpperCase());
 
 export default function MemberV3({user,profile}:Props){
  const[name]=useState(profile?.full_name||user?.email?.split("@")[0]||"Member");
