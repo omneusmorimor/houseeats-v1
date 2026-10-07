@@ -74,3 +74,46 @@
 @media(max-width:390px){
  .he-brand strong{font-size:23px}.he-brand small{font-size:8px}.he-motto{font-size:7px}.he-greeting{font-size:24px}.he-meal{grid-template-columns:61px minmax(0,1fr) 94px;gap:7px;padding-left:12px;padding-right:12px}.he-type{min-width:56px;font-size:8px}.he-meal-copy h3{font-size:13px}.he-late{min-width:90px;font-size:9px}.he-day{margin:0 13px}
 }
+/* Reference rendering lock: 841 x 1870 mobile composition */
+:root{--navy:#092842;--navy2:#0e3e63;--gold:#e0bd6d;--gold2:#d4b66e;--paper:#f6f5f1;--ink:#173a5c;--line:#dfe2e1}
+html,body,#root{margin:0;background:var(--paper)}
+.he-v3{background:var(--paper);padding-bottom:162px}
+.he-home,.he-page{max-width:841px}
+.he-hero{height:326px;background:#092842;padding:78px 50px 0}
+.he-brand{gap:16px}
+.he-brand-icon{width:29px;height:58px;color:#e0bd6d;stroke-width:1.65}
+.he-brand-copy strong{font-size:31px;color:#f7f4ec}
+.he-brand-copy small{margin-top:9px;color:#e0bd6d;font-size:12px;letter-spacing:.11em}
+.he-motto{position:absolute;right:0;top:11px;width:190px;text-align:center;color:#e0bd6d;font-family:Arial,Helvetica,sans-serif;font-size:13px;line-height:1.55;letter-spacing:.015em}
+.he-motto span{display:block}.he-motto b{position:absolute;font-size:23px;line-height:1;top:11px;font-weight:400}.he-motto b:first-of-type{left:0}.he-motto b:last-of-type{right:0}
+.he-greeting{left:50px;top:178px;font-size:31px;color:#f7f4ec}
+.he-greeting i{font-size:47px;color:#e0bd6d;margin-left:6px}
+.he-menu-heading{position:absolute;left:50px;right:50px;bottom:14px;padding:0!important;margin:0!important;background:transparent!important;max-width:none}
+.he-menu-heading .eyebrow{color:#e0bd6d;font-size:15px;font-weight:500;letter-spacing:.2em}
+.he-menu-heading .range{margin-top:7px;font-size:20px;color:#f7f4ec}
+.he-menu-heading:after{display:none}
+.hero-rule{height:2px;background:#e0bd6d;margin-top:18px}
+.he-menu{background:#f6f5f1}
+.he-day{margin:0 39px 0 50px;border-bottom:1px solid #dfe2e1}
+.he-day-title{height:61px;padding:0;gap:9px;font-size:21px}
+.he-day-title b{color:#cfae61;font-size:23px;font-weight:700}
+.he-day-title span{font-size:20px;font-weight:500}
+.he-day-title .dot-sep{font-size:21px;color:#b6a77c}
+.he-day.today{border-left:3px solid #d3b26c}.he-day.today .he-day-title{padding-left:18px}
+.he-meal{min-height:127px;grid-template-columns:91px minmax(0,1fr) 156px;gap:18px;padding:19px 0 17px;border-top:1px solid #dfe2e1}
+.he-type{border-radius:15px;padding:5px 8px;font-size:13px;font-weight:500}
+.he-type.lunch{background:#ddc07c;color:#173a5c}.he-type.dinner{background:#0e3e63;color:#fff}
+.he-meal-copy{padding-top:1px}.he-meal-copy h3{font-size:17px;color:#173a5c}.he-meal-copy p{font-size:15px;color:#234968}
+.he-allergens{gap:6px;margin-top:8px}.he-allergens span{background:#e1e6e9;border-radius:13px;padding:5px 11px;font-size:11px;color:#36566f}
+.he-late{width:156px;height:44px;border:1.7px solid #cda653;border-radius:24px;color:#173a5c;gap:10px;font-size:14px}
+.he-late svg{width:21px;height:21px}
+.he-nav{height:162px;background:#092842;padding:21px max(20px,calc((100vw - 841px)/2 + 20px)) 45px}
+.he-nav button{color:#d6dce2;gap:8px;font-size:17px}.he-nav svg{width:34px;height:34px}.he-nav button.active{color:#e0bd6d}.he-nav button.active svg{stroke:#e0bd6d}
+.he-nav em{top:-5px;right:calc(50% - 35px);min-width:25px;height:25px;background:#dcb96c;color:#173a5c;font-size:13px}
+@media(max-width:600px){
+ .he-v3{padding-bottom:118px}.he-hero{height:326px;padding:78px 50px 0}.he-brand{gap:15px}.he-brand-icon{width:28px;height:57px}.he-brand-copy strong{font-size:30px}.he-brand-copy small{font-size:11px}.he-motto{width:180px;font-size:12px}.he-greeting{left:50px;top:177px;font-size:30px}.he-greeting i{font-size:45px}
+ .he-menu-heading{left:50px;right:50px;bottom:14px}.he-menu-heading .eyebrow{font-size:14px}.he-menu-heading .range{font-size:20px}.hero-rule{margin-top:18px}
+ .he-day{margin-left:30px;margin-right:39px}.he-day-title{height:60px}.he-day-title b{font-size:22px}.he-day-title span{font-size:19px}.he-day.today .he-day-title{padding-left:18px}
+ .he-meal{grid-template-columns:91px minmax(0,1fr) 156px;gap:18px;min-height:127px;padding-top:18px;padding-bottom:17px}.he-meal-copy h3{font-size:17px}.he-meal-copy p{font-size:15px}.he-late{width:156px}
+ .he-nav{height:118px;padding-top:15px;padding-bottom:26px}.he-nav button{font-size:14px;gap:7px}.he-nav svg{width:31px;height:31px}
+}
