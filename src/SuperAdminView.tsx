@@ -1,13 +1,13 @@
 import React,{useState}from"react";
 import V2AdminWorkspace from"./V2AdminWorkspace";
 import ChefV2 from"./ChefV2";
-import MemberV2Clean from"./MemberV2Clean";
+import MemberV3 from"./MemberV3";
 
 type Mode="admin"|"member"|"chef";
 type Props={user:any;profile:any;onSignOut:()=>void};
 
 export default function SuperAdminView({user,profile,onSignOut}:Props){
- const[mode,setMode]=useState<Mode>("admin");
+ const[mode,setMode]=useState<Mode>("member");
  const activeProfile={...profile,role:mode};
  return <div className="super-admin-shell">
    <div className="super-admin-switcher" aria-label="Super admin preview">
@@ -30,6 +30,6 @@ export default function SuperAdminView({user,profile,onSignOut}:Props){
      .super-admin-modes button.signout{border-color:rgba(255,255,255,.2);color:#b9c7d4}
      @media(max-width:430px){.super-admin-switcher{gap:8px;padding:6px 9px;min-height:48px}.super-admin-title{min-width:70px}.super-admin-title strong{font-size:8px}.super-admin-title span{font-size:7px}.super-admin-modes button{padding:7px 8px;font-size:8px}}
    `}</style>
-   {mode==="admin"?<V2AdminWorkspace user={user} profile={activeProfile} onSignOut={onSignOut}/>:mode==="chef"?<ChefV2 user={user} profile={activeProfile}/>:<MemberV2Clean key={mode} user={user} profile={activeProfile}/>} 
+   {mode==="admin"?<V2AdminWorkspace user={user} profile={activeProfile} onSignOut={onSignOut}/>:mode==="chef"?<ChefV2 user={user} profile={activeProfile}/>:<MemberV3 key={mode} user={user} profile={activeProfile}/>} 
  </div>
 }
