@@ -117,3 +117,19 @@ html,body,#root{margin:0;background:var(--paper)}
  .he-meal{grid-template-columns:91px minmax(0,1fr) 156px;gap:18px;min-height:127px;padding-top:18px;padding-bottom:17px}.he-meal-copy h3{font-size:17px}.he-meal-copy p{font-size:15px}.he-late{width:156px}
  .he-nav{height:118px;padding-top:15px;padding-bottom:26px}.he-nav button{font-size:14px;gap:7px}.he-nav svg{width:31px;height:31px}
 }
+
+/* Final reference geometry calibration */
+.he-hero{height:320px}
+.he-greeting{top:176px}
+.he-menu-heading{bottom:14px}
+.he-day-title{height:61px}
+.he-meal{min-height:127px;padding-top:18px;padding-bottom:17px}
+.he-nav{height:162px;padding-top:21px;padding-bottom:45px}
+@media(max-width:600px){
+  .he-hero{height:320px}
+  .he-greeting{top:176px}
+  .he-menu-heading{bottom:14px}
+  .he-day-title{height:61px}
+  .he-meal{min-height:127px;padding-top:18px;padding-bottom:17px}
+  .he-nav{height:118px}
+}
